@@ -34,12 +34,15 @@ passport.use("jwt", passportJWT.jwt);
 middleware.forEach((it) => app.use(it));
 
 app.post("/api/v1/auth/signin", async (req, res) => {
-  console.log("get req");
+  console.log(req.body);
   try {
     const user = await User.findAndValidateUser(req.body);
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    res.json({ status: "ok", token });
+    console.log('signin', user, payload, token)
+    delete user.password;
+    res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
+    res.json({ status: "ok, signed in", token, user });
   } catch (err) {
     console.log(err);
     res.json({ status: "error", err });

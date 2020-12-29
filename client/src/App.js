@@ -1,20 +1,33 @@
 import React from "react";
-import {
-  Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import Registration from "./features/registration/Registration";
+import Login from "./features/login/Login";
 import Chat from "./features/chat/Chat";
 import history from "./history";
 import { Provider, useSelector } from "react-redux";
 import store from "./app/store";
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const auth = useSelector((s) => s.auth);
+const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
+  const registration = useSelector((s) => s.registration);
+  const login = useSelector((s) => s.login);
+
   const func = (props) =>
-    !!auth.user && !!auth.token ? (
+    (!!registration.user && !!registration.token) ||
+    (!!login.user && !!login.token) ? (
+      <Redirect to={{ pathname: "/registration" }} />
+    ) : (
+      <Component {...props} />
+    );
+  return <Route {...rest} render={func} />;
+};
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const registration = useSelector((s) => s.registration);
+  const login = useSelector((s) => s.login);
+
+  const func = (props) =>
+    (!!registration.user && !!registration.token) ||
+    (!!login.user && !!login.token) ? (
       <Component {...props} />
     ) : (
       <Redirect
@@ -31,12 +44,17 @@ function App() {
     <Provider store={store}>
       <Router history={history}>
         <Switch>
-          <Route exact path="/registration">
-            <Registration />
-          </Route>
-          <Route exact path="/chat">
-            <Chat />
-          </Route>
+          <OnlyAnonymousRoute
+            exact
+            path="/registration"
+            component={Registration}
+          ></OnlyAnonymousRoute>
+          <OnlyAnonymousRoute
+            exact
+            path="/login"
+            component={Login}
+          ></OnlyAnonymousRoute>
+          <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute>
         </Switch>
       </Router>
     </Provider>
