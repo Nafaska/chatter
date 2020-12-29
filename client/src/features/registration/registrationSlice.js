@@ -1,10 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import history from "../../history";
 
 export const registrationSlice = createSlice({
   name: "registration",
   initialState: {
     password: "",
     email: "",
+    token: "",
+    user: {},
   },
   reducers: {
     createPassword: (state, action) => {
@@ -13,10 +17,14 @@ export const registrationSlice = createSlice({
     createEmail: (state, action) => {
       state.email = action.payload;
     },
+    addUser: (state, action) => {
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+    },
   },
 });
 
-export const { createEmail, createPassword } = registrationSlice.actions;
+export const { createEmail, createPassword, addUser } = registrationSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -28,11 +36,52 @@ export const { createEmail, createPassword } = registrationSlice.actions;
 //   }, 1000);
 // };
 
-// export const updateEmail = (email) => (dispatch) => {
-//   setTimeout(() => {
-//     dispatch(createEmail(email));
-//   }, 1000);
-// };
+export const createUser = (email, password) => async (dispatch) => {
+
+  const credentials = {
+    email,
+    password,
+  };
+  await axios
+    .post("http://localhost:5000/api/v1/auth/signup", credentials)
+    .then((res) => {
+      dispatch(
+        addUser({ token: res.data.token, user: res.data.userInfo.role })
+      );
+      history.push('/chat');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  // try {
+  //   fetch("http://localhost:5000/api/v1/auth/signup", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       email,
+  //       password,
+  //     }),
+  //   })
+  //     .then((res) => console.log(typeof res, res))
+  //     .then((res) => {
+  //       if (!res.status !== 200) {
+  //         throw new Error(res.status);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       dispatch(data.token);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // } catch (err) {
+  //   console.log(err);
+  // }
+};
+
 export const selectEmail = (state) => state.registration.email;
 export const selectPassword = (state) => state.registration.password;
 
