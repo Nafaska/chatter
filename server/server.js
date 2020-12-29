@@ -17,7 +17,7 @@ const app = express();
 const port = 5000;
 
 const middleware = [
-  cors(),
+  cors({ origin: "http://localhost:3000", credentials: true }),
   passport.initialize(),
   express.static(path.resolve(__dirname, "../dist/assets")),
   bodyParser.urlencoded({
@@ -32,6 +32,22 @@ const middleware = [
 passport.use("jwt", passportJWT.jwt);
 
 middleware.forEach((it) => app.use(it));
+
+app.get("/api/v1/auth/signin", async (req, res) => {
+  try {
+    const jwtUser = jwt.verify(req.cookies.token, config.secret);
+    const user = await User.findById(jwtUser.uid);
+
+    const payload = { uid: user.id };
+    const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
+    delete user.password;
+    res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
+    res.json({ status: "ok", token, user });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error", err });
+  }
+});
 
 app.post("/api/v1/auth/signin", async (req, res) => {
   console.log(req.body);

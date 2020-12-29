@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 export const registrationSlice = createSlice({
   name: "registration",
   initialState: {
     password: "",
     email: "",
-    token: "",
+    token: cookies.get("token"),
     user: {},
   },
   reducers: {
@@ -24,7 +27,11 @@ export const registrationSlice = createSlice({
   },
 });
 
-export const { createEmail, createPassword, addUser } = registrationSlice.actions;
+export const {
+  createEmail,
+  createPassword,
+  addUser,
+} = registrationSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -37,18 +44,19 @@ export const { createEmail, createPassword, addUser } = registrationSlice.action
 // };
 
 export const createUser = (email, password) => async (dispatch) => {
-
   const credentials = {
     email,
     password,
   };
   await axios
-    .post("http://localhost:5000/api/v1/auth/signup", credentials)
+    .post("http://localhost:5000/api/v1/auth/signup", credentials, {
+      withCredentials: true,
+    })
     .then((res) => {
       dispatch(
         addUser({ token: res.data.token, user: res.data.userInfo.role })
       );
-      history.push('/chat');
+      history.push("/chat");
     })
     .catch((err) => {
       console.log(err);

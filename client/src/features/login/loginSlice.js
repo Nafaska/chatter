@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 export const loginSlice = createSlice({
   name: "login",
   initialState: {
     password: "",
     email: "",
-    token: "",
+    token: cookies.get("token"),
     user: {},
   },
   reducers: {
@@ -42,7 +45,7 @@ export const authUser = (email, password) => async (dispatch) => {
     password,
   };
   await axios
-    .post("http://localhost:5000/api/v1/auth/signin", credentials)
+    .post("http://localhost:5000/api/v1/auth/signin", credentials, { withCredentials: true })
     .then((res) => {
       dispatch(
         validateUser({ token: res.data.token, user: res.data.user.role })
@@ -53,6 +56,17 @@ export const authUser = (email, password) => async (dispatch) => {
       console.log(err);
     });
 };
+
+export function readToken() {
+  return (dispatch) => {
+    fetch("http://localhost:5000/api/v1/auth/signin")
+      .then((r) => r.json())
+      .then((data) => {
+        dispatch({ token: data.token, user: data.user });
+        history.push("/chat");
+      });
+  };
+}
 
 export const selectEmail = (state) => state.login.email;
 export const selectPassword = (state) => state.login.password;

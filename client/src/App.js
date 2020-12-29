@@ -14,7 +14,7 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const func = (props) =>
     (!!registration.user && !!registration.token) ||
     (!!login.user && !!login.token) ? (
-      <Redirect to={{ pathname: "/registration" }} />
+      <Redirect to={{ pathname: "/chat" }} />
     ) : (
       <Component {...props} />
     );
@@ -32,7 +32,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     ) : (
       <Redirect
         to={{
-          pathname: "/registration",
+          pathname: "/login",
         }}
       />
     );
