@@ -12,13 +12,14 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "sockjs": "^0.3.21"
   },
   "scripts": {
-    "build": "babel ./server.js --out-dir ./dist",
-    "start": "node ./dist/server",
+    "build": "babel ./src --out-dir ./dist",
+    "start": "node ./dist/server.js",
     "start:dev": "NODE_ENV=development npm-run-all build start",
-    "start:watch": "nodemon --exec babel-node ./server.js"
+    "start:watch": "nodemon --exec babel-node ./src/server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -30,7 +31,14 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env"
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
     ]
   }
 }

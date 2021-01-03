@@ -4,7 +4,8 @@ import path from "path";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import passport from "passport";
-import passportJWT from "./services/passport.js";
+import passportJWT from "./services/passport";
+import sockjs from "sockjs"
 import jwt from "jsonwebtoken";
 import config from "./config";
 // import axios from "axios";
@@ -15,6 +16,7 @@ mongooseService.connect();
 
 const app = express();
 const port = 5000;
+// let connections = [];
 
 const middleware = [
   cors({ origin: "http://localhost:3000", credentials: true }),
@@ -87,3 +89,19 @@ app.post("/api/v1/auth/signup", async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+// if (config.isSocketsEnabled) {
+//   const echo = sockjs.createServer();
+//   echo.on("connection", (conn) => {
+//     connections.push(conn);
+//     console.log("connected");
+//     conn.on("data", async () => {
+//       console.log("get data");
+//     });
+
+//     conn.on("close", () => {
+//       connections = connections.filter((c) => c.readyState !== 3);
+//     });
+//   });
+//   echo.installHandlers(app, { prefix: "/ws" });
+// }
