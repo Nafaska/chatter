@@ -6,6 +6,7 @@ import {
   selectMessage,
   selectChannel,
 } from "./chatSlice";
+import { selectEmail } from "../login/loginSlice";
 // import { useHistory } from "react-router-dom";
 const Chat = () => {
   // const history = useHistory();
@@ -13,6 +14,9 @@ const Chat = () => {
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
   const channel = useSelector(selectChannel);
+  const email = useSelector(selectEmail);
+
+  console.log(email);
 
   return (
     <div className="w-full border shadow bg-white">
@@ -81,7 +85,7 @@ const Chat = () => {
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
             {channel.map((it) => {
               return (
-                <div className="flex items-start mb-4 no-overflow-anchoring">
+                <div key={it.time} className="flex items-start mb-4 no-overflow-anchoring">
                   <img
                     src="https://avatars2.githubusercontent.com/u/343407?s=460&v=4"
                     className="w-10 h-10 rounded mr-3"
@@ -91,7 +95,7 @@ const Chat = () => {
                     <div className="flex items-end">
                       <span className="font-bold text-md mr-2 font-sans">
                         {/* { typeof it.username !== "undefined" ? it.username : it.email} */}
-                        Username
+                        {email}
                       </span>
                       <span className="text-grey-700 text-xs font-light">
                         {new Date(it.time).toLocaleString()}

@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import passportJWT from "./services/passport";
-import sockjs from "sockjs"
+import sockjs from "sockjs";
 import jwt from "jsonwebtoken";
 import config from "./config";
 // import axios from "axios";
@@ -39,15 +39,14 @@ app.get("/api/v1/auth/signin", async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret);
     const user = await User.findById(jwtUser.uid);
-
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
+    console.log("verify user", user, payload, token);
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
     res.json({ status: "ok", token, user });
   } catch (err) {
-    console.log(err);
-    res.json({ status: "error", err });
+    res.status(401).json({ status: "error", err });
   }
 });
 
@@ -57,7 +56,7 @@ app.post("/api/v1/auth/signin", async (req, res) => {
     const user = await User.findAndValidateUser(req.body);
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    console.log('signin', user, payload, token)
+    console.log("signin", user, payload, token);
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
     res.json({ status: "ok, signed in", token, user });

@@ -1,6 +1,7 @@
 import React from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
 import Registration from "./features/registration/Registration";
+import Startup from "./startup";
 import Login from "./features/login/Login";
 import Chat from "./features/chat/Chat";
 import history from "./history";
@@ -43,19 +44,21 @@ function App() {
   return (
     <Provider store={store}>
       <Router history={history}>
-        <Switch>
-          <OnlyAnonymousRoute
-            exact
-            path="/registration"
-            component={Registration}
-          ></OnlyAnonymousRoute>
-          <OnlyAnonymousRoute
-            exact
-            path="/login"
-            component={Login}
-          ></OnlyAnonymousRoute>
-          <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute>
-        </Switch>
+        <Startup>
+          <Switch>
+            <OnlyAnonymousRoute
+              exact
+              path="/registration"
+              component={Registration}
+            ></OnlyAnonymousRoute>
+            <OnlyAnonymousRoute
+              exact
+              path="/login"
+              component={Login}
+            ></OnlyAnonymousRoute>
+            <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute>
+          </Switch>
+        </Startup>
       </Router>
     </Provider>
   );
