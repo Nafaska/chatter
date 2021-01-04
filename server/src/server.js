@@ -41,7 +41,6 @@ app.get("/api/v1/auth/signin", async (req, res) => {
     const user = await User.findById(jwtUser.uid);
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    console.log("verify user", user, payload, token);
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
     res.json({ status: "ok", token, user });
@@ -51,12 +50,10 @@ app.get("/api/v1/auth/signin", async (req, res) => {
 });
 
 app.post("/api/v1/auth/signin", async (req, res) => {
-  console.log(req.body);
   try {
     const user = await User.findAndValidateUser(req.body);
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    console.log("signin", user, payload, token);
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
     res.json({ status: "ok, signed in", token, user });
@@ -67,19 +64,18 @@ app.post("/api/v1/auth/signin", async (req, res) => {
 });
 
 app.post("/api/v1/auth/signup", async (req, res) => {
-  const user = new User({
+  const newUser = new User({
     email: req.body.email,
     password: req.body.password,
+    username: req.body.username,
   });
   try {
-    console.log(req.body.password, req.body.email);
-    const userInfo = await user.save();
-    const payload = { uid: userInfo.id };
+    const user = await newUser.save();
+    const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    delete userInfo.password;
+    delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    console.log(userInfo, token);
-    res.send({ status: "ok", token, userInfo });
+    res.send({ status: "ok", token, user });
   } catch (err) {
     res.status(400).send(err);
   }

@@ -6,7 +6,6 @@ import { readToken, passToken } from "./features/auth/authSlice";
 const Startup = (props) => {
   const dispatch = useDispatch();
   const token = useSelector(passToken);
-  console.log(token)
   useEffect(() => {
     if (token) {
       dispatch(readToken());

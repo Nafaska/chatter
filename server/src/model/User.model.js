@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: ["user"],
     },
+    username: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -39,7 +43,7 @@ userSchema.method({
 });
 
 userSchema.statics = {
-  async findAndValidateUser({ email, password }) {
+  async findAndValidateUser({ email, password, username }) {
     if (!email) {
       throw new Error("No Email");
     }

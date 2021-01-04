@@ -6,7 +6,7 @@ import {
   selectMessage,
   selectChannel,
 } from "./chatSlice";
-import { selectEmail } from "../auth/authSlice";
+import { selectUsername } from "../auth/authSlice";
 // import { useHistory } from "react-router-dom";
 const Chat = () => {
   // const history = useHistory();
@@ -14,9 +14,7 @@ const Chat = () => {
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
   const channel = useSelector(selectChannel);
-  const email = useSelector(selectEmail);
-
-  console.log(email);
+  const username = useSelector(selectUsername);
 
   return (
     <div className="w-full border shadow bg-white">
@@ -95,7 +93,7 @@ const Chat = () => {
                     <div className="flex items-end">
                       <span className="font-bold text-md mr-2 font-sans">
                         {/* { typeof it.username !== "undefined" ? it.username : it.email} */}
-                        {email}
+                        {username}
                       </span>
                       <span className="text-grey-700 text-xs font-light">
                         {new Date(it.time).toLocaleString()}

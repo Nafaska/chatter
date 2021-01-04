@@ -12,6 +12,7 @@ export const authSlice = createSlice({
     email: "",
     token: cookies.get("token"),
     role: {},
+    username: "",
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -20,15 +21,26 @@ export const authSlice = createSlice({
     validateEmail: (state, action) => {
       state.email = action.payload;
     },
+    validateUsername: (state, action) => {
+      state.username = action.payload;
+    },
+
     validateUser: (state, action) => {
       state.token = action.payload.token;
       state.role = action.payload.role;
+      state.email = action.payload.email;
+      state.username = action.payload.username;
       state.password = "";
     },
   },
 });
 
-export const { validatePassword, validateEmail, validateUser } = authSlice.actions;
+export const {
+  validatePassword,
+  validateEmail,
+  validateUser,
+  validateUsername,
+} = authSlice.actions;
 
 export const authUser = (email, password) => async (dispatch) => {
   const credentials = {
@@ -40,9 +52,8 @@ export const authUser = (email, password) => async (dispatch) => {
       withCredentials: true,
     })
     .then((res) => {
-      console.log(res.data.user.role);
       dispatch(
-        validateUser({ token: res.data.token, role: res.data.user.role })
+        validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email })
       );
       history.push("/chat");
     })
@@ -51,10 +62,11 @@ export const authUser = (email, password) => async (dispatch) => {
     });
 };
 
-export const createUser = (email, password) => async (dispatch) => {
+export const createUser = (email, password, username) => async (dispatch) => {
   const credentials = {
     email,
     password,
+    username,
   };
   await axios
     .post("http://localhost:5000/api/v1/auth/signup", credentials, {
@@ -62,7 +74,12 @@ export const createUser = (email, password) => async (dispatch) => {
     })
     .then((res) => {
       dispatch(
-        validateUser({ token: res.data.token, role: res.data.userInfo.role })
+        validateUser({
+          token: res.data.token,
+          role: res.data.user.role,
+          email: res.data.user.email,
+          username: res.data.user.username,
+        })
       );
       history.push("/chat");
     })
@@ -78,7 +95,14 @@ export function readToken() {
         withCredentials: true,
       })
       .then((res) => {
-        dispatch(validateUser({ token: res.data.token, role: res.data.user.role }));
+        dispatch(
+          validateUser({
+            token: res.data.token,
+            role: res.data.user.role,
+            email: res.data.user.email,
+            username: res.data.user.username,
+          })
+        );
         history.push("/chat");
       })
       .catch((err) => {
@@ -90,6 +114,7 @@ export function readToken() {
 }
 
 export const selectEmail = (state) => state.auth.email;
+export const selectUsername = (state) => state.auth.username;
 export const selectPassword = (state) => state.auth.password;
 export const passToken = (state) => state.auth.token;
 
