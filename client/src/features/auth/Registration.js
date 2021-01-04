@@ -1,8 +1,14 @@
 import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { createEmail, createPassword, selectEmail, selectPassword, createUser } from "./registrationSlice";
 import logo from "../../assets/at-symbol.svg";
 import { useHistory } from "react-router-dom";
+import {
+  validateEmail,
+  validatePassword,
+  selectEmail,
+  selectPassword,
+  createUser,
+} from "./authSlice";
 
 
 const Registration = () => {
@@ -36,7 +42,7 @@ const Registration = () => {
                 type="email"
                 value={email}
                 onChange={(e) => {
-                  dispatch(createEmail(e.target.value));
+                  dispatch(validateEmail(e.target.value));
                 }}
                 autoComplete="email"
                 required
@@ -54,7 +60,7 @@ const Registration = () => {
                 // type="password"
                 value={password}
                 onChange={(e) => {
-                  dispatch(createPassword(e.target.value));
+                  dispatch(validatePassword(e.target.value));
                 }}
                 // autocomplete="current-password"
                 required

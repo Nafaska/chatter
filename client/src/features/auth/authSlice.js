@@ -2,17 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
 import Cookies from "universal-cookie";
-import { addUser } from "../registration/registrationSlice";
 
 const cookies = new Cookies();
 
-export const loginSlice = createSlice({
-  name: "login",
+export const authSlice = createSlice({
+  name: "auth",
   initialState: {
     password: "",
     email: "",
     token: cookies.get("token"),
-    user: {},
+    role: {},
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -23,27 +22,13 @@ export const loginSlice = createSlice({
     },
     validateUser: (state, action) => {
       state.token = action.payload.token;
-      state.user = action.payload.user;
+      state.role = action.payload.role;
       state.password = "";
     },
   },
 });
 
-export const {
-  validatePassword,
-  validateEmail,
-  validateUser,
-} = loginSlice.actions;
-
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-// export const incrementAsync = (amount) => (dispatch) => {
-//   setTimeout(() => {
-//     dispatch(incrementByAmount(amount));
-//   }, 1000);
-// };
+export const { validatePassword, validateEmail, validateUser } = authSlice.actions;
 
 export const authUser = (email, password) => async (dispatch) => {
   const credentials = {
@@ -55,8 +40,9 @@ export const authUser = (email, password) => async (dispatch) => {
       withCredentials: true,
     })
     .then((res) => {
+      console.log(res.data.user.role);
       dispatch(
-        validateUser({ token: res.data.token, user: res.data.user.role })
+        validateUser({ token: res.data.token, role: res.data.user.role })
       );
       history.push("/chat");
     })
@@ -65,6 +51,26 @@ export const authUser = (email, password) => async (dispatch) => {
     });
 };
 
+export const createUser = (email, password) => async (dispatch) => {
+  const credentials = {
+    email,
+    password,
+  };
+  await axios
+    .post("http://localhost:5000/api/v1/auth/signup", credentials, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      dispatch(
+        validateUser({ token: res.data.token, role: res.data.userInfo.role })
+      );
+      history.push("/chat");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 export function readToken() {
   return async (dispatch) => {
     await axios
@@ -72,20 +78,19 @@ export function readToken() {
         withCredentials: true,
       })
       .then((res) => {
-        dispatch(validateUser({ token: res.data.token, user: res.data.user }));
+        dispatch(validateUser({ token: res.data.token, role: res.data.user.role }));
         history.push("/chat");
       })
       .catch((err) => {
         console.log(err, "You have to login again");
-        dispatch(validateUser({ token: null, user: null }));
-        dispatch(addUser({ token: null, user: null }));
+        dispatch(validateUser({ token: null, role: null }));
         history.push("/login");
       });
   };
 }
 
-export const selectEmail = (state) => state.login.email;
-export const selectPassword = (state) => state.login.password;
-export const passToken = (state) => state.login.token;
+export const selectEmail = (state) => state.auth.email;
+export const selectPassword = (state) => state.auth.password;
+export const passToken = (state) => state.auth.token;
 
-export default loginSlice.reducer;
+export default authSlice.reducer;

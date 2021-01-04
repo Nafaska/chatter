@@ -1,20 +1,18 @@
 import React from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
-import Registration from "./features/registration/Registration";
+import Registration from "./features/auth/Registration";
 import Startup from "./startup";
-import Login from "./features/login/Login";
+import Login from "./features/auth/Login";
 import Chat from "./features/chat/Chat";
 import history from "./history";
 import { Provider, useSelector } from "react-redux";
 import store from "./app/store";
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
-  const registration = useSelector((s) => s.registration);
-  const login = useSelector((s) => s.login);
+  const auth = useSelector((s) => s.auth);
 
   const func = (props) =>
-    (!!registration.user && !!registration.token) ||
-    (!!login.user && !!login.token) ? (
+    (!!auth.role && !!auth.token) ? (
       <Redirect to={{ pathname: "/chat" }} />
     ) : (
       <Component {...props} />
@@ -23,12 +21,10 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 };
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const registration = useSelector((s) => s.registration);
-  const login = useSelector((s) => s.login);
+  const auth = useSelector((s) => s.auth);
 
   const func = (props) =>
-    (!!registration.user && !!registration.token) ||
-    (!!login.user && !!login.token) ? (
+    (!!auth.role && !!auth.token) ? (
       <Component {...props} />
     ) : (
       <Redirect

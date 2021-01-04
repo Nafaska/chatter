@@ -6,7 +6,7 @@ import {
   selectEmail,
   selectPassword,
   authUser,
-} from "./loginSlice";
+} from "./authSlice";
 import logo from "../../assets/at-symbol.svg";
 import { useHistory } from "react-router-dom";
 

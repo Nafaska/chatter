@@ -6,7 +6,7 @@ import {
   selectMessage,
   selectChannel,
 } from "./chatSlice";
-import { selectEmail } from "../login/loginSlice";
+import { selectEmail } from "../auth/authSlice";
 // import { useHistory } from "react-router-dom";
 const Chat = () => {
   // const history = useHistory();
