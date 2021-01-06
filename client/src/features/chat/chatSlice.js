@@ -5,11 +5,19 @@ export const chatSlice = createSlice({
   initialState: {
     message: "",
     channel: [],
+    username: ""
   },
   reducers: {
     postMessage: (state, action) => {
       state.message = "";
-      state.channel = [...state.channel, {message: action.payload, time: +new Date()}];
+      state.channel = [
+        ...state.channel,
+        {
+          message: action.payload.data.message,
+          time: +new Date(),
+          username: action.payload.data.username,
+        },
+      ];
     },
     typeMessage: (state, action) => {
       state.message = action.payload;
@@ -17,7 +25,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { postMessage, typeMessage } = chatSlice.actions;
+export const { postMessage, typeMessage, postMessageFromSocket } = chatSlice.actions;
 
 export const selectMessage = (state) => state.chat.message;
 export const selectChannel = (state) => state.chat.channel;

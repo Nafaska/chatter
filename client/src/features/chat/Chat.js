@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { WebSocketContext } from "../../WebSocket";
 import {
   typeMessage,
-  postMessage,
   selectMessage,
   selectChannel,
 } from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
+
 // import { useHistory } from "react-router-dom";
 const Chat = () => {
-  // const history = useHistory();
 
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
   const channel = useSelector(selectChannel);
   const username = useSelector(selectUsername);
+  const ws = useContext(WebSocketContext);
+
+  const sendMessage = () => {
+    console.log('sending username message', username, message);
+    ws.sendMessage({
+      username: username,
+      message: message,
+    });
+  };
 
   return (
     <div className="w-full border shadow bg-white">
@@ -83,7 +92,10 @@ const Chat = () => {
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
             {channel.map((it) => {
               return (
-                <div key={it.time} className="flex items-start mb-4 no-overflow-anchoring">
+                <div
+                  key={it.time}
+                  className="flex items-start mb-4 no-overflow-anchoring"
+                >
                   <img
                     src="https://avatars2.githubusercontent.com/u/343407?s=460&v=4"
                     className="w-10 h-10 rounded mr-3"
@@ -93,7 +105,7 @@ const Chat = () => {
                     <div className="flex items-end">
                       <span className="font-bold text-md mr-2 font-sans">
                         {/* { typeof it.username !== "undefined" ? it.username : it.email} */}
-                        {username}
+                        {it.username}
                       </span>
                       <span className="text-grey-700 text-xs font-light">
                         {new Date(it.time).toLocaleString()}
@@ -111,7 +123,7 @@ const Chat = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              dispatch(postMessage(message));
+              sendMessage();
               const channelEl = document.getElementById("channel");
               channelEl.scrollTop = channelEl.scrollHeight;
             }}

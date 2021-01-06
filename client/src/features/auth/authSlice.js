@@ -53,7 +53,7 @@ export const authUser = (email, password) => async (dispatch) => {
     })
     .then((res) => {
       dispatch(
-        validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email })
+        validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email, username: res.data.user.username })
       );
       history.push("/chat");
     })
