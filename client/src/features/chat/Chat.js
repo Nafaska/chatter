@@ -1,24 +1,21 @@
 import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { WebSocketContext } from "../../WebSocket";
-import {
-  typeMessage,
-  selectMessage,
-  selectChannel,
-} from "./chatSlice";
+import { typeMessage, selectMessage, selectChannel } from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
+import avatar from "../../assets/cat-avatar.png";
 
 // import { useHistory } from "react-router-dom";
 const Chat = () => {
-
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
   const channel = useSelector(selectChannel);
   const username = useSelector(selectUsername);
   const ws = useContext(WebSocketContext);
+  const regexOnlyWhiteSpace = /^\s*$/;
 
   const sendMessage = () => {
-    console.log('sending username message', username, message);
+    console.log("sending username message", username, message);
     ws.sendMessage({
       username: username,
       message: message,
@@ -26,48 +23,41 @@ const Chat = () => {
   };
 
   return (
-    <div className="w-full border shadow bg-white">
+    <div className="font-mono w-full border shadow bg-white">
       <div className="flex">
-        <div className="bg-purple-900 text-purple-400 w-1/5 pb-6 hidden md:block">
-          <h1 className="text-white text-xl mb-2 mt-3 px-4 font-sans flex justify-between">
-            <span>Chat</span>
-            <svg
-              className="h-6 w-6 text-purple-400 fill-current"
-              viewBox="0 0 32 32"
-            >
-              <g id="surface1"></g>
-            </svg>
+        <div className="bg-gradient-to-r from-gray-400 to-blue-500 w-1/5 pb-6 hidden md:block">
+          <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
+            <span>Chatter</span>
           </h1>
-          <div className="flex items-center mb-6 px-4">
-            <span className="bg-green-600 rounded-full block w-2 h-2 mr-2"></span>
-            <span className="text-purple-400">Olivia</span>
+          <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
+            Channels
+          </div>
+          <div className="bg-teal-600 mb-6 py-1 px-4 text-white font-semi-bold">
+            <span className="pr-1">#</span> general
           </div>
 
-          <div className="px-4 mb-2 font-sans">Channels</div>
-          <div className="bg-teal-600 mb-6 py-1 px-4 text-white font-semi-bold ">
-            <span className="pr-1 text-grey-300">#</span> general
+          <div className="px-4 mb-3 tracking-wide text-gray-800 font-bold">
+            Online
           </div>
-
-          <div className="px-4 mb-3 font-sans">Direct Messages</div>
 
           <div className="flex items-center mb-3 px-4">
-            <span className="bg-green-600 rounded-full block w-2 h-2 mr-2"></span>
-            <span className="text-purple-400">
-              Olivia Dunham <i className="text-grey text-sm">(me)</i>
+            <span className="text-white">
+              <span className="pr-1 text-white">#</span> Olivia Dunham{" "}
+              <i className="text-gray-300 text-sm">(me)</i>
             </span>
           </div>
 
           <div className="flex items-center mb-3 px-4">
-            <span className="bg-green-600 rounded-full block w-2 h-2 mr-2"></span>
-            <span className="text-purple-400">Adam Bishop</span>
+            <span className="text-white">
+              <span className="pr-1 text-white">#</span> Adam Bishop
+            </span>
           </div>
 
           <div className="flex items-center px-4 mb-6">
-            <span className="border rounded-full block w-2 h-2 mr-2"></span>
-            <span className="text-purple-400">killgt</span>
+            <span className="text-white">
+              <span className="pr-1 text-white">#</span> killgt
+            </span>
           </div>
-
-          <div className="px-4 mb-3 font-sans">Applications</div>
         </div>
 
         <div className="w-full h-screen flex flex-col">
@@ -97,14 +87,13 @@ const Chat = () => {
                   className="flex items-start mb-4 no-overflow-anchoring"
                 >
                   <img
-                    src="https://avatars2.githubusercontent.com/u/343407?s=460&v=4"
-                    className="w-10 h-10 rounded mr-3"
+                    src={avatar}
+                    className="w-12 h-12 rounded-full mr-3"
                     alt="user avatar"
                   />
                   <div className="flex flex-col">
                     <div className="flex items-end">
-                      <span className="font-bold text-md mr-2 font-sans">
-                        {/* { typeof it.username !== "undefined" ? it.username : it.email} */}
+                      <span className="font-bold text-md mr-2">
                         {it.username}
                       </span>
                       <span className="text-grey-700 text-xs font-light">
@@ -127,14 +116,11 @@ const Chat = () => {
               const channelEl = document.getElementById("channel");
               channelEl.scrollTop = channelEl.scrollHeight;
             }}
-            className="flex m-6 rounded-lg border-2 border-grey overflow-hidden"
+            className="flex m-6 rounded-lg border-2 border-grey auto-overflow-anchoring"
           >
-            <span className="text-3xl text-grey px-3 border-r-2 border-grey">
-              +
-            </span>
             <input
               type="text"
-              className="w-full px-4"
+              className="w-full focus:ring-2 focus:outline-none ring-blue-600 rounded-l-lg px-4 mr-0.5"
               placeholder="Message to #general"
               value={message}
               onChange={(e) => {
@@ -142,8 +128,9 @@ const Chat = () => {
               }}
             />
             <button
+              disabled={regexOnlyWhiteSpace.test(message)}
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="justify-center py-2 px-4 ring-2 text-sm font-medium rounded-r-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ring-blue-600"
             >
               Send
             </button>

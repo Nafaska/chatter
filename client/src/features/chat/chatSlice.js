@@ -25,7 +25,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { postMessage, typeMessage, postMessageFromSocket } = chatSlice.actions;
+export const { postMessage, typeMessage } = chatSlice.actions;
 
 export const selectMessage = (state) => state.chat.message;
 export const selectChannel = (state) => state.chat.channel;

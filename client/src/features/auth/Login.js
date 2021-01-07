@@ -7,7 +7,7 @@ import {
   selectPassword,
   authUser,
 } from "./authSlice";
-import logo from "../../assets/at-symbol.svg";
+import logo from "../../assets/cat-avatar.png";
 import { useHistory } from "react-router-dom";
 
 const Registration = () => {

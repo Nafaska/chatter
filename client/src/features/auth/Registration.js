@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import logo from "../../assets/at-symbol.svg";
+import logo from "../../assets/cat-avatar.png";
 import { useHistory } from "react-router-dom";
 import {
   validateEmail,
