@@ -78,14 +78,6 @@ app.post("/api/v1/auth/signin", async (req, res) => {
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    // connections.forEach((c) =>
-    //   c.write(
-    //     JSON.stringify({
-    //       type: "SHOW_MESSAGE",
-    //       message: `${user.email} jist logged in`,
-    //     })
-    //   )
-    // );
     res.json({ status: "ok, signed in", token, user });
   } catch (err) {
     console.log(err);
@@ -108,6 +100,32 @@ app.post("/api/v1/auth/signup", async (req, res) => {
     res.send({ status: "ok", token, user });
   } catch (err) {
     res.status(400).send(err);
+  }
+});
+
+app.get("/api/v1/channels", async (req, res) => {
+  try {
+    const jwtUser = jwt.verify(req.cookies.token, config.secret);
+    const user = await User.findById(jwtUser.uid);
+    res.send({ status: "ok", listOfChannels: user.participant });
+  } catch (err) {
+    res.status(401).json({ status: "error", err });
+  }
+});
+
+app.post("/api/v1/channels", async (req, res) => {
+  try {
+    const jwtUser = jwt.verify(req.cookies.token, config.secret);
+    const user = await User.findById(jwtUser.uid);
+    console.log(user.participant, req.body.channel);
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      { participant: [...user.participant, req.body.channel] }
+    );
+    res.json({ status: "ok", updatedUser, newChannel: req.body.channel });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error", err });
   }
 });
 

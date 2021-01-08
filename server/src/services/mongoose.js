@@ -12,6 +12,8 @@ mongoose.connection.on("error", (err) => {
   process.exit(1);
 });
 
+mongoose.set("useFindAndModify", false);
+
 exports.connect = async () => {
   mongoose.connect(MONGO_URL, {
     useUnifiedTopology: true,

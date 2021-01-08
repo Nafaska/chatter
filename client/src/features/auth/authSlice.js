@@ -13,6 +13,7 @@ export const authSlice = createSlice({
     token: cookies.get("token"),
     role: {},
     username: "",
+    participant: [],
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -31,6 +32,7 @@ export const authSlice = createSlice({
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.password = "";
+      state.participant = action.payload.participant;
     },
   },
 });
@@ -53,7 +55,7 @@ export const authUser = (email, password) => async (dispatch) => {
     })
     .then((res) => {
       dispatch(
-        validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email, username: res.data.user.username })
+        validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email, username: res.data.user.username, participant: res.data.user.participant })
       );
       history.push("/channel");
     })
@@ -79,6 +81,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
           role: res.data.user.role,
           email: res.data.user.email,
           username: res.data.user.username,
+          participant: res.data.user.participant,
         })
       );
       history.push("/channel");
@@ -101,6 +104,7 @@ export function readToken() {
             role: res.data.user.role,
             email: res.data.user.email,
             username: res.data.user.username,
+            participant: res.data.user.participant,
           })
         );
         history.push("/channel");
@@ -117,5 +121,6 @@ export const selectEmail = (state) => state.auth.email;
 export const selectUsername = (state) => state.auth.username;
 export const selectPassword = (state) => state.auth.password;
 export const passToken = (state) => state.auth.token;
+export const getListOfChannels = (state) => state.auth.participant;
 
 export default authSlice.reducer;

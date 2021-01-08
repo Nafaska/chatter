@@ -1,12 +1,22 @@
 import logo from "../../assets/cat-avatar.png";
 import { useHistory } from "react-router-dom";
-import { expandedDropdown, dropdownState } from "./channelSlice";
+import {
+  expandedDropdown,
+  dropdownState,
+  selectChannelTitle,
+  updateChannelTitle,
+  createChannel,
+  getListOfChannels,
+  selectChannelList,
+} from "./channelSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Channel = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isDropdownOpen = useSelector(dropdownState);
+  const listOfChannels = useSelector(selectChannelList);
+  const channelTitle = useSelector(selectChannelTitle);
 
   return (
     <div className="min-h-screen flex flex-col w-full items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -15,6 +25,7 @@ const Channel = () => {
         <button
           type="button"
           onClick={() => {
+            dispatch(getListOfChannels());
             dispatch(expandedDropdown());
           }}
           className="inline-flex mt-6 justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
@@ -40,36 +51,43 @@ const Channel = () => {
         {isDropdownOpen && (
           <div className="origin-top-left absolute font-medium left-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
             <div
-              className="py-1"
+              className="py-1 max-h-48 overflow-y-auto"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              <button
-                href=""
-                className="w-full px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 text-left"
-                role="menuitem"
-                onClick={() => history.push("/chat")}
-              >
-                # General
-              </button>
+              {listOfChannels.map((it) => {
+                return (
+                  <button
+                    className="w-full px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 text-left"
+                    role="menuitem"
+                    onClick={() => history.push("/chat")}
+                  >
+                    # {it}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
       </div>
 
-      <div className={isDropdownOpen ? "w-2/5 opacity-0" : "w-2/5"}>
+      <div className={isDropdownOpen ? "w-2/5 invisible" : "w-2/5"}>
         <h4 className="mt-3 text-sm text-gray-500 text-center">Or</h4>
         <input
           id="new-channel"
           name="new-channel"
+          value={channelTitle}
+          onChange={(e) => {
+            dispatch(updateChannelTitle(e.target.value));
+          }}
           required
           className="mt-3 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-600 font-medium text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500 sm:text-sm"
           placeholder="Create a new channel"
         />
         <button
           type="button"
-          onClick={() => history.push("/chat")}
+          onClick={() => dispatch(createChannel(channelTitle))}
           className="group relative mt-3 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Create

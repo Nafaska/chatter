@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    participant: {
+      type: [String],
+      default: ["general"],
+    },
   },
   {
     timestamp: true,
