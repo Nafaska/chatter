@@ -4,6 +4,7 @@ import Registration from "./features/auth/Registration";
 import Startup from "./startup";
 import Login from "./features/auth/Login";
 import Chat from "./features/chat/Chat";
+import Channel from "./features/channel/Channel";
 import history from "./history";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./app/store";
@@ -14,7 +15,7 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 
   const func = (props) =>
     !!auth.role && !!auth.token ? (
-      <Redirect to={{ pathname: "/chat" }} />
+      <Redirect to={{ pathname: "/channel" }} />
     ) : (
       <Component {...props} />
     );
@@ -40,25 +41,26 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 function App() {
   return (
     <Provider store={store}>
-            <WebSocketProvider>
-      <Router history={history}>
-        <Startup>
-          <Switch>
+      <WebSocketProvider>
+        <Router history={history}>
+          <Startup>
+            <Switch>
               <OnlyAnonymousRoute
                 exact
                 path="/registration"
                 component={Registration}
-                ></OnlyAnonymousRoute>
+              ></OnlyAnonymousRoute>
               <OnlyAnonymousRoute
                 exact
                 path="/login"
                 component={Login}
-                ></OnlyAnonymousRoute>
+              ></OnlyAnonymousRoute>
+              <PrivateRoute exact path="/channel" component={Channel}></PrivateRoute>
               <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute>
             </Switch>
-        </Startup>
-      </Router>
-          </WebSocketProvider>
+          </Startup>
+        </Router>
+      </WebSocketProvider>
     </Provider>
   );
 }

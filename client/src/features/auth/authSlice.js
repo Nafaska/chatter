@@ -55,7 +55,7 @@ export const authUser = (email, password) => async (dispatch) => {
       dispatch(
         validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email, username: res.data.user.username })
       );
-      history.push("/chat");
+      history.push("/channel");
     })
     .catch((err) => {
       console.log(err);
@@ -81,7 +81,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
           username: res.data.user.username,
         })
       );
-      history.push("/chat");
+      history.push("/channel");
     })
     .catch((err) => {
       console.log(err);
@@ -103,7 +103,7 @@ export function readToken() {
             username: res.data.user.username,
           })
         );
-        history.push("/chat");
+        history.push("/channel");
       })
       .catch((err) => {
         console.log(err, "You have to login again");
