@@ -73,6 +73,10 @@ app.get("/api/v1/auth/signin", async (req, res) => {
 
 app.post("/api/v1/auth/signin", async (req, res) => {
   try {
+    if (!req.body.email || !req.body.password) {
+      console.log(err);
+      return res.status(422).json({ error: "Fill all required fields" });
+    }
     const user = await User.findAndValidateUser(req.body);
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
@@ -81,7 +85,11 @@ app.post("/api/v1/auth/signin", async (req, res) => {
     res.json({ status: "ok, signed in", token, user });
   } catch (err) {
     console.log(err);
-    res.json({ status: "error", err });
+    if (err.message === "Password Incorrect" || err.message === "No User") {
+      res.status(401).json({ error: "Invalid Credentials" });
+    } else {
+      res.status(500).json({ error: "Something went wrong" });
+    }
   }
 });
 

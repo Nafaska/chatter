@@ -56,7 +56,8 @@ function App() {
                 component={Login}
               ></OnlyAnonymousRoute>
               <PrivateRoute exact path="/channel" component={Channel}></PrivateRoute>
-              <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute>
+              {/* <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute> */}
+              <PrivateRoute exact path="/chat/:channel" component={Chat}></PrivateRoute>
             </Switch>
           </Startup>
         </Router>

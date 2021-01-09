@@ -63,7 +63,7 @@ userSchema.statics = {
     const isPasswordOk = await user.passwordMatches(password);
 
     if (!isPasswordOk) {
-      throw new Error("PasswordIncorrect");
+      throw new Error("Password Incorrect");
     }
 
     return user;

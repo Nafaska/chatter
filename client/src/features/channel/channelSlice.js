@@ -51,7 +51,7 @@ export const createChannel = (channel) => async (dispatch) => {
         })
       );
       console.log(res.data.updatedUser, res.data.newChannel);
-      history.push(`channel/${res.data.newChannel}`);
+      history.push(`chat/${res.data.newChannel}`);
     })
     .catch((err) => {
       console.log(err);

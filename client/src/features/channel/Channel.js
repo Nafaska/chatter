@@ -17,6 +17,7 @@ const Channel = () => {
   const isDropdownOpen = useSelector(dropdownState);
   const listOfChannels = useSelector(selectChannelList);
   const channelTitle = useSelector(selectChannelTitle);
+  const regexOnlyWhiteSpace = /^\s*$/;
 
   return (
     <div className="min-h-screen flex flex-col w-full items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -56,12 +57,13 @@ const Channel = () => {
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {listOfChannels.map((it) => {
+              {listOfChannels.map((it, index) => {
                 return (
                   <button
                     className="w-full px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 text-left"
                     role="menuitem"
-                    onClick={() => history.push("/chat")}
+                    key={`${it}_${index}`}
+                    onClick={() => history.push(`/chat/${it}`)}
                   >
                     # {it}
                   </button>
@@ -87,8 +89,9 @@ const Channel = () => {
         />
         <button
           type="button"
+          disabled={regexOnlyWhiteSpace.test(channelTitle)}
           onClick={() => dispatch(createChannel(channelTitle))}
-          className="group relative mt-3 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="group relative mt-3 w-full disabled:opacity-70 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Create
         </button>
