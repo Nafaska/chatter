@@ -47,7 +47,7 @@ userSchema.method({
 });
 
 userSchema.statics = {
-  async findAndValidateUser({ email, password, username }) {
+  async findAndValidateUser({ email, password }) {
     if (!email) {
       throw new Error("No Email");
     }

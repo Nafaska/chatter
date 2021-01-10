@@ -74,7 +74,6 @@ app.get("/api/v1/auth/signin", async (req, res) => {
 app.post("/api/v1/auth/signin", async (req, res) => {
   try {
     if (!req.body.email || !req.body.password) {
-      console.log(err);
       return res.status(422).json({ error: "Fill all required fields" });
     }
     const user = await User.findAndValidateUser(req.body);
@@ -94,12 +93,23 @@ app.post("/api/v1/auth/signin", async (req, res) => {
 });
 
 app.post("/api/v1/auth/signup", async (req, res) => {
-  const newUser = new User({
-    email: req.body.email,
-    password: req.body.password,
-    username: req.body.username,
-  });
   try {
+    const newUser = new User({
+      email: req.body.email,
+      password: req.body.password,
+      username: req.body.username,
+    });
+
+    if (!req.body.email || !req.body.password) {
+      return res.status(422).json({ error: "Fill all required fields" });
+    }
+
+    const validationUser = await User.findOne({ email: req.body.email }).exec();
+    if (validationUser) {
+      console.log(validationUser, "user is already exist");
+      return res.status(409).send("user is already exist");
+    }
+
     const user = await newUser.save();
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
