@@ -7,6 +7,7 @@ const Startup = (props) => {
   const dispatch = useDispatch();
   const token = useSelector(passToken);
   useEffect(() => {
+    console.log("dispatch >>> readtoken", token)
     if (token) {
       dispatch(readToken());
     }

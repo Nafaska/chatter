@@ -1,18 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { WebSocketContext } from "../../WebSocket";
-import { typeMessage, selectMessage, selectChannel } from "./chatSlice";
+import { typeMessage, selectMessage, selectChannel, selectParticipants, getChatInfo } from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
+import { useParams } from "react-router-dom";
 
-// import { useHistory } from "react-router-dom";
 const Chat = () => {
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
-  const channel = useSelector(selectChannel);
+  const channelSelector = useSelector(selectChannel);
   const username = useSelector(selectUsername);
+  const participants = useSelector(selectParticipants);
   const ws = useContext(WebSocketContext);
   const regexOnlyWhiteSpace = /^\s*$/;
+  const { channel } = useParams();
 
   const sendMessage = () => {
     console.log("sending username message", username, message);
@@ -21,6 +23,11 @@ const Chat = () => {
       message: message,
     });
   };
+
+  useEffect(() => {
+    dispatch(getChatInfo(channel));
+    return () => {};
+  }, [channel]);
 
   return (
     <div className="font-mono w-full border shadow bg-white">
@@ -64,7 +71,7 @@ const Chat = () => {
           <div className="border-b flex px-6 py-2 items-center">
             <div className="flex flex-col">
               <h3 className="text-grey-900 text-md mb-1 font-extrabold">
-                #general
+                #general - {participants.participants}
               </h3>
               <div className="text-grey font-light text-sm">
                 Chit-chattin' about ugly HTML and mixing of concerns.
@@ -80,7 +87,7 @@ const Chat = () => {
           </div>
 
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
-            {channel.map((it) => {
+            {channelSelector.map((it) => {
               return (
                 <div
                   key={it.time}

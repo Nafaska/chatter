@@ -15,7 +15,7 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 
   const func = (props) =>
     !!auth.role && !!auth.token ? (
-      <Redirect to={{ pathname: "/channel" }} />
+      <Redirect to={{ pathname: "/channels" }} />
     ) : (
       <Component {...props} />
     );
@@ -55,9 +55,9 @@ function App() {
                 path="/login"
                 component={Login}
               ></OnlyAnonymousRoute>
-              <PrivateRoute exact path="/channel" component={Channel}></PrivateRoute>
+              <PrivateRoute exact path="/channels" component={Channel}></PrivateRoute>
               {/* <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute> */}
-              <PrivateRoute exact path="/chat/:channel" component={Chat}></PrivateRoute>
+              <PrivateRoute path="/channels/:channel" component={Chat}></PrivateRoute>
             </Switch>
           </Startup>
         </Router>

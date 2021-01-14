@@ -61,13 +61,13 @@ app.get("/api/v1/auth/signin", async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret);
     const user = await User.findById(jwtUser.uid);
-    const payload = { uid: user.id };
-    const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
+    // const payload = { uid: user.id };
+    // const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
     delete user.password;
-    res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res.json({ status: "ok", token, user });
+    // res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
+    res.status(200).json({ token: req.cookies.token, user });
   } catch (err) {
-    res.status(401).json({ status: "error", err });
+    res.status(401).json({ error: err });
   }
 });
 
@@ -81,7 +81,7 @@ app.post("/api/v1/auth/signin", async (req, res) => {
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res.json({ status: "ok, signed in", token, user });
+    res.status(200).json({ token, user });
   } catch (err) {
     console.log(err);
     if (err.message === "Password Incorrect" || err.message === "No User") {
@@ -115,7 +115,7 @@ app.post("/api/v1/auth/signup", async (req, res) => {
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
     delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res.send({ status: "ok", token, user });
+    res.status(200).json({ token, user });
   } catch (err) {
     res.status(400).send(err);
   }
@@ -125,9 +125,27 @@ app.get("/api/v1/channels", async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret);
     const user = await User.findById(jwtUser.uid);
-    res.send({ status: "ok", listOfChannels: user.participant });
+    res.status(200).json({ listOfChannels: user.participant });
   } catch (err) {
-    res.status(401).json({ status: "error", err });
+    res.status(404).json({ error: err });
+  }
+});
+
+app.get("/api/v1/channels/:channel", async (req, res) => {
+  const { channel } = req.params;
+  try {
+    const validationChannel = await User.find({
+      participant: channel,
+    }).exec();
+    if (validationChannel.length === 0) {
+      console.log(validationChannel, "chat isn't exist");
+      return res.status(409).send("chat isn't exist");
+    }
+    const jwtUser = jwt.verify(req.cookies.token, config.secret);
+    const user = await User.findById(jwtUser.uid);
+    res.status(200).json({username: user.username});
+  } catch (err) {
+    res.status(404).json({ error: err });
   }
 });
 
@@ -140,10 +158,12 @@ app.post("/api/v1/channels", async (req, res) => {
       { _id: user._id },
       { participant: [...user.participant, req.body.channel] }
     );
-    res.json({ status: "ok", updatedUser, newChannel: req.body.channel });
+    res
+      .status(200)
+      .json({ newChannel: req.body.channel });
   } catch (err) {
     console.log(err);
-    res.json({ status: "error", err });
+    res.status(401).json({ error: err });
   }
 });
 
