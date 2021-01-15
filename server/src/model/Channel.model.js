@@ -7,8 +7,8 @@ const channelSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    participants: {
-      type: [String],
+    description: {
+      type: String,
     },
   },
   {

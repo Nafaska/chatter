@@ -183,7 +183,7 @@ app.post("/api/v1/new-channels", async (req, res) => {
   try {
     const newChannel = new Channel({
       name: req.body.name,
-      participants: [],
+      description: req.body.description,
     });
 
     if (!req.body.name) {
@@ -207,21 +207,34 @@ app.post("/api/v1/new-channels", async (req, res) => {
   }
 });
 
-app.post("/api/v1/user-in-channel", async (req, res) => {
+app.patch("/api/v1/new-channels", async (req, res) => {
   try {
-    const user = req.body.user;
-    const name = req.body.name;
-    const channel = await Channel.findOne({ name: name }).exec();
+    if (!req.body.name) {
+      return res.status(422).json({ error: "Fill all required fields" });
+    }
 
-    const returnChannel = await Channel.findOneAndUpdate(
-      { name: name },
-      { participants: [...channel.participants, user] },
+    if (req.body.newName.length < 1 || req.body.newName === ' ') {
+      return res
+        .status(422)
+        .json({ error: "Name should have at list one character" });
+    }
+
+    const validationChannel = await Channel.findOne({
+      name: req.body.name,
+    }).exec();
+
+    if (!validationChannel) {
+      console.log(req.body.name, "channel doesn't exist");
+      return res.status(404).send(`'${req.body.name}' channel doesn't exist`);
+    }
+
+    const channel = await Channel.findOneAndUpdate(
+      { name: req.body.name },
+      { description: req.body.newDescription, name: req.body.newName },
       { new: true }
-    ).exec();
+    );
 
-    // const returnChannel = await Channel.findOne({ name: name }).exec();
-
-    res.status(200).json({ returnChannel });
+    res.status(200).json({ channel });
   } catch (err) {
     res.status(400).send(err);
   }
