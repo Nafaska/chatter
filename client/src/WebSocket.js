@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { postMessage } from "./features/chat/chatSlice";
+import { getMyIP } from "./utils/IPDetector";
 
 const WebSocketContext = createContext(null);
 
@@ -24,7 +25,7 @@ export default ({ children }) => {
   };
 
     if (!socket) {
-      socket = io.connect("http://localhost:5000", { withCredentials: true });
+      socket = io.connect(`http://${getMyIP()}:5000`, { withCredentials: true });
   console.log("creating socket")
       socket.on("get message", (msg) => {
         console.log("got message from server", msg)

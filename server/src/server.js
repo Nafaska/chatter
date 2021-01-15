@@ -12,6 +12,7 @@ import config from "./config";
 import mongooseService from "./services/mongoose";
 import User from "./model/User.model";
 import Channel from "./model/Channel.model";
+import { getMyCurrentIP } from "./utils/ipDetector";
 
 mongooseService.connect();
 
@@ -19,7 +20,7 @@ const app = express();
 const httpServer = http.Server(app);
 const io = socketIo(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: `http://${getMyCurrentIP()}:9000`,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -42,7 +43,7 @@ if (config.isSocketsEnabled) {
 const port = 5000;
 
 const middleware = [
-  cors({ origin: "http://localhost:3000", credentials: true }),
+  cors({ origin: `http://${getMyCurrentIP()}:9000`, credentials: true }),
   passport.initialize(),
   express.static(path.resolve(__dirname, "../dist/assets")),
   bodyParser.urlencoded({
@@ -212,12 +213,13 @@ app.post("/api/v1/user-in-channel", async (req, res) => {
     const name = req.body.name;
     const channel = await Channel.findOne({ name: name }).exec();
 
-    await Channel.findOneAndUpdate(
+    const returnChannel = await Channel.findOneAndUpdate(
       { name: name },
-      { participants: [...channel.participants, user] }
+      { participants: [...channel.participants, user] },
+      { new: true }
     ).exec();
 
-    const returnChannel = await Channel.findOne({ name: name }).exec();
+    // const returnChannel = await Channel.findOne({ name: name }).exec();
 
     res.status(200).json({ returnChannel });
   } catch (err) {
@@ -226,5 +228,5 @@ app.post("/api/v1/user-in-channel", async (req, res) => {
 });
 
 httpServer.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://${getMyCurrentIP()}:${port}`);
 });

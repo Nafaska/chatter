@@ -15,18 +15,8 @@ for (const name of Object.keys(nets)) {
   }
 }
 
-const getMyCurrentIP = () => {
-  return results.en0[0];
-};
+export default results;
 
-module.exports = {
-  style: {
-    postcss: {
-      plugins: [require("tailwindcss"), require("autoprefixer")],
-    },
-  },
-  devServer: {
-    port: 9000,
-    host: getMyCurrentIP(),
-  },
-};
+export const getMyCurrentIP = () => {
+  return results.en0[0];
+}

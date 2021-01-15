@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-// import config from "../config";
-
-const MONGO_URL= "mongodb://127.0.0.1:27017/auth"
+import config from "../config";
 
 mongoose.connection.on("connected", () => {
   console.log("db is connected");
@@ -15,7 +13,8 @@ mongoose.connection.on("error", (err) => {
 mongoose.set("useFindAndModify", false);
 
 exports.connect = async () => {
-  mongoose.connect(MONGO_URL, {
+  console.log("trying to connect to db at", config.mongoURL);
+  mongoose.connect(config.mongoURL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,

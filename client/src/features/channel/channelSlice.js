@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
+import { getMyIP } from "../../utils/IPDetector";
+
 
 export const channelSlice = createSlice({
   name: "channel",
@@ -23,7 +25,7 @@ export const channelSlice = createSlice({
 
 export const getListOfChannels = () => async (dispatch) => {
   await axios
-    .get("http://localhost:5000/api/v1/channels", {
+    .get(`http://${getMyIP()}:5000/api/v1/channels`, {
       withCredentials: true,
     })
     .then((res) => {
@@ -36,7 +38,7 @@ export const getListOfChannels = () => async (dispatch) => {
 
 export const createChannel = (channel) => async (dispatch) => {
   await axios
-    .post("http://localhost:5000/api/v1/channels", {channel: channel}, {
+    .post(`http://${getMyIP()}:5000/api/v1/channels`, {channel: channel}, {
       withCredentials: true,
     })
     .then((res) => {

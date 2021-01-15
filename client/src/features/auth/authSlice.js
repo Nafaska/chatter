@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
 import Cookies from "universal-cookie";
+import { getMyIP } from "../../utils/IPDetector";
+
 
 const cookies = new Cookies();
 
@@ -50,12 +52,18 @@ export const authUser = (email, password) => async (dispatch) => {
     password,
   };
   await axios
-    .post("http://localhost:5000/api/v1/auth/signin", credentials, {
+    .post(`http://${getMyIP()}:5000/api/v1/auth/signin`, credentials, {
       withCredentials: true,
     })
     .then((res) => {
       dispatch(
-        validateUser({ token: res.data.token, role: res.data.user.role, email: res.data.user.email, username: res.data.user.username, participant: res.data.user.participant })
+        validateUser({
+          token: res.data.token,
+          role: res.data.user.role,
+          email: res.data.user.email,
+          username: res.data.user.username,
+          participant: res.data.user.participant,
+        })
       );
       history.push("/channels/general");
     })
@@ -71,7 +79,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
     username,
   };
   await axios
-    .post("http://localhost:5000/api/v1/auth/signup", credentials, {
+    .post(`http://${getMyIP()}:5000/api/v1/auth/signup`, credentials, {
       withCredentials: true,
     })
     .then((res) => {
@@ -94,7 +102,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
 export function readToken() {
   return async (dispatch) => {
     await axios
-      .get("http://localhost:5000/api/v1/auth/signin", {
+      .get(`http://${getMyIP()}:5000/api/v1/auth/signin`, {
         withCredentials: true,
       })
       .then((res) => {

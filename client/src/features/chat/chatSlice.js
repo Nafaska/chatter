@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
+import { getMyIP } from "../../utils/IPDetector";
+
 
 export const chatSlice = createSlice({
   name: "chat",
@@ -35,12 +37,9 @@ export const { postMessage, typeMessage, openChat } = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
   await axios
-    .get(
-      `http://localhost:5000/api/v1/channels/${channel}`,
-      {
-        withCredentials: true,
-      }
-    )
+    .get(`http://${getMyIP()}:5000/api/v1/channels/${channel}`, {
+      withCredentials: true,
+    })
     .then((res) => {
       dispatch(
         openChat({
