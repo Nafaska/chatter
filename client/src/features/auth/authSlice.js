@@ -15,7 +15,6 @@ export const authSlice = createSlice({
     token: cookies.get("token"),
     role: {},
     username: "",
-    participant: [],
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -34,7 +33,6 @@ export const authSlice = createSlice({
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.password = "";
-      state.participant = action.payload.participant;
     },
   },
 });
@@ -62,10 +60,9 @@ export const authUser = (email, password) => async (dispatch) => {
           role: res.data.role,
           email: res.data.email,
           username: res.data.username,
-          participant: res.data.participant,
         })
       );
-      history.push("/channels/general");
+      history.push("/channels");
     })
     .catch((err) => {
       console.log(err);
@@ -89,7 +86,6 @@ export const createUser = (email, password, username) => async (dispatch) => {
           role: res.data.role,
           email: res.data.email,
           username: res.data.username,
-          participant: res.data.participant,
         })
       );
       history.push("/channels");
@@ -112,7 +108,6 @@ export function readToken() {
             role: res.data.role,
             email: res.data.email,
             username: res.data.username,
-            participant: res.data.participant,
           })
         );
       })
@@ -128,6 +123,5 @@ export const selectEmail = (state) => state.auth.email;
 export const selectUsername = (state) => state.auth.username;
 export const selectPassword = (state) => state.auth.password;
 export const passToken = (state) => state.auth.token;
-export const getListOfChannels = (state) => state.auth.participant;
 
 export default authSlice.reducer;

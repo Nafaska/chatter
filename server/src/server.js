@@ -68,7 +68,6 @@ app.get("/api/v1/auth/signin", async (req, res) => {
       username: user.username,
       role: user.role,
       email: user.email,
-      participant: user.participant,
     });
   } catch (err) {
     res.status(401).json({ error: err });
@@ -89,7 +88,6 @@ app.post("/api/v1/auth/signin", async (req, res) => {
       username: user.username,
       role: user.role,
       email: user.email,
-      participant: user.participant,
     });
   } catch (err) {
     console.log(err);
@@ -130,32 +128,9 @@ app.post("/api/v1/auth/signup", async (req, res) => {
         username: user.username,
         role: user.role,
         email: user.email,
-        participant: user.participant,
       });
   } catch (err) {
     res.status(400).send(err);
-  }
-});
-
-app.get("/api/v1/channels/:channel", async (req, res) => {
-  const { channel } = req.params;
-  try {
-    const jwtUser = jwt.verify(req.cookies.token, config.secret);
-
-    const validationChannel = await User.find({
-      participant: channel,
-    }).exec();
-
-    if (validationChannel.length === 0) {
-      console.log(validationChannel, "chat isn't exist");
-      return res.status(409).send("chat isn't exist");
-    }
-
-    const user = await User.findById(jwtUser.uid);
-
-    res.status(200).json({ username: user.username });
-  } catch (err) {
-    res.status(404).json({ error: err });
   }
 });
 
