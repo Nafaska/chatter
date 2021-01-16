@@ -1,20 +1,30 @@
 import React, { useContext, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { WebSocketContext } from "../../WebSocket";
-import { typeMessage, selectMessage, selectChannel, selectParticipants, getChatInfo } from "./chatSlice";
+import {
+  typeMessage,
+  selectMessage,
+  selectDescription,
+  selectChannel,
+  selectName,
+  getChatInfo,
+} from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
 import { useParams } from "react-router-dom";
+import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
 
 const Chat = () => {
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
   const channelSelector = useSelector(selectChannel);
   const username = useSelector(selectUsername);
-  const participants = useSelector(selectParticipants);
+  const name = useSelector(selectName);
+  const description = useSelector(selectDescription);
   const ws = useContext(WebSocketContext);
   const regexOnlyWhiteSpace = /^\s*$/;
   const { channel } = useParams();
+  const listOfChannels = useSelector(selectChannelList);
 
   const sendMessage = () => {
     console.log("sending username message", username, message);
@@ -26,8 +36,9 @@ const Chat = () => {
 
   useEffect(() => {
     dispatch(getChatInfo(channel));
+    dispatch(getListOfChannels());
     return () => {};
-  }, [channel]);
+  }, [channel, dispatch]);
 
   return (
     <div className="font-mono w-full border shadow bg-white">
@@ -36,34 +47,47 @@ const Chat = () => {
           <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
             <span>Chatter</span>
           </h1>
-          <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
-            Channels
-          </div>
-          <div className="bg-teal-600 mb-6 py-1 px-4 text-white font-semi-bold">
-            <span className="pr-1">#</span> general
-          </div>
+          <div className="overflow-y-auto">
+            <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
+              Channels
+            </div>
+            <div className="bg-teal-600 mb-1 py-1 px-4 text-white font-semi-bold">
+              <span className="pr-1">#</span> {name}
+            </div>
+            {listOfChannels
+              .filter((ch) => ch !== name)
+              .map((ch, index) => {
+                return (
+                  <div
+                    key={`${ch}_${index}`}
+                    className="mb-1 py-1 px-4 text-white font-semi-bold"
+                  >
+                    <span className="pr-1">#</span> {ch}
+                  </div>
+                );
+              })}
+            <div className="px-4 mb-3 tracking-wide text-gray-800 font-bold">
+              Online
+            </div>
 
-          <div className="px-4 mb-3 tracking-wide text-gray-800 font-bold">
-            Online
-          </div>
+            <div className="flex items-center mb-3 px-4">
+              <span className="text-white">
+                <span className="pr-1 text-white">#</span> Olivia Dunham{" "}
+                <i className="text-gray-300 text-sm">(me)</i>
+              </span>
+            </div>
 
-          <div className="flex items-center mb-3 px-4">
-            <span className="text-white">
-              <span className="pr-1 text-white">#</span> Olivia Dunham{" "}
-              <i className="text-gray-300 text-sm">(me)</i>
-            </span>
-          </div>
+            <div className="flex items-center mb-3 px-4">
+              <span className="text-white">
+                <span className="pr-1 text-white">#</span> Adam Bishop
+              </span>
+            </div>
 
-          <div className="flex items-center mb-3 px-4">
-            <span className="text-white">
-              <span className="pr-1 text-white">#</span> Adam Bishop
-            </span>
-          </div>
-
-          <div className="flex items-center px-4 mb-6">
-            <span className="text-white">
-              <span className="pr-1 text-white">#</span> killgt
-            </span>
+            <div className="flex items-center px-4 mb-6">
+              <span className="text-white">
+                <span className="pr-1 text-white">#</span> killgt
+              </span>
+            </div>
           </div>
         </div>
 
@@ -71,11 +95,9 @@ const Chat = () => {
           <div className="border-b flex px-6 py-2 items-center">
             <div className="flex flex-col">
               <h3 className="text-grey-900 text-md mb-1 font-extrabold">
-                #general - {participants.participants}
+                {name}
               </h3>
-              <div className="text-grey font-light text-sm">
-                Chit-chattin' about ugly HTML and mixing of concerns.
-              </div>
+              <div className="text-grey font-light text-sm">{description}</div>
             </div>
             <div className="ml-auto hidden md:block">
               <input

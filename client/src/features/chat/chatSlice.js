@@ -10,11 +10,13 @@ export const chatSlice = createSlice({
     message: "",
     channel: [],
     username: "",
-    participants: [],
+    description: "",
+    name: "",
   },
   reducers: {
     openChat: (state, action) => {
-      state.participants = action.payload;
+      state.description = action.payload.description;
+      state.name = action.payload.name;
     },
     postMessage: (state, action) => {
       state.message = "";
@@ -37,13 +39,14 @@ export const { postMessage, typeMessage, openChat } = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
   await axios
-    .get(`http://${getMyIP()}:5000/api/v1/channels/${channel}`, {
+    .get(`http://${getMyIP()}:5000/api/v2/channels/${channel}`, {
       withCredentials: true,
     })
     .then((res) => {
       dispatch(
         openChat({
-          participants: res.data.username,
+          description: res.data.description,
+          name: res.data.name,
         })
       );
     })
@@ -55,6 +58,7 @@ export const getChatInfo = (channel) => async (dispatch) => {
 
 export const selectMessage = (state) => state.chat.message;
 export const selectChannel = (state) => state.chat.channel;
-export const selectParticipants = (state) => state.chat.participants;
+export const selectDescription = (state) => state.chat.description;
+export const selectName = (state) => state.chat.name;
 
 export default chatSlice.reducer;

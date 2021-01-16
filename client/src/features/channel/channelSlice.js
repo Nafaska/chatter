@@ -9,13 +9,17 @@ export const channelSlice = createSlice({
   initialState: {
     channelList: [],
     newChannel: "",
+    newDescription: "",
   },
   reducers: {
     createNewChannel: (state, action) => {
       state.channelList = [...state.channelList, action.payload];
     },
-    updateChannelTitle: (state, action) => {
+    updateChannelName: (state, action) => {
       state.newChannel = action.payload;
+    },
+    updateChannelDescription: (state, action) => {
+      state.newDescription = action.payload;
     },
     showChannelList: (state, action) => {
       state.channelList = [...action.payload];
@@ -25,29 +29,28 @@ export const channelSlice = createSlice({
 
 export const getListOfChannels = () => async (dispatch) => {
   await axios
-    .get(`http://${getMyIP()}:5000/api/v1/channels`, {
+    .get(`http://${getMyIP()}:5000/api/v2/channels`, {
       withCredentials: true,
     })
     .then((res) => {
-      dispatch(showChannelList(res.data.listOfChannels));
+      const channels = res.data.map(channel => channel.name);
+      dispatch(showChannelList(channels));
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export const createChannel = (channel) => async (dispatch) => {
+export const createChannel = (name, description) => async (dispatch) => {
   await axios
-    .post(`http://${getMyIP()}:5000/api/v1/channels`, {channel: channel}, {
+    .post(`http://${getMyIP()}:5000/api/v2/channels`, {name, description}, {
       withCredentials: true,
     })
     .then((res) => {
       dispatch(
-        createNewChannel({
-          newChannel: res.data.channel,
-        })
+        createNewChannel(res.data.name)
       );
-      history.push(`channels/${res.data.newChannel}`);
+      history.push(`channels/${res.data.name}`);
     })
     .catch((err) => {
       console.log(err);
@@ -56,14 +59,16 @@ export const createChannel = (channel) => async (dispatch) => {
 
 export const {
   createNewChannel,
-  updateChannelTitle,
+  updateChannelName,
   showChannelList,
+  updateChannelDescription,
 } = channelSlice.actions;
 
 
 export const selectChannel = (state) => state.channel.channelsList;
-export const selectChannelTitle = (state) => state.channel.newChannel;
+export const selectChannelName = (state) => state.channel.newChannel;
 export const selectChannelList = (state) => state.channel.channelList;
+export const selectChannelDescription = (state) => state.channel.newDescription;
 
 
 export default channelSlice.reducer;

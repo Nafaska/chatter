@@ -63,11 +63,13 @@ app.get("/api/v1/auth/signin", async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret);
     const user = await User.findById(jwtUser.uid);
-    // const payload = { uid: user.id };
-    // const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    delete user.password;
-    // res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res.status(200).json({ token: req.cookies.token, user });
+    res.status(200).json({
+      token: req.cookies.token,
+      username: user.username,
+      role: user.role,
+      email: user.email,
+      participant: user.participant,
+    });
   } catch (err) {
     res.status(401).json({ error: err });
   }
@@ -81,9 +83,14 @@ app.post("/api/v1/auth/signin", async (req, res) => {
     const user = await User.findAndValidateUser(req.body);
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res.status(200).json({ token, user });
+    res.status(200).json({
+      token,
+      username: user.username,
+      role: user.role,
+      email: user.email,
+      participant: user.participant,
+    });
   } catch (err) {
     console.log(err);
     if (err.message === "Password Incorrect" || err.message === "No User") {
@@ -115,72 +122,75 @@ app.post("/api/v1/auth/signup", async (req, res) => {
     const user = await newUser.save();
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
-    delete user.password;
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res.status(200).json({ token, user });
+    res
+      .status(200)
+      .json({
+        token,
+        username: user.username,
+        role: user.role,
+        email: user.email,
+        participant: user.participant,
+      });
   } catch (err) {
     res.status(400).send(err);
-  }
-});
-
-app.get("/api/v1/channels", async (req, res) => {
-  try {
-    const jwtUser = jwt.verify(req.cookies.token, config.secret);
-    const user = await User.findById(jwtUser.uid);
-    res.status(200).json({ listOfChannels: user.participant });
-  } catch (err) {
-    res.status(404).json({ error: err });
   }
 });
 
 app.get("/api/v1/channels/:channel", async (req, res) => {
   const { channel } = req.params;
   try {
+    const jwtUser = jwt.verify(req.cookies.token, config.secret);
+
     const validationChannel = await User.find({
       participant: channel,
     }).exec();
+
     if (validationChannel.length === 0) {
       console.log(validationChannel, "chat isn't exist");
       return res.status(409).send("chat isn't exist");
     }
-    const jwtUser = jwt.verify(req.cookies.token, config.secret);
+
     const user = await User.findById(jwtUser.uid);
+
     res.status(200).json({ username: user.username });
   } catch (err) {
     res.status(404).json({ error: err });
   }
 });
 
-app.post("/api/v1/channels", async (req, res) => {
+app.get("/api/v2/channels/:channel", async (req, res) => {
+  const { channel } = req.params;
   try {
-    const jwtUser = jwt.verify(req.cookies.token, config.secret);
-    const user = await User.findById(jwtUser.uid);
-    console.log(user.participant, req.body.channel);
-    await User.findOneAndUpdate(
-      { _id: user._id },
-      { participant: [...user.participant, req.body.channel] }
-    );
-    // if (updatedUser.participant.includes(req.body.channel))
-    res.status(200).json({ newChannel: req.body.channel });
-  } catch (err) {
-    console.log(err);
-    res.status(401).json({ error: err });
-  }
-});
+    jwt.verify(req.cookies.token, config.secret);
+    const validationChannel = await Channel.findOne({
+      name: channel,
+    }).exec();
 
-app.get("/api/v1/new-channels", async (req, res) => {
-  try {
-    // const jwtUser = jwt.verify(req.cookies.token, config.secret);
-    // const user = await User.findById(jwtUser.uid);
-    const channels = await Channel.find();
-    res.status(200).json({ channels });
+    if (!validationChannel) {
+      console.log(channel, "channel doesn't exist");
+      return res.status(404).send("channel doesn't exist");
+    }
+    res.status(200).json(validationChannel);
   } catch (err) {
     res.status(404).json({ error: err });
   }
 });
 
-app.post("/api/v1/new-channels", async (req, res) => {
+app.get("/api/v2/channels", async (req, res) => {
   try {
+    jwt.verify(req.cookies.token, config.secret);
+    const channels = await Channel.find();
+    res.status(200).send(channels);
+  } catch (err) {
+    res.status(404).json({ error: err });
+  }
+});
+
+app.post("/api/v2/channels", async (req, res) => {
+  try {
+    jwt.verify(req.cookies.token, config.secret);
+
     const newChannel = new Channel({
       name: req.body.name,
       description: req.body.description,
@@ -201,7 +211,7 @@ app.post("/api/v1/new-channels", async (req, res) => {
 
     const channel = await newChannel.save();
 
-    res.status(200).json({ channel });
+    res.status(200).send(channel);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -209,11 +219,13 @@ app.post("/api/v1/new-channels", async (req, res) => {
 
 app.patch("/api/v1/new-channels", async (req, res) => {
   try {
+    jwt.verify(req.cookies.token, config.secret);
+
     if (!req.body.name) {
       return res.status(422).json({ error: "Fill all required fields" });
     }
 
-    if (req.body.newName.length < 1 || req.body.newName === ' ') {
+    if (req.body.newName.length < 1 || req.body.newName === " ") {
       return res
         .status(422)
         .json({ error: "Name should have at list one character" });

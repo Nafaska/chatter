@@ -59,10 +59,10 @@ export const authUser = (email, password) => async (dispatch) => {
       dispatch(
         validateUser({
           token: res.data.token,
-          role: res.data.user.role,
-          email: res.data.user.email,
-          username: res.data.user.username,
-          participant: res.data.user.participant,
+          role: res.data.role,
+          email: res.data.email,
+          username: res.data.username,
+          participant: res.data.participant,
         })
       );
       history.push("/channels/general");
@@ -86,10 +86,10 @@ export const createUser = (email, password, username) => async (dispatch) => {
       dispatch(
         validateUser({
           token: res.data.token,
-          role: res.data.user.role,
-          email: res.data.user.email,
-          username: res.data.user.username,
-          participant: res.data.user.participant,
+          role: res.data.role,
+          email: res.data.email,
+          username: res.data.username,
+          participant: res.data.participant,
         })
       );
       history.push("/channels");
@@ -109,13 +109,12 @@ export function readToken() {
         dispatch(
           validateUser({
             token: res.data.token,
-            role: res.data.user.role,
-            email: res.data.user.email,
-            username: res.data.user.username,
-            participant: res.data.user.participant,
+            role: res.data.role,
+            email: res.data.email,
+            username: res.data.username,
+            participant: res.data.participant,
           })
         );
-        // history.push("/channels");
       })
       .catch((err) => {
         console.log(err, "You have to login again");
