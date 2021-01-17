@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { WebSocketContext } from "../../WebSocket";
+import { useHistory } from "react-router-dom";
 import {
   typeMessage,
   selectMessage,
@@ -16,8 +17,8 @@ import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
 import Picker from "emoji-picker-react";
 
-
 const Chat = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
   const channelSelector = useSelector(selectChannel);
@@ -30,19 +31,8 @@ const Chat = () => {
   const listOfChannels = useSelector(selectChannelList);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  // const onEmojiPickerClick = () => {
-  //   console.log(showEmojiPicker);
-
-  //   if (!showEmojiPicker) {
-  //     setShowEmojiPicker(true);
-  //   }
-
-  //   console.log(showEmojiPicker);
-  // };
-
-    const pickerWrapper = useRef();
-    const emojiButton = useRef();
-
+  const pickerWrapper = useRef();
+  const emojiButton = useRef();
 
   const sendMessage = () => {
     console.log("sending username message", username, message);
@@ -63,13 +53,11 @@ const Chat = () => {
       if (!showEmojiPicker && e.target === emojiButton.current) {
         setShowEmojiPicker(true);
       }
-
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-
   }, [channel, dispatch, showEmojiPicker]);
 
   return (
@@ -83,19 +71,26 @@ const Chat = () => {
             <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
               Channels
             </div>
+            <div
+              title={name}
+              className="bg-teal-600 mb-1 py-1 truncate px-4 text-white font-semi-bold"
+            >
+              # {name}
+            </div>
             <div className="overflow-y-auto h-3/5">
-              <div className="bg-teal-600 mb-1 py-1 px-4 text-white font-semi-bold">
-                <span className="pr-1">#</span> {name}
-              </div>
               {listOfChannels
                 .filter((ch) => ch !== name)
                 .map((ch, index) => {
                   return (
                     <div
+                      onClick={() => {
+                        history.push(`/channels/${ch}`);
+                      }}
                       key={`${ch}_${index}`}
-                      className="mb-1 py-1 px-4 text-white font-semi-bold"
+                      title={ch}
+                      className="mb-1 truncate py-1 px-4 text-white font-semi-bold cursor-pointer"
                     >
-                      <span className="pr-1">#</span> {ch}
+                      # {ch}
                     </div>
                   );
                 })}
@@ -103,24 +98,25 @@ const Chat = () => {
             <div className="px-4 my-3 tracking-wide text-gray-800 font-bold">
               Online
             </div>
+            <div className="h-1/5 overflow-y-auto">
+              <div className="flex items-center mb-3 px-4">
+                <span className="text-white">
+                  <span className="pr-1 text-white">#</span> Olivia Dunham{" "}
+                  <i className="text-gray-300 text-sm">(me)</i>
+                </span>
+              </div>
 
-            <div className="flex items-center mb-3 px-4">
-              <span className="text-white">
-                <span className="pr-1 text-white">#</span> Olivia Dunham{" "}
-                <i className="text-gray-300 text-sm">(me)</i>
-              </span>
-            </div>
+              <div className="flex items-center mb-3 px-4">
+                <span className="text-white">
+                  <span className="pr-1 text-white">#</span> Adam Bishop
+                </span>
+              </div>
 
-            <div className="flex items-center mb-3 px-4">
-              <span className="text-white">
-                <span className="pr-1 text-white">#</span> Adam Bishop
-              </span>
-            </div>
-
-            <div className="flex items-center px-4 mb-6">
-              <span className="text-white">
-                <span className="pr-1 text-white">#</span> killgt
-              </span>
+              <div className="flex items-center px-4 mb-6">
+                <span className="text-white">
+                  <span className="pr-1 text-white">#</span> killgt
+                </span>
+              </div>
             </div>
           </div>
         </div>
