@@ -32,10 +32,14 @@ export const chatSlice = createSlice({
     typeMessage: (state, action) => {
       state.message = action.payload;
     },
+    addEmoji: (state, action) => {
+      state.message = `${state.message}${action.payload}`
+   //   state.message = state.message  + action.payload
+    }
   },
 });
 
-export const { postMessage, typeMessage, openChat } = chatSlice.actions;
+export const { postMessage, typeMessage, openChat, addEmoji } = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
   await axios

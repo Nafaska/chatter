@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { WebSocketContext } from "../../WebSocket";
 import {
@@ -8,11 +8,14 @@ import {
   selectChannel,
   selectName,
   getChatInfo,
+  addEmoji,
 } from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
 import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
+import Picker from "emoji-picker-react";
+
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -25,6 +28,21 @@ const Chat = () => {
   const regexOnlyWhiteSpace = /^\s*$/;
   const { channel } = useParams();
   const listOfChannels = useSelector(selectChannelList);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  // const onEmojiPickerClick = () => {
+  //   console.log(showEmojiPicker);
+
+  //   if (!showEmojiPicker) {
+  //     setShowEmojiPicker(true);
+  //   }
+
+  //   console.log(showEmojiPicker);
+  // };
+
+    const pickerWrapper = useRef();
+    const emojiButton = useRef();
+
 
   const sendMessage = () => {
     console.log("sending username message", username, message);
@@ -37,36 +55,52 @@ const Chat = () => {
   useEffect(() => {
     dispatch(getChatInfo(channel));
     dispatch(getListOfChannels());
-    return () => {};
-  }, [channel, dispatch]);
+    const handleClickOutside = (e) => {
+      if (showEmojiPicker && !pickerWrapper.current.contains(e.target)) {
+        setShowEmojiPicker(false);
+      }
+
+      if (!showEmojiPicker && e.target === emojiButton.current) {
+        setShowEmojiPicker(true);
+      }
+
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+
+  }, [channel, dispatch, showEmojiPicker]);
 
   return (
     <div className="font-mono w-full border shadow bg-white">
       <div className="flex">
-        <div className="bg-gradient-to-r from-gray-400 to-blue-500 w-1/5 pb-6 hidden md:block">
+        <div className="h-screen bg-gradient-to-r from-gray-400 to-blue-500 w-1/5 pb-6 hidden md:block">
           <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
             <span>Chatter</span>
           </h1>
-          <div className="overflow-y-auto">
+          <div className="h-4/5">
             <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
               Channels
             </div>
-            <div className="bg-teal-600 mb-1 py-1 px-4 text-white font-semi-bold">
-              <span className="pr-1">#</span> {name}
+            <div className="overflow-y-auto h-3/5">
+              <div className="bg-teal-600 mb-1 py-1 px-4 text-white font-semi-bold">
+                <span className="pr-1">#</span> {name}
+              </div>
+              {listOfChannels
+                .filter((ch) => ch !== name)
+                .map((ch, index) => {
+                  return (
+                    <div
+                      key={`${ch}_${index}`}
+                      className="mb-1 py-1 px-4 text-white font-semi-bold"
+                    >
+                      <span className="pr-1">#</span> {ch}
+                    </div>
+                  );
+                })}
             </div>
-            {listOfChannels
-              .filter((ch) => ch !== name)
-              .map((ch, index) => {
-                return (
-                  <div
-                    key={`${ch}_${index}`}
-                    className="mb-1 py-1 px-4 text-white font-semi-bold"
-                  >
-                    <span className="pr-1">#</span> {ch}
-                  </div>
-                );
-              })}
-            <div className="px-4 mb-3 tracking-wide text-gray-800 font-bold">
+            <div className="px-4 my-3 tracking-wide text-gray-800 font-bold">
               Online
             </div>
 
@@ -91,7 +125,7 @@ const Chat = () => {
           </div>
         </div>
 
-        <div className="w-full h-screen flex flex-col">
+        <div className="w-full flex h-screen flex-col">
           <div className="border-b flex px-6 py-2 items-center">
             <div className="flex flex-col">
               <h3 className="text-grey-900 text-md mb-1 font-extrabold">
@@ -107,7 +141,6 @@ const Chat = () => {
               />
             </div>
           </div>
-
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
             {channelSelector.map((it) => {
               return (
@@ -138,6 +171,18 @@ const Chat = () => {
             })}
             <div className="h-1 auto-overflow-anchoring"></div>
           </div>
+          <div
+            ref={pickerWrapper}
+            className={showEmojiPicker ? "absolute block bottom-20" : "hidden"}
+          >
+            <Picker
+              disableSkinTonePicker="true"
+              preload="true"
+              onEmojiClick={(event, emojiObject) =>
+                dispatch(addEmoji(emojiObject.emoji))
+              }
+            />
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -145,11 +190,18 @@ const Chat = () => {
               const channelEl = document.getElementById("channel");
               channelEl.scrollTop = channelEl.scrollHeight;
             }}
-            className="flex m-6 rounded-lg border-2 border-grey auto-overflow-anchoring"
+            className="flex m-6 rounded-lg border-2 auto-overflow-anchoring"
           >
+            {" "}
+            <span
+              ref={emojiButton}
+              className="hover:bg-gray-200 text-3xl text-gray-500 cursor-pointer px-3 border-r-2"
+            >
+              ☺
+            </span>
             <input
               type="text"
-              className="w-full focus:ring-2 focus:outline-none ring-blue-600 rounded-l-lg px-4 mr-0.5"
+              className="w-full focus:ring-2 focus:outline-none ring-blue-600 px-4 mr-0.5"
               placeholder="Message to #general"
               value={message}
               onChange={(e) => {

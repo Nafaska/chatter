@@ -74,7 +74,6 @@ const Channel = () => {
                     role="menuitem"
                     key={`${it}_${index}`}
                     onClick={() => {
-                      // dispatch(getChatInfo(it));
                       history.push(`/channels/${it}`);
                     }}
                   >

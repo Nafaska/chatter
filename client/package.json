@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "autoprefixer": "^9",
     "axios": "^0.21.1",
+    "emoji-picker-react": "^3.4.1",
     "history": "^4.10.1",
     "postcss": "^7",
     "react": "^17.0.1",
