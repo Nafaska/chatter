@@ -159,9 +159,15 @@ const Chat = () => {
                   />
                   <div className="flex flex-col">
                     <div className="flex items-end">
-                      <span className="font-bold text-md mr-2">
-                        {it.username}
-                      </span>
+                      {it.username === username ? (
+                        <span className="font-bold text-blue-700 text-md mr-2">
+                          {it.username}
+                        </span>
+                      ) : (
+                        <span className="font-bold text-md mr-2">
+                          {it.username}
+                        </span>
+                      )}
                       <span className="text-grey-700 text-xs font-light">
                         {new Date(it.time).toLocaleString()}
                       </span>
@@ -206,7 +212,7 @@ const Chat = () => {
             <input
               type="text"
               className="w-full focus:ring-2 focus:outline-none ring-blue-600 px-4 mr-0.5"
-              placeholder="Message to #general"
+              placeholder={`Message to #${name}`}
               value={message}
               onChange={(e) => {
                 dispatch(typeMessage(e.target.value));
