@@ -19,13 +19,18 @@ export const chatSlice = createSlice({
       state.name = action.payload.name;
     },
     postMessage: (state, action) => {
-      state.message = "";
+      if (state.name !== action.payload.data.channel) {
+        return;
+      }
+
+      // state.message = "";
       state.channel = [
         ...state.channel,
         {
           message: action.payload.data.message,
           time: +new Date(),
           username: action.payload.data.username,
+          name: action.payload.data.channel,
         },
       ];
     },
@@ -34,12 +39,24 @@ export const chatSlice = createSlice({
     },
     addEmoji: (state, action) => {
       state.message = `${state.message}${action.payload}`
-   //   state.message = state.message  + action.payload
+    },
+    deleteAllMessages: (state, action) => {
+      state.channel = [];
+    },
+    cleanMessageInput: (state, action) => {
+      state.message = "";
     }
   },
 });
 
-export const { postMessage, typeMessage, openChat, addEmoji } = chatSlice.actions;
+export const {
+  postMessage,
+  typeMessage,
+  openChat,
+  addEmoji,
+  deleteAllMessages,
+  cleanMessageInput,
+} = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
   await axios

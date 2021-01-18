@@ -13,7 +13,6 @@ let ws;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({ children }) => {
-
   const dispatch = useDispatch();
 
   const sendMessage = (message) => {
@@ -24,21 +23,20 @@ export default ({ children }) => {
     // dispatch(postMessage(payload));
   };
 
-    if (!socket) {
-      socket = io.connect(`http://${getMyIP()}:5000`, { withCredentials: true });
-  console.log("creating socket")
-      socket.on("get message", (msg) => {
-        console.log("got message from server", msg)
-        const payload = JSON.parse(msg);
-        dispatch(postMessage(payload));
-      });
+  if (!socket) {
+    socket = io.connect(`http://${getMyIP()}:5000`, { withCredentials: true });
+    console.log("creating socket");
+    socket.on("get message", (msg) => {
+      console.log("got message from server", msg);
+      const payload = JSON.parse(msg);
+      dispatch(postMessage(payload));
+    });
+  }
 
-    }
-
-    ws = {
-      socket: socket,
-      sendMessage,
-    };
+  ws = {
+    socket: socket,
+    sendMessage,
+  };
 
   return (
     <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>

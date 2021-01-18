@@ -10,6 +10,8 @@ import {
   selectName,
   getChatInfo,
   addEmoji,
+  deleteAllMessages,
+  cleanMessageInput,
 } from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
@@ -35,11 +37,13 @@ const Chat = () => {
   const emojiButton = useRef();
 
   const sendMessage = () => {
-    console.log("sending username message", username, message);
+    console.log("sending username message", username, message, name);
     ws.sendMessage({
       username: username,
       message: message,
+      channel: name,
     });
+    dispatch(cleanMessageInput());
   };
 
   useEffect(() => {
@@ -59,6 +63,10 @@ const Chat = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [channel, dispatch, showEmojiPicker]);
+
+  useEffect(() => {
+    dispatch(deleteAllMessages());
+  }, [channel, dispatch]);
 
   return (
     <div className="font-mono w-full border shadow bg-white">
