@@ -3,59 +3,65 @@ import axios from "axios";
 import history from "../../history";
 import { getMyIP } from "../../utils/IPDetector";
 
+const LIMIT_OF_MESSAGES = 5;
 
 export const chatSlice = createSlice({
   name: "chat",
   initialState: {
     message: "",
-    channel: [],
     username: "",
     description: "",
     name: "",
+    channelsContent: {},
   },
   reducers: {
     openChat: (state, action) => {
       state.description = action.payload.description;
       state.name = action.payload.name;
     },
-    postMessage: (state, action) => {
-      if (state.name !== action.payload.data.channel) {
-        return;
-      }
-
-      // state.message = "";
-      state.channel = [
-        ...state.channel,
-        {
-          message: action.payload.data.message,
-          time: +new Date(),
-          username: action.payload.data.username,
-          name: action.payload.data.channel,
-        },
-      ];
-    },
     typeMessage: (state, action) => {
       state.message = action.payload;
     },
     addEmoji: (state, action) => {
-      state.message = `${state.message}${action.payload}`
-    },
-    deleteAllMessages: (state, action) => {
-      state.channel = [];
+      state.message = `${state.message}${action.payload}`;
     },
     cleanMessageInput: (state, action) => {
       state.message = "";
-    }
+    },
+    storeMessages: (state, action) => {
+      const channelName = action.payload.data.channel;
+      const newMessage = {
+        message: action.payload.data.message,
+        time: +new Date(),
+        username: action.payload.data.username,
+        name: channelName,
+      };
+
+      if (state.channelsContent[channelName]) {
+        if (state.channelsContent[channelName].length >= LIMIT_OF_MESSAGES) {
+          state.channelsContent[channelName] = [
+            ...state.channelsContent[channelName].slice(1),
+            newMessage,
+          ];
+        } else {
+          state.channelsContent[channelName] = [
+            ...state.channelsContent[channelName],
+            newMessage,
+          ];
+        }
+      } else {
+        state.channelsContent[channelName] = [newMessage];
+      }
+    },
   },
 });
 
 export const {
-  postMessage,
   typeMessage,
   openChat,
   addEmoji,
-  deleteAllMessages,
   cleanMessageInput,
+  storeMessages,
 } = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
@@ -78,8 +84,8 @@ export const getChatInfo = (channel) => async (dispatch) => {
 };
 
 export const selectMessage = (state) => state.chat.message;
-export const selectChannel = (state) => state.chat.channel;
 export const selectDescription = (state) => state.chat.description;
 export const selectName = (state) => state.chat.name;
+export const selectChannelsContent = (state) => state.chat.channelsContent;
 
 export default chatSlice.reducer;

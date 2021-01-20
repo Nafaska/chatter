@@ -6,12 +6,11 @@ import {
   typeMessage,
   selectMessage,
   selectDescription,
-  selectChannel,
   selectName,
   getChatInfo,
   addEmoji,
-  deleteAllMessages,
   cleanMessageInput,
+  selectChannelsContent,
 } from "./chatSlice";
 import { selectUsername } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
@@ -23,7 +22,6 @@ const Chat = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
-  const channelSelector = useSelector(selectChannel);
   const username = useSelector(selectUsername);
   const name = useSelector(selectName);
   const description = useSelector(selectDescription);
@@ -31,13 +29,13 @@ const Chat = () => {
   const regexOnlyWhiteSpace = /^\s*$/;
   const { channel } = useParams();
   const listOfChannels = useSelector(selectChannelList);
+  const channelsContent = useSelector(selectChannelsContent);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const pickerWrapper = useRef();
   const emojiButton = useRef();
 
   const sendMessage = () => {
-    console.log("sending username message", username, message, name);
     ws.sendMessage({
       username: username,
       message: message,
@@ -64,10 +62,6 @@ const Chat = () => {
     };
   }, [channel, dispatch, showEmojiPicker]);
 
-  useEffect(() => {
-    dispatch(deleteAllMessages());
-  }, [channel, dispatch]);
-
   return (
     <div className="font-mono w-full border shadow bg-white">
       <div className="flex">
@@ -75,17 +69,19 @@ const Chat = () => {
           <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
             <span>Chatter</span>
           </h1>
-          <div className="h-4/5">
+          <div className="h-5/6">
             <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
               Channels
             </div>
-            <div
-              title={name}
-              className="bg-teal-600 mb-1 py-1 truncate px-4 text-white font-semi-bold"
-            >
-              # {name}
-            </div>
-            <div className="overflow-y-auto h-3/5">
+            {name && (
+              <div
+                title={name}
+                className="bg-teal-600 mb-1 py-1 truncate px-4 text-white font-semi-bold"
+              >
+                # {name}
+              </div>
+            )}
+            <div className="overflow-y-auto h-4/5">
               {listOfChannels
                 .filter((ch) => ch !== name)
                 .map((ch, index) => {
@@ -103,29 +99,6 @@ const Chat = () => {
                   );
                 })}
             </div>
-            <div className="px-4 my-3 tracking-wide text-gray-800 font-bold">
-              Online
-            </div>
-            <div className="h-1/5 overflow-y-auto">
-              <div className="flex items-center mb-3 px-4">
-                <span className="text-white">
-                  <span className="pr-1 text-white">#</span> Olivia Dunham{" "}
-                  <i className="text-gray-300 text-sm">(me)</i>
-                </span>
-              </div>
-
-              <div className="flex items-center mb-3 px-4">
-                <span className="text-white">
-                  <span className="pr-1 text-white">#</span> Adam Bishop
-                </span>
-              </div>
-
-              <div className="flex items-center px-4 mb-6">
-                <span className="text-white">
-                  <span className="pr-1 text-white">#</span> killgt
-                </span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -137,48 +110,43 @@ const Chat = () => {
               </h3>
               <div className="text-grey font-light text-sm">{description}</div>
             </div>
-            <div className="ml-auto hidden md:block">
-              <input
-                type="search"
-                placeholder="Search"
-                className="border border-grey-600 rounded-lg p-2"
-              />
-            </div>
           </div>
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
-            {channelSelector.map((it) => {
-              return (
-                <div
-                  key={it.time}
-                  className="flex items-start mb-4 no-overflow-anchoring"
-                >
-                  <img
-                    src={avatar}
-                    className="w-12 h-12 rounded-full mr-3"
-                    alt="user avatar"
-                  />
-                  <div className="flex flex-col">
-                    <div className="flex items-end">
-                      {it.username === username ? (
-                        <span className="font-bold text-blue-700 text-md mr-2">
-                          {it.username}
-                        </span>
-                      ) : (
-                        <span className="font-bold text-md mr-2">
-                          {it.username}
-                        </span>
-                      )}
-                      <span className="text-grey-700 text-xs font-light">
-                        {new Date(it.time).toLocaleString()}
-                      </span>
+            {channelsContent[name]
+              ? Object.values(channelsContent[name]).map((it) => {
+                  return (
+                    <div
+                      key={it.time}
+                      className="flex items-start mb-4 no-overflow-anchoring"
+                    >
+                      <img
+                        src={avatar}
+                        className="w-12 h-12 rounded-full mr-3"
+                        alt="user avatar"
+                      />
+                      <div className="flex flex-col">
+                        <div className="flex items-end">
+                          {it.username === username ? (
+                            <span className="font-bold text-blue-700 text-md mr-2">
+                              {it.username}
+                            </span>
+                          ) : (
+                            <span className="font-bold text-md mr-2">
+                              {it.username}
+                            </span>
+                          )}
+                          <span className="text-grey-700 text-xs font-light">
+                            {new Date(it.time).toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="font-light text-md text-grey-800 pt-1">
+                          {it.message}
+                        </p>
+                      </div>
                     </div>
-                    <p className="font-light text-md text-grey-800 pt-1">
-                      {it.message}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })
+              : " "}
             <div className="h-1 auto-overflow-anchoring"></div>
           </div>
           <div

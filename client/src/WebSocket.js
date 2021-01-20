@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { postMessage } from "./features/chat/chatSlice";
+import { storeMessages } from "./features/chat/chatSlice";
 import { getMyIP } from "./utils/IPDetector";
 
 const WebSocketContext = createContext(null);
@@ -20,7 +20,6 @@ export default ({ children }) => {
       data: message,
     };
     socket.emit("send message", JSON.stringify(payload));
-    // dispatch(postMessage(payload));
   };
 
   if (!socket) {
@@ -29,7 +28,7 @@ export default ({ children }) => {
     socket.on("get message", (msg) => {
       console.log("got message from server", msg);
       const payload = JSON.parse(msg);
-      dispatch(postMessage(payload));
+      dispatch(storeMessages(payload));
     });
   }
 
