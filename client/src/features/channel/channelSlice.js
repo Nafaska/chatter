@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
 import { getMyIP } from "../../utils/IPDetector";
-
+import { toast } from "react-toastify";
 
 export const channelSlice = createSlice({
   name: "channel",
@@ -54,6 +54,7 @@ export const createChannel = (name, description) => async (dispatch) => {
     })
     .catch((err) => {
       console.log(err);
+      toast.error(err.response.data);
     });
 };
 

@@ -51,6 +51,7 @@ const Registration = () => {
                 Password
               </label>
               <input
+                type="password"
                 id="password"
                 name="password"
                 value={password}
@@ -74,9 +75,7 @@ const Registration = () => {
             >
               Login
             </button>
-            <h2 className="my-3 text-center text-gray-500">
-              Or
-            </h2>
+            <h2 className="my-3 text-center text-gray-500">Or</h2>
             <button
               type="button"
               onClick={() => history.push("/registration")}

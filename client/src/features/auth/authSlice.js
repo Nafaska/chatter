@@ -3,7 +3,7 @@ import axios from "axios";
 import history from "../../history";
 import Cookies from "universal-cookie";
 import { getMyIP } from "../../utils/IPDetector";
-
+import { toast } from "react-toastify";
 
 const cookies = new Cookies();
 
@@ -49,24 +49,28 @@ export const authUser = (email, password) => async (dispatch) => {
     email,
     password,
   };
-  await axios
-    .post(`http://${getMyIP()}:5000/api/v1/auth/signin`, credentials, {
-      withCredentials: true,
-    })
-    .then((res) => {
-      dispatch(
-        validateUser({
-          token: res.data.token,
-          role: res.data.role,
-          email: res.data.email,
-          username: res.data.username,
-        })
-      );
-      history.push("/channels");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  try {
+    const res = await axios.post(
+      `http://${getMyIP()}:5000/api/v1/auth/signin`,
+      credentials,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(
+      validateUser({
+        token: res.data.token,
+        role: res.data.role,
+        email: res.data.email,
+        username: res.data.username,
+      })
+    );
+  } catch (err) {
+    console.log(err);
+    toast.error(
+      err.response ? err.response.data.error : "Something went wrong"
+    );
+  }
 };
 
 export const createUser = (email, password, username) => async (dispatch) => {
@@ -75,11 +79,42 @@ export const createUser = (email, password, username) => async (dispatch) => {
     password,
     username,
   };
-  await axios
-    .post(`http://${getMyIP()}:5000/api/v1/auth/signup`, credentials, {
-      withCredentials: true,
-    })
-    .then((res) => {
+
+  try {
+    const res = await axios.post(
+      `http://${getMyIP()}:5000/api/v1/auth/signup`,
+      credentials,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(
+      validateUser({
+        token: res.data.token,
+        role: res.data.role,
+        email: res.data.email,
+        username: res.data.username,
+      })
+    );
+    history.push("/channels");
+  } catch (err) {
+    console.log(err);
+    toast.error(
+      err.response ? err.response.data.error : "Something went wrong"
+    );
+  }
+};
+
+export function readToken() {
+  return async (dispatch) => {
+    try {
+      console.log("readtoken - try");
+      const res = await axios.get(
+        `http://${getMyIP()}:5000/api/v1/auth/signin`,
+        {
+          withCredentials: true,
+        }
+      );
       dispatch(
         validateUser({
           token: res.data.token,
@@ -88,34 +123,14 @@ export const createUser = (email, password, username) => async (dispatch) => {
           username: res.data.username,
         })
       );
-      history.push("/channels");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-export function readToken() {
-  return async (dispatch) => {
-    await axios
-      .get(`http://${getMyIP()}:5000/api/v1/auth/signin`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        dispatch(
-          validateUser({
-            token: res.data.token,
-            role: res.data.role,
-            email: res.data.email,
-            username: res.data.username,
-          })
-        );
-      })
-      .catch((err) => {
-        console.log(err, "You have to login again");
-        dispatch(validateUser({ token: null, role: null }));
-        history.push("/login");
-      });
+      return true;
+    } catch (err) {
+      dispatch(validateUser({ token: null, role: null }));
+      history.push("/login");
+      toast.error("You have to login again");
+      console.log(err, "You have to login again");
+      return false;
+    }
   };
 }
 

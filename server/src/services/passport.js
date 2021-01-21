@@ -2,8 +2,6 @@ import passportJWT from "passport-jwt";
 import User from "../model/User.model";
 import config from "../config";
 
-
-
 const cookieExtractor = (req) => {
   return req && req.cookies && req.cookies.token;
 };

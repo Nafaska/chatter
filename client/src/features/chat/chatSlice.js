@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
 import { getMyIP } from "../../utils/IPDetector";
+import { toast } from "react-toastify";
 
 const LIMIT_OF_MESSAGES = 5;
 
@@ -65,22 +66,26 @@ export const {
 } = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
-  await axios
-    .get(`http://${getMyIP()}:5000/api/v2/channels/${channel}`, {
-      withCredentials: true,
-    })
-    .then((res) => {
-      dispatch(
-        openChat({
-          description: res.data.description,
-          name: res.data.name,
-        })
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-      history.push(`/channels`);
-    });
+  try {
+    console.log("getchatInfo - try");
+    const res = await
+    axios.get(
+      `http://${getMyIP()}:5000/api/v2/channels/${channel}`,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(
+      openChat({
+        description: res.data.description,
+        name: res.data.name,
+      })
+    );
+  } catch (err) {
+    console.log(err);
+    toast.error(err.response.data);
+    history.push(`/channels`);
+  }
 };
 
 export const selectMessage = (state) => state.chat.message;

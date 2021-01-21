@@ -9,6 +9,7 @@ import history from "./history";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./app/store";
 import WebSocketProvider from "./WebSocket";
+import Toast from "./features/toast";
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth);
@@ -55,13 +56,20 @@ function App() {
                 path="/login"
                 component={Login}
               ></OnlyAnonymousRoute>
-              <PrivateRoute exact path="/channels" component={Channel}></PrivateRoute>
-              {/* <PrivateRoute exact path="/chat" component={Chat}></PrivateRoute> */}
-              <PrivateRoute path="/channels/:channel" component={Chat}></PrivateRoute>
+              <PrivateRoute
+                exact
+                path="/channels"
+                component={Channel}
+              ></PrivateRoute>
+              <PrivateRoute
+                path="/channels/:channel"
+                component={Chat}
+              ></PrivateRoute>
             </Switch>
           </Startup>
         </Router>
       </WebSocketProvider>
+      <Toast />
     </Provider>
   );
 }

@@ -12,7 +12,7 @@ import {
   cleanMessageInput,
   selectChannelsContent,
 } from "./chatSlice";
-import { selectUsername } from "../auth/authSlice";
+import { readToken, selectUsername } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
 import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
@@ -45,8 +45,17 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    dispatch(getChatInfo(channel));
-    dispatch(getListOfChannels());
+    const startSequence = async () => {
+      const isTokenSuccess = await dispatch(readToken());
+      if (isTokenSuccess) {
+        await dispatch(getChatInfo(channel));
+        if (listOfChannels.length === 0) {
+          await dispatch(getListOfChannels());
+        }
+      }
+    };
+
+    startSequence();
     const handleClickOutside = (e) => {
       if (showEmojiPicker && !pickerWrapper.current.contains(e.target)) {
         setShowEmojiPicker(false);
@@ -60,7 +69,7 @@ const Chat = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [channel, dispatch, showEmojiPicker]);
+  }, [channel, listOfChannels, dispatch, showEmojiPicker]);
 
   return (
     <div className="font-mono w-full border shadow bg-white">

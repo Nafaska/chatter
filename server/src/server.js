@@ -107,30 +107,28 @@ app.post("/api/v1/auth/signup", async (req, res) => {
       username: req.body.username,
     });
 
-    if (!req.body.email || !req.body.password) {
+    if (!req.body.email || !req.body.password || !req.body.username) {
       return res.status(422).json({ error: "Fill all required fields" });
     }
 
     const validationUser = await User.findOne({ email: req.body.email }).exec();
     if (validationUser) {
-      console.log(validationUser, "user is already exist");
-      return res.status(409).send("user is already exist");
+      console.log(validationUser, "User already exists");
+      return res.status(409).json({ error: "User already exists" });
     }
 
     const user = await newUser.save();
     const payload = { uid: user.id };
     const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
     res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
-    res
-      .status(200)
-      .json({
-        token,
-        username: user.username,
-        role: user.role,
-        email: user.email,
-      });
+    res.status(200).json({
+      token,
+      username: user.username,
+      role: user.role,
+      email: user.email,
+    });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(500).json({ error: "Something went wrong" });
   }
 });
 
@@ -143,12 +141,12 @@ app.get("/api/v2/channels/:channel", async (req, res) => {
     }).exec();
 
     if (!validationChannel) {
-      console.log(channel, "channel doesn't exist");
-      return res.status(404).send("channel doesn't exist");
+      console.log(channel, "Channel doesn't exist");
+      return res.status(404).send("Channel doesn't exist");
     }
     res.status(200).json(validationChannel);
   } catch (err) {
-    res.status(404).json({ error: err });
+    res.status(401).json({ error: err });
   }
 });
 
@@ -180,8 +178,8 @@ app.post("/api/v2/channels", async (req, res) => {
     }).exec();
 
     if (validationChannel) {
-      console.log(validationChannel, "channel already exists");
-      return res.status(409).send("channel already exists");
+      console.log(validationChannel, "Channel already exists");
+      return res.status(409).send("Channel already exists");
     }
 
     const channel = await newChannel.save();
@@ -211,8 +209,8 @@ app.patch("/api/v1/new-channels", async (req, res) => {
     }).exec();
 
     if (!validationChannel) {
-      console.log(req.body.name, "channel doesn't exist");
-      return res.status(404).send(`'${req.body.name}' channel doesn't exist`);
+      console.log(req.body.name, "Channel doesn't exist");
+      return res.status(404).send(`'${req.body.name}' Channel doesn't exist`);
     }
 
     const channel = await Channel.findOneAndUpdate(
