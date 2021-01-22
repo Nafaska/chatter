@@ -17,6 +17,7 @@ import avatar from "../../assets/cat-avatar.png";
 import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
 import Picker from "emoji-picker-react";
+import Spinner from "../helpers/Spinner";
 
 const Chat = () => {
   const history = useHistory();
@@ -54,8 +55,8 @@ const Chat = () => {
         }
       }
     };
-
     startSequence();
+
     const handleClickOutside = (e) => {
       if (showEmojiPicker && !pickerWrapper.current.contains(e.target)) {
         setShowEmojiPicker(false);
@@ -72,47 +73,49 @@ const Chat = () => {
   }, [channel, listOfChannels, dispatch, showEmojiPicker]);
 
   return (
-    <div className="font-mono w-full border shadow bg-white">
+    <div className={`font-mono w-full border shadow bg-white`}>
       <div className="flex">
         <div className="h-screen bg-gradient-to-r from-gray-400 to-blue-500 w-1/5 pb-6 hidden md:block">
           <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
             <span>Chatter</span>
           </h1>
-          <div className="h-5/6">
-            <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
-              Channels
-            </div>
-            {name && (
+          {name && listOfChannels ? (
+            <div className="h-5/6">
+              <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
+                Channels
+              </div>
               <div
                 title={name}
                 className="bg-teal-600 mb-1 py-1 truncate px-4 text-white font-semi-bold"
               >
                 # {name}
               </div>
-            )}
-            <div className="overflow-y-auto h-4/5">
-              {listOfChannels
-                .filter((ch) => ch !== name)
-                .map((ch, index) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        history.push(`/channels/${ch}`);
-                      }}
-                      key={`${ch}_${index}`}
-                      title={ch}
-                      className="mb-1 truncate py-1 px-4 text-white font-semi-bold cursor-pointer"
-                    >
-                      # {ch}
-                    </div>
-                  );
-                })}
+              <div className="overflow-y-auto h-4/5">
+                {listOfChannels
+                  .filter((ch) => ch !== name)
+                  .map((ch, index) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          history.push(`/channels/${ch}`);
+                        }}
+                        key={`${ch}_${index}`}
+                        title={ch}
+                        className="mb-1 truncate py-1 px-4 text-white font-semi-bold cursor-pointer"
+                      >
+                        # {ch}
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
-          </div>
+          ) : (
+            <Spinner />
+          )}
         </div>
 
         <div className="w-full flex h-screen flex-col">
-          <div className="border-b flex px-6 py-2 items-center">
+          <div className="border-b flex px-6 py-2 h-16 items-center">
             <div className="flex flex-col">
               <h3 className="text-grey-900 text-md mb-1 font-extrabold">
                 {name}
@@ -121,6 +124,7 @@ const Chat = () => {
             </div>
           </div>
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
+            {!name && <Spinner />}
             {channelsContent[name]
               ? Object.values(channelsContent[name]).map((it) => {
                   return (
@@ -189,7 +193,7 @@ const Chat = () => {
             <input
               type="text"
               className="w-full focus:ring-2 focus:outline-none ring-blue-600 px-4 mr-0.5"
-              placeholder={`Message to #${name}`}
+              placeholder={name && `Message to #${name}`}
               value={message}
               onChange={(e) => {
                 dispatch(typeMessage(e.target.value));

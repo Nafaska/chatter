@@ -108,7 +108,6 @@ export const createUser = (email, password, username) => async (dispatch) => {
 export function readToken() {
   return async (dispatch) => {
     try {
-      console.log("readtoken - try");
       const res = await axios.get(
         `http://${getMyIP()}:5000/api/v1/auth/signin`,
         {

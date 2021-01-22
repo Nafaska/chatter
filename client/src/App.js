@@ -9,7 +9,7 @@ import history from "./history";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./app/store";
 import WebSocketProvider from "./WebSocket";
-import Toast from "./features/toast";
+import Toast from "./features/helpers/toast";
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth);
