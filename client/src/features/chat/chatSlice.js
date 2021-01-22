@@ -67,7 +67,6 @@ export const {
 
 export const getChatInfo = (channel) => async (dispatch) => {
   try {
-    console.log("getchatInfo - try");
     const res = await
     axios.get(
       `http://${getMyIP()}:5000/api/v2/channels/${channel}`,

@@ -10,32 +10,57 @@ import { Provider, useSelector } from "react-redux";
 import { store } from "./app/store";
 import WebSocketProvider from "./WebSocket";
 import Toast from "./features/helpers/toast";
+import Admin from "./features/admin/Admin";
+import Spinner from "./features/helpers/Spinner";
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth);
+  const func = (props) => {
+    if (!auth.isAuthenticated) {
+      return <Spinner height="h-screen" />;
+    } else {
+      if (auth.role.includes("user")) {
+        return <Redirect to={{ pathname: "/channels" }} />;
+      } else {
+        return <Component {...props} />;
+      }
+    }
+  };
 
-  const func = (props) =>
-    !!auth.role && !!auth.token ? (
-      <Redirect to={{ pathname: "/channels" }} />
-    ) : (
-      <Component {...props} />
-    );
   return <Route {...rest} render={func} />;
 };
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth);
 
-  const func = (props) =>
-    !!auth.role && !!auth.token ? (
-      <Component {...props} />
-    ) : (
-      <Redirect
-        to={{
-          pathname: "/login",
-        }}
-      />
-    );
+  const func = (props) => {
+    if (!auth.isAuthenticated) {
+      return <Spinner height="h-screen" />;
+    } else {
+      if (auth.role.includes("user")) {
+        return <Component {...props} />;
+      } else {
+        return <Redirect to={{ pathname: "/login" }} />;
+      }
+    }
+  };
+  return <Route {...rest} render={func} />;
+};
+
+const AdminRoute = ({ component: Component, ...rest }) => {
+  const auth = useSelector((s) => s.auth);
+
+  const func = (props) => {
+    if (!auth.isAuthenticated) {
+      return <Spinner height="h-screen" />;
+    } else {
+      if (auth.role.includes("admin")) {
+        return <Component {...props} />;
+      } else {
+        return <Redirect to={{ pathname: "/channels" }} />;
+      }
+    }
+  };
   return <Route {...rest} render={func} />;
 };
 
@@ -65,6 +90,7 @@ function App() {
                 path="/channels/:channel"
                 component={Chat}
               ></PrivateRoute>
+              <AdminRoute path="/admin" component={Admin}></AdminRoute>
             </Switch>
           </Startup>
         </Router>

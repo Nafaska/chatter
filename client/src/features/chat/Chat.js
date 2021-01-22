@@ -110,7 +110,7 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <Spinner />
+            <Spinner height="h-4/5" />
           )}
         </div>
 
@@ -124,7 +124,7 @@ const Chat = () => {
             </div>
           </div>
           <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
-            {!name && <Spinner />}
+            {!name && <Spinner height="h-4/5" />}
             {channelsContent[name]
               ? Object.values(channelsContent[name]).map((it) => {
                   return (

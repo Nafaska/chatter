@@ -13,8 +13,9 @@ export const authSlice = createSlice({
     password: "",
     email: "",
     token: cookies.get("token"),
-    role: {},
+    role: [],
     username: "",
+    isAuthenticated: false,
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -33,6 +34,7 @@ export const authSlice = createSlice({
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.password = "";
+      state.isAuthenticated = action.payload.role.length > 0;
     },
   },
 });
@@ -124,7 +126,7 @@ export function readToken() {
       );
       return true;
     } catch (err) {
-      dispatch(validateUser({ token: null, role: null }));
+      dispatch(validateUser({ token: null, role: [] }));
       history.push("/login");
       toast.error("You have to login again");
       console.log(err, "You have to login again");
