@@ -16,15 +16,11 @@ import Spinner from "./features/helpers/Spinner";
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth);
   const func = (props) => {
-    if (!auth.isAuthenticated) {
-      return <Spinner height="h-screen" />;
-    } else {
       if (auth.role.includes("user")) {
         return <Redirect to={{ pathname: "/channels" }} />;
       } else {
         return <Component {...props} />;
       }
-    }
   };
 
   return <Route {...rest} render={func} />;
