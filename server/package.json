@@ -18,9 +18,9 @@
   },
   "scripts": {
     "build": "babel ./src --out-dir ./dist",
-    "start": "node ./dist/server.js",
+    "start": "node ./dist/main.js",
     "start:dev": "NODE_ENV=development npm-run-all build start",
-    "start:watch": "nodemon --exec babel-node ./src/server.js"
+    "start:watch": "nodemon --exec babel-node ./src/main.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",

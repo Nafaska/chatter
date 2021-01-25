@@ -24,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 /client/.eslintcache
 .eslintcache
-/server/dist
+/server/src/dist
