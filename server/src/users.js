@@ -29,11 +29,12 @@ const deleteUser = (app) => {
         console.log(`User ${req.body.id} doesn't have access`);
         return res.status(403).send(`User ${req.body.id} doesn't have access`);
       }
-      User.deleteOne({ _id: userId }, (err, result) => {
+      User.deleteOne({ _id: userId }, async (err, result) => {
         if (err) {
           res.status(404).json({ error: err });
         } else if (result.deletedCount === 1) {
-          res.status(200).json({ message: "User has been deleted" });
+          const users = await User.find({}, "email username _id role");
+          res.status(200).json({ message: "User has been deleted", users });
         } else if (result.deletedCount === 0) {
           res.status(200).json({ message: "User doesn't exist" });
         }
@@ -76,29 +77,23 @@ const updateUser = (app) => {
         return res.status(422).json({ error: "Role invalid" });
       }
 
-      const validationUser = await User.findById(userId).exec();
-
-      if (!validationUser) {
-        console.log(`${userId} User doesn't exist`);
-        return res.status(404).send(`${userId} User doesn't exist`);
-      }
-
       const updatedUser = await User.findOneAndUpdate(
         { _id: userId },
         {
           username: req.body.newUsername,
           email: req.body.newEmail,
           role: roleWithoutDuplicates,
-        },
-        { new: true }
+        }
       );
 
-      res.status(200).json({
-        email: updatedUser.email,
-        username: updatedUser.username,
-        id: updatedUser._id,
-        role: updatedUser.role,
-      });
+      if (!updatedUser) {
+        console.log(`${userId} User doesn't exist`);
+        return res.status(404).send(`${userId} User doesn't exist`);
+      }
+
+      const users = await User.find({}, "email username _id role");
+
+      res.status(200).json({ users });
     } catch (err) {
       res.status(400).send(err);
     }

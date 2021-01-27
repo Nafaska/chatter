@@ -12,6 +12,7 @@ const verifyAuth = (app) => {
         username: user.username,
         role: user.role,
         email: user.email,
+        id: user._id,
       });
     } catch (err) {
       res.status(401).json({ error: err });
@@ -33,6 +34,7 @@ const signin = (app) => {
         username: user.username,
         role: user.role,
         email: user.email,
+        id: user._id,
       });
     } catch (err) {
       console.log(err);
@@ -75,6 +77,7 @@ const signup = (app) => {
         username: user.username,
         role: user.role,
         email: user.email,
+        id: user._id,
       });
     } catch (err) {
       res.status(500).json({ error: "Something went wrong" });

@@ -16,6 +16,7 @@ export const authSlice = createSlice({
     role: [],
     username: "",
     isAuthenticated: false,
+    id: ""
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -35,6 +36,7 @@ export const authSlice = createSlice({
       state.username = action.payload.username;
       state.password = "";
       state.isAuthenticated = action.payload.role.length > 0;
+      state.id = action.payload.id;
     },
   },
 });
@@ -65,6 +67,7 @@ export const authUser = (email, password) => async (dispatch) => {
         role: res.data.role,
         email: res.data.email,
         username: res.data.username,
+        id: res.data.id,
       })
     );
   } catch (err) {
@@ -96,6 +99,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
         role: res.data.role,
         email: res.data.email,
         username: res.data.username,
+        id: res.data.id,
       })
     );
     history.push("/channels");
@@ -122,6 +126,7 @@ export function readToken() {
           role: res.data.role,
           email: res.data.email,
           username: res.data.username,
+          id: res.data.id,
         })
       );
       return true;
