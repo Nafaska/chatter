@@ -38,6 +38,16 @@ export const authSlice = createSlice({
       state.isAuthenticated = action.payload.role.length > 0;
       state.id = action.payload.id;
     },
+    logout: (state, action) => {
+      cookies.remove("token");
+      state.token = '';
+      state.role = [];
+      state.email = "";
+      state.username = "";
+      state.password = "";
+      state.isAuthenticated = false;
+      state.id = "";
+    },
   },
 });
 
@@ -46,6 +56,7 @@ export const {
   validateEmail,
   validateUser,
   validateUsername,
+  logout,
 } = authSlice.actions;
 
 export const authUser = (email, password) => async (dispatch) => {
@@ -143,6 +154,7 @@ export function readToken() {
 export const selectEmail = (state) => state.auth.email;
 export const selectUsername = (state) => state.auth.username;
 export const selectPassword = (state) => state.auth.password;
+export const selectRole = (state) => state.auth.role;
 export const passToken = (state) => state.auth.token;
 
 export default authSlice.reducer;

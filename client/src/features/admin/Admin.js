@@ -14,6 +14,12 @@ import {
   asyncUpdateUser,
 } from "./adminSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import ConfirmationModal from "../modal/ConfirmationModal"
+import {
+  openModal
+} from "../modal/confirmationSlice";
+import DeleteConfirmation from "../modal/DeleteConfirmation";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -23,6 +29,7 @@ const Admin = () => {
   const isAdmin = useSelector(selectIsAdmin);
   const newEmail = useSelector(selectNewEmail);
   const currentItemId = useSelector(selectId);
+  const history = useHistory();
 
   const updateEditMode = (item) => {
     dispatch(getId(item._id));
@@ -43,12 +50,18 @@ const Admin = () => {
   return (
     <div className="bg-gray-800 font-mono h-screen overflow-y-auto flex flex-col w-screen box-content text-white">
       <div className="text-xl m-4">Cool Admin's Things 🔑</div>
+      <button
+        onClick={() => history.push("/channels")}
+        className="absolute top-0 right-0 m-3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        Go to Channels
+      </button>
       {users.map((it) => {
         if (it._id === currentItemId && editMode) {
           return (
-            <div key={it._id} className="flex items-start m-2">
-              <div className="flex w-screen flex-col relative">
-                <div className="flex relative w-2/3 items-end">
+            <div key={it._id} className="flex items-start">
+              <div className="flex w-screen flex-col relative mx-2 mt-2">
+                <div className="flex relative items-end">
                   <button
                     title="Save"
                     className="rounded px-1 mr-1 text-xl hover:bg-blue-300"
@@ -73,7 +86,7 @@ const Admin = () => {
                       dispatch(updateUsername(e.target.value));
                     }}
                     value={newUsername}
-                    className="font-bold pl-2 text-blue-300 bg-gray-500 rounded text-md mr-2"
+                    className="font-bold pl-2 py-1 text-blue-300 bg-gray-500 rounded text-md mr-2"
                   ></input>
                   <span className="text-grey-700 text-yellow-300 text-xs font-light">
                     {it.role.map((role) => `[${role}]`)}
@@ -93,8 +106,9 @@ const Admin = () => {
                   placeholder={it.email}
                   value={newEmail}
                   onChange={(e) => dispatch(updateEmail(e.target.value))}
-                  className="font-light mt-1 w-2/3 bg-gray-500 rounded pl-2 text-md text-white pt-1"
+                  className="font-light mt-2 bg-gray-500 rounded pl-2 text-md text-white py-1"
                 ></input>
+                <div className="border-b mt-2 border-dotted"></div>
               </div>
             </div>
           );
@@ -121,10 +135,11 @@ const Admin = () => {
                   </span>
                   <button
                     title="Delete"
-                    className={`rounded absolute right-0 top-0 my-3 hover:bg-blue-300 px-1 text-xl`}
-                    onClick={() => {
-                      dispatch(deleteUser(it._id));
-                    }}
+                    disabled={editMode ? true : false}
+                    className={`rounded ${
+                      editMode ? "disabled:opacity-50 " : "hover:bg-blue-300"
+                    } absolute right-0 top-0 my-3 px-1 text-xl`}
+                    onClick={() => dispatch(openModal({username: it.username, id: it._id}))}
                   >
                     🗑️
                   </button>
@@ -137,6 +152,7 @@ const Admin = () => {
           );
         }
       })}
+      <ConfirmationModal body={<DeleteConfirmation/>}/>
     </div>
   );
 };

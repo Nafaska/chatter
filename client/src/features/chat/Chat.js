@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { WebSocketContext } from "../../WebSocket";
+import { ReactComponent as LogoutImg } from "../../assets/logout.svg";
+import { ReactComponent as AdminPageImg } from "../../assets/adminPage.svg";
 import { useHistory } from "react-router-dom";
 import {
   typeMessage,
@@ -12,12 +14,19 @@ import {
   cleanMessageInput,
   selectChannelsContent,
 } from "./chatSlice";
-import { readToken, selectUsername } from "../auth/authSlice";
+import {
+  readToken,
+  selectUsername,
+  selectRole,
+} from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
 import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
 import Picker from "emoji-picker-react";
 import Spinner from "../helpers/Spinner";
+import LogOutConfirmation from "../modal/LogOutConfirmation";
+import ConfirmationModal from "../modal/ConfirmationModal";
+import { openModal } from "../modal/confirmationSlice";
 
 const Chat = () => {
   const history = useHistory();
@@ -32,6 +41,7 @@ const Chat = () => {
   const listOfChannels = useSelector(selectChannelList);
   const channelsContent = useSelector(selectChannelsContent);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const isAdmin = useSelector(selectRole).includes("admin");
 
   const pickerWrapper = useRef();
   const emojiButton = useRef();
@@ -77,7 +87,13 @@ const Chat = () => {
       <div className="flex">
         <div className="h-screen bg-gradient-to-r from-gray-400 to-blue-500 w-1/5 pb-6 hidden md:block">
           <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
-            <span>Chatter</span>
+            <span
+              title="Go to Channels"
+              onClick={() => history.push("/channels")}
+              className="cursor-pointer"
+            >
+              Chatter
+            </span>
           </h1>
           {name && listOfChannels ? (
             <div className="h-5/6">
@@ -115,6 +131,25 @@ const Chat = () => {
         </div>
 
         <div className="w-full flex h-screen flex-col">
+          <div className="inline-flex absolute top-0 right-0 inline-flex ">
+            <button
+              title="Log Out"
+              onClick={() => dispatch(openModal())}
+              className="my-3 flex justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <LogoutImg className="mx-auto h-7 w-auto" />
+            </button>
+            {isAdmin ? (
+              <button
+                onClick={() => history.push("/admin")}
+                className="my-3 mr-3 flex rounded-l-none justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <AdminPageImg className="mx-auto h-7 w-auto" />
+              </button>
+            ) : (
+              false
+            )}
+          </div>
           <div className="border-b flex px-6 py-2 h-16 items-center">
             <div className="flex flex-col">
               <h3 className="text-grey-900 text-md mb-1 font-extrabold">
@@ -209,6 +244,7 @@ const Chat = () => {
           </form>
         </div>
       </div>
+      <ConfirmationModal body={<LogOutConfirmation />} />
     </div>
   );
 };

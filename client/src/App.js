@@ -87,6 +87,7 @@ function App() {
                 component={Chat}
               ></PrivateRoute>
               <AdminRoute path="/admin" component={Admin}></AdminRoute>
+              <Redirect from="/" to="/channels" />
             </Switch>
           </Startup>
         </Router>

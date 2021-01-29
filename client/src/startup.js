@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { readToken, passToken } from "./features/auth/authSlice";
-import history from "./history";
+import { useHistory } from "react-router-dom";
 
 const Startup = (props) => {
   const dispatch = useDispatch();
   const token = useSelector(passToken);
+  const history = useHistory();
+
   useEffect(() => {
     const asyncFunc = async() => {
       if (token) {
@@ -17,7 +19,7 @@ const Startup = (props) => {
       }
     }
     asyncFunc();
-  }, [dispatch, token]);
+  }, [dispatch, token, history]);
 
   return props.children
 };
