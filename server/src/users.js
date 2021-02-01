@@ -27,7 +27,7 @@ const deleteUser = (app) => {
 
       if (!isAdmin) {
         console.log(`User ${req.body.id} doesn't have access`);
-        return res.status(403).send(`User ${req.body.id} doesn't have access`);
+        return res.status(403).json({error: `User ${req.body.id} doesn't have access`});
       }
       User.deleteOne({ _id: userId }, async (err, result) => {
         if (err) {
@@ -55,7 +55,7 @@ const updateUser = (app) => {
 
       if (!isAdmin) {
         console.log(`User ${req.body.id} doesn't have access`);
-        return res.status(403).send(`User ${req.body.id} doesn't have access`);
+        return res.status(403).json({ error: `User ${req.body.id} doesn't have access`});
       }
 
       if (req.body.newUsername.length < 1 || req.body.newUsername === " ") {
@@ -71,7 +71,7 @@ const updateUser = (app) => {
       const validateRole = req.body.newRole.every((role) =>
         ROLES.includes(role)
       );
-      const roleWithoutDuplicates = Array.from(new Set(req.body.newRole));
+      const roleWithoutDuplicates = Array.from(new Set(req.body.newRole)).sort().reverse();
 
       if (req.body.newRole.length < 1 || !validateRole) {
         return res.status(422).json({ error: "Role invalid" });
@@ -95,7 +95,7 @@ const updateUser = (app) => {
 
       res.status(200).json({ users });
     } catch (err) {
-      res.status(400).send(err);
+      res.status(400).json({error: err});
     }
   });
 };

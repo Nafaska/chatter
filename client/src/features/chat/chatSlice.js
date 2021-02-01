@@ -14,6 +14,7 @@ export const chatSlice = createSlice({
     description: "",
     name: "",
     channelsContent: {},
+    isBurgerMenuOpen: false,
   },
   reducers: {
     openChat: (state, action) => {
@@ -28,6 +29,9 @@ export const chatSlice = createSlice({
     },
     cleanMessageInput: (state, action) => {
       state.message = "";
+    },
+    openBurgerMenu: (state, action) => {
+      state.isBurgerMenuOpen = action.payload;
     },
     storeMessages: (state, action) => {
       const channelName = action.payload.data.channel;
@@ -63,6 +67,7 @@ export const {
   addEmoji,
   cleanMessageInput,
   storeMessages,
+  openBurgerMenu,
 } = chatSlice.actions;
 
 export const getChatInfo = (channel) => async (dispatch) => {
@@ -91,5 +96,6 @@ export const selectMessage = (state) => state.chat.message;
 export const selectDescription = (state) => state.chat.description;
 export const selectName = (state) => state.chat.name;
 export const selectChannelsContent = (state) => state.chat.channelsContent;
+export const selectIsBurgerMenuOpen = (state) => state.chat.isBurgerMenuOpen;
 
 export default chatSlice.reducer;

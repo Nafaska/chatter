@@ -56,14 +56,14 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       dispatch(saveUsersFromServer(res.data.users));
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err, err.response.data.error);
+      toast.error(err.response.data.error);
     });
 };
 
 export const asyncUpdateUser = () => async (dispatch, getState) => {
   const { id, newEmail, newUsername, isAdmin } = getState().admin;
   const myId = getState().auth.id;
-  console.log(id, newEmail, newUsername, isAdmin);
 
   await axios
     .patch(
@@ -80,7 +80,8 @@ export const asyncUpdateUser = () => async (dispatch, getState) => {
     )
     .then((res) => dispatch(saveUsersFromServer(res.data.users)))
     .catch((err) => {
-      console.log(err);
+      console.log(err, err.response.data.error);
+      toast.error(err.response.data.error);
     });
 };
 

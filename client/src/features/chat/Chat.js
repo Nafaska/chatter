@@ -12,13 +12,10 @@ import {
   getChatInfo,
   addEmoji,
   cleanMessageInput,
+  selectIsBurgerMenuOpen,
   selectChannelsContent,
 } from "./chatSlice";
-import {
-  readToken,
-  selectUsername,
-  selectRole,
-} from "../auth/authSlice";
+import { readToken, selectUsername, selectRole } from "../auth/authSlice";
 import avatar from "../../assets/cat-avatar.png";
 import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
@@ -27,6 +24,9 @@ import Spinner from "../helpers/Spinner";
 import LogOutConfirmation from "../modal/LogOutConfirmation";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { openModal } from "../modal/confirmationSlice";
+import { topography } from "hero-patterns";
+import BurgerMenu from "./BurgerMenu";
+import BurgerButton from "./BurgerButton";
 
 const Chat = () => {
   const history = useHistory();
@@ -42,9 +42,14 @@ const Chat = () => {
   const channelsContent = useSelector(selectChannelsContent);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const isAdmin = useSelector(selectRole).includes("admin");
+  const isBurgerMenuOpen = useSelector(selectIsBurgerMenuOpen);
 
   const pickerWrapper = useRef();
   const emojiButton = useRef();
+
+  const backgroundStyle = {
+    backgroundImage: topography("#F3D5AD", 0.5),
+  };
 
   const sendMessage = () => {
     ws.sendMessage({
@@ -85,80 +90,66 @@ const Chat = () => {
   return (
     <div className={`font-mono w-full border shadow bg-white`}>
       <div className="flex">
-        <div className="h-screen bg-gradient-to-r from-gray-400 to-blue-500 w-1/5 pb-6 hidden md:block">
-          <h1 className="text-white text-2xl my-6 px-4 tracking-widest font-extrabold flex justify-between">
+        <div
+          className={`${
+            isBurgerMenuOpen
+              ? "bg-gradient-to-r from-gray-400 to-blue-500"
+              : "bg-transparent"
+          }`}
+        >
+          <BurgerButton />
+          <BurgerMenu />
+        </div>
+        <div
+          className={`${
+            isBurgerMenuOpen
+              ? "hidden sm:flex w-3/4 absolute right-0"
+              : "w-full"
+          } flex h-screen flex-col`}
+        >
+          <div className="border-b flex p-3 h-16 items-center">
             <span
               title="Go to Channels"
               onClick={() => history.push("/channels")}
-              className="cursor-pointer"
+              className={`text-2xl ${
+                isBurgerMenuOpen ? "hidden" : "hidden sm:block"
+              } tracking-widest ml-12 cursor-pointer px-2 font-extrabold flex justify-between`}
             >
-              Chatter
+              Chatter:
             </span>
-          </h1>
-          {name && listOfChannels ? (
-            <div className="h-5/6">
-              <div className="px-4 my-2 tracking-wide text-gray-800 font-bold">
-                Channels
-              </div>
-              <div
-                title={name}
-                className="bg-teal-600 mb-1 py-1 truncate px-4 text-white font-semi-bold"
-              >
-                # {name}
-              </div>
-              <div className="overflow-y-auto h-4/5">
-                {listOfChannels
-                  .filter((ch) => ch !== name)
-                  .map((ch, index) => {
-                    return (
-                      <div
-                        onClick={() => {
-                          history.push(`/channels/${ch}`);
-                        }}
-                        key={`${ch}_${index}`}
-                        title={ch}
-                        className="mb-1 truncate py-1 px-4 text-white font-semi-bold cursor-pointer"
-                      >
-                        # {ch}
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-          ) : (
-            <Spinner height="h-4/5" />
-          )}
-        </div>
-
-        <div className="w-full flex h-screen flex-col">
-          <div className="inline-flex absolute top-0 right-0 inline-flex ">
-            <button
-              title="Log Out"
-              onClick={() => dispatch(openModal())}
-              className="my-3 flex justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <LogoutImg className="mx-auto h-7 w-auto" />
-            </button>
-            {isAdmin ? (
-              <button
-                onClick={() => history.push("/admin")}
-                className="my-3 mr-3 flex rounded-l-none justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <AdminPageImg className="mx-auto h-7 w-auto" />
-              </button>
-            ) : (
-              false
-            )}
-          </div>
-          <div className="border-b flex px-6 py-2 h-16 items-center">
-            <div className="flex flex-col">
-              <h3 className="text-grey-900 text-md mb-1 font-extrabold">
+            <div className="flex flex-col ml-12 sm:ml-0">
+              <h3 className="text-grey-900 text-md mb-1 truncate font-extrabold">
                 {name}
               </h3>
-              <div className="text-grey font-light text-sm">{description}</div>
+              <div className="text-grey font-light truncate text-sm">
+                {description}
+              </div>
+            </div>
+            <div className="inline-flex absolute top-0 right-0 inline-flex ">
+              <button
+                title="Log Out"
+                onClick={() => dispatch(openModal())}
+                className="my-3 flex justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <LogoutImg className="mx-auto h-7 w-auto" />
+              </button>
+              {isAdmin ? (
+                <button
+                  onClick={() => history.push("/admin")}
+                  className="my-3 mr-3 flex rounded-l-none justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <AdminPageImg className="mx-auto h-7 w-auto" />
+                </button>
+              ) : (
+                false
+              )}
             </div>
           </div>
-          <div id="channel" className="px-6 py-4 flex-1 overflow-y-auto">
+          <div
+            id="channel"
+            style={backgroundStyle}
+            className="border-b px-6 py-4 flex-1 overflow-y-auto"
+          >
             {!name && <Spinner height="h-4/5" />}
             {channelsContent[name]
               ? Object.values(channelsContent[name]).map((it) => {
@@ -187,7 +178,7 @@ const Chat = () => {
                             {new Date(it.time).toLocaleString()}
                           </span>
                         </div>
-                        <p className="font-light text-md text-grey-800 pt-1">
+                        <p className="font-light break-words text-md text-grey-800 pt-1">
                           {it.message}
                         </p>
                       </div>

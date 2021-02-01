@@ -7,6 +7,11 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
+    backgroundColor: (theme) => ({
+      ...theme("colors"),
+      rosybrown: "#BC8F8F",
+      peach: "#F5B895",
+    }),
   },
   variants: {
     extend: {

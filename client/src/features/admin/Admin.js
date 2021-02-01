@@ -7,7 +7,6 @@ import {
   updateEmail,
   selectNewEmail,
   selectIsAdmin,
-  deleteUser,
   updateRole,
   selectId,
   getId,
@@ -89,7 +88,8 @@ const Admin = () => {
                     className="font-bold pl-2 py-1 text-blue-300 bg-gray-500 rounded text-md mr-2"
                   ></input>
                   <span className="text-grey-700 text-yellow-300 text-xs font-light">
-                    {it.role.map((role) => `[${role}]`)}
+                    {/* {it.role.map((role) => `[${role}]`)} */}
+                    {isAdmin ? "[user] [admin]" : "[user]"}
                   </span>
                   <button
                     onClick={() => {
@@ -97,9 +97,7 @@ const Admin = () => {
                     }}
                     className="absolute transform hover:scale-110 motion-reduce:transform-none right-0 text-grey-700 text-yellow-300 text-xs"
                   >
-                    {it.role.includes("admin")
-                      ? "❌ Remove Admin"
-                      : "✅ Set as Admin"}
+                    {isAdmin ? "❌ Remove Admin" : "✅ Set as Admin"}
                   </button>
                 </div>
                 <input
@@ -131,7 +129,7 @@ const Admin = () => {
                     {it.username}
                   </span>
                   <span className="text-grey-700 text-yellow-300 text-xs font-light">
-                    {it.role.map((role) => `[${role}]`).sort()}
+                    {it.role.map((role) => `[${role}]`)}
                   </span>
                   <button
                     title="Delete"
@@ -139,7 +137,9 @@ const Admin = () => {
                     className={`rounded ${
                       editMode ? "disabled:opacity-50 " : "hover:bg-blue-300"
                     } absolute right-0 top-0 my-3 px-1 text-xl`}
-                    onClick={() => dispatch(openModal({username: it.username, id: it._id}))}
+                    onClick={() =>
+                      dispatch(openModal({ username: it.username, id: it._id }))
+                    }
                   >
                     🗑️
                   </button>
