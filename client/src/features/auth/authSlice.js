@@ -66,7 +66,7 @@ export const authUser = (email, password) => async (dispatch) => {
   };
   try {
     const res = await axios.post(
-      `http://${getMyIP()}:5000/api/v1/auth/signin`,
+      `/api/v1/auth/signin`,
       credentials,
       {
         withCredentials: true,
@@ -98,7 +98,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
 
   try {
     const res = await axios.post(
-      `http://${getMyIP()}:5000/api/v1/auth/signup`,
+      `/api/v1/auth/signup`,
       credentials,
       {
         withCredentials: true,
@@ -126,7 +126,7 @@ export function readToken() {
   return async (dispatch) => {
     try {
       const res = await axios.get(
-        `http://${getMyIP()}:5000/api/v1/auth/signin`,
+        `/api/v1/auth/signin`,
         {
           withCredentials: true,
         }

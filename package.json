@@ -2,6 +2,9 @@
   "name": "e-commerce-server",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "12.x"
+  },
   "dependencies": {
     "axios": "^0.21.0",
     "bcrypt-nodejs": "^0.0.3",
@@ -19,6 +22,7 @@
   "scripts": {
     "build": "babel ./src --out-dir ./dist",
     "start": "node ./dist/main.js",
+    "heroku-postbuild": "yarn build && cd client && yarn && yarn run build",
     "start:dev": "NODE_ENV=development npm-run-all build start",
     "start:watch": "nodemon --exec babel-node ./src/main.js"
   },

@@ -18,10 +18,14 @@ const authHandlers = require("./auth");
 mongooseService.connect();
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, "../client/build")));
+
 const httpServer = http.Server(app);
+// const io = socketIo(httpServer);
 const io = socketIo(httpServer, {
   cors: {
-    origin: `http://${getMyCurrentIP()}:9000`,
+    origin: `https://chatter-messaging-app.herokuapp.com`,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -41,12 +45,15 @@ if (config.isSocketsEnabled) {
   });
 }
 
-const port = 5000;
+// const port = 5000;
 
 const middleware = [
-  cors({ origin: `http://${getMyCurrentIP()}:9000`, credentials: true }),
+  cors({
+    origin: `https://chatter-messaging-app.herokuapp.com`,
+    credentials: true,
+  }),
   passport.initialize(),
-  express.static(path.resolve(__dirname, "../dist/assets")),
+  express.static(path.resolve(__dirname, "../dist")),
   bodyParser.urlencoded({
     limit: "50mb",
     extended: true,
@@ -73,6 +80,11 @@ userHandlers.getAllUsers(app);
 userHandlers.updateUser(app);
 userHandlers.deleteUser(app);
 
-httpServer.listen(port, () => {
-  console.log(`Example app listening at http://${getMyCurrentIP()}:${port}`);
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+
+httpServer.listen(config.port, () => {
+  console.log(`Example app listening at ${config.port}`);
+  // console.log(`Example app listening at http://${getMyCurrentIP()}:${config.port}`);
 });

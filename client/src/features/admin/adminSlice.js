@@ -33,7 +33,7 @@ export const adminSlice = createSlice({
 
 export const getAllUsers = () => async (dispatch) => {
   await axios
-    .get(`http://${getMyIP()}:5000/api/v2/users`, {
+    .get(`/api/v2/users`, {
       withCredentials: true,
     })
     .then((res) => {
@@ -47,7 +47,7 @@ export const getAllUsers = () => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch, getState) => {
   const myId = getState().auth.id;
   await axios
-    .delete(`http://${getMyIP()}:5000/api/v2/users/${id}`, {
+    .delete(`/api/v2/users/${id}`, {
       data: { id: myId },
       withCredentials: true,
     })
@@ -67,7 +67,7 @@ export const asyncUpdateUser = () => async (dispatch, getState) => {
 
   await axios
     .patch(
-      `http://${getMyIP()}:5000/api/v2/users/${id}`,
+      `/api/v2/users/${id}`,
       {
         newUsername,
         newEmail,

@@ -74,7 +74,7 @@ export const getChatInfo = (channel) => async (dispatch) => {
   try {
     const res = await
     axios.get(
-      `http://${getMyIP()}:5000/api/v2/channels/${channel}`,
+      `/api/v2/channels/${channel}`,
       {
         withCredentials: true,
       }

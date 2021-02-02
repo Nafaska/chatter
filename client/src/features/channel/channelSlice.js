@@ -29,7 +29,7 @@ export const channelSlice = createSlice({
 
 export const getListOfChannels = () => async (dispatch) => {
   await axios
-    .get(`http://${getMyIP()}:5000/api/v2/channels`, {
+    .get(`/api/v2/channels`, {
       withCredentials: true,
     })
     .then((res) => {
@@ -43,7 +43,7 @@ export const getListOfChannels = () => async (dispatch) => {
 
 export const createChannel = (name, description) => async (dispatch) => {
   await axios
-    .post(`http://${getMyIP()}:5000/api/v2/channels`, {name, description}, {
+    .post(`/api/v2/channels`, {name, description}, {
       withCredentials: true,
     })
     .then((res) => {

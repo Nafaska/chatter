@@ -16,7 +16,7 @@ for (const name of Object.keys(nets)) {
 }
 
 const getMyCurrentIP = () => {
-  return results.en0[0];
+  return results.en0 ? results.en0[0] : results.eth0[0];
 };
 
 module.exports = {

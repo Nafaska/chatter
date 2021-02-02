@@ -23,8 +23,9 @@ export default ({ children }) => {
   };
 
   if (!socket) {
-    socket = io.connect(`http://${getMyIP()}:5000`, { withCredentials: true });
-    console.log("creating socket");
+    // socket = io.connect(`http://${getMyIP()}:5000`, { withCredentials: true });
+    socket = io.connect(``, { withCredentials: true });
+    console.log("creating socket", socket);
     socket.on("get message", (msg) => {
       console.log("got message from server", msg);
       const payload = JSON.parse(msg);

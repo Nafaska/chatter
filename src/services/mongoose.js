@@ -14,10 +14,20 @@ mongoose.set("useFindAndModify", false);
 
 exports.connect = async () => {
   console.log("trying to connect to db at", config.mongoURL);
-  mongoose.connect(config.mongoURL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true,
-  });
+  try {
+    await mongoose.connect(config.mongoURL, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    });
+  } catch (error) {
+    console.log("----------");
+    console.log(error, 'db failed');
+  }
+  // mongoose.connect(config.mongoURL, {
+  //   useUnifiedTopology: true,
+  //   useNewUrlParser: true,
+  //   useCreateIndex: true,
+  // });
   return mongoose.connection;
 };
