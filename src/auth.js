@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import config from "./config";
 import User from "./model/User.model";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 const verifyAuth = (app) => {
   app.get("/api/v1/auth/signin", async (req, res) => {
@@ -85,4 +88,39 @@ const signup = (app) => {
   });
 };
 
-module.exports = { verifyAuth, signin, signup };
+const googleSignin = (app) => {
+  app.post("/api/v1/auth/google", async (req, res) => {
+    try {
+      const googleToken = req.body.token;
+      console.log(googleToken, req.body)
+      const ticket = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: config.clientId,
+      });
+
+      const { name, email } = ticket.getPayload();
+      const user = await User.findOneAndUpdate(
+        { email: email },
+        { $set: { username: name } },
+        { upsert: true, new: true }
+      );
+
+      const payload = { uid: user.id };
+      const token = jwt.sign(payload, config.secret, { expiresIn: "48h" });
+      res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 48 });
+
+      res.status(200).json({
+        token,
+        username: user.username,
+        role: user.role,
+        email: user.email,
+        id: user._id,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Something went wrong" });
+    }
+  });
+};
+
+module.exports = { verifyAuth, signin, signup, googleSignin };

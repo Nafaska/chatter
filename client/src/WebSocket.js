@@ -24,8 +24,11 @@ export default ({ children }) => {
 
   if (!socket) {
     // socket = io.connect(`http://${getMyIP()}:5000`, { withCredentials: true });
-    socket = io.connect(``, { withCredentials: true });
-    console.log("creating socket", socket);
+    console.log(process.env.REACT_APP_SERVER_URL);
+    socket = io.connect(process.env.REACT_APP_SERVER_URL, {
+      withCredentials: true,
+    });
+    console.log("creating socket");
     socket.on("get message", (msg) => {
       console.log("got message from server", msg);
       const payload = JSON.parse(msg);

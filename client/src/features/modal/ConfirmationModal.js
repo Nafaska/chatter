@@ -18,10 +18,11 @@ const ConfirmationModal = (props) => {
       transform: "translate(-50%, -50%)",
       padding: "0px",
       background: "transparent",
-      border: "none",
+      border: "none"
     },
     overlay: {
       backgroundColor: "lightgray",
+      zIndex: 20
     },
   };
 

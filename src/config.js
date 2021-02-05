@@ -7,6 +7,8 @@ const options = {
   isSocketsEnabled: process.env.ENABLE_SOCKETS,
   mongoURL: process.env.MONGO_URL || "mongodb://127.0.0.1:27017/auth",
   secret: process.env.SECRET_JWT || "secretKey",
+  clientId: process.env.CLIENT_ID, // for google oAuth
+  clientUrl: process.env.CLIENT_URL,
 };
 
 export default options;

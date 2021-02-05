@@ -13,14 +13,15 @@ import Toast from "./features/helpers/toast";
 import Admin from "./features/admin/Admin";
 import Spinner from "./features/helpers/Spinner";
 
+
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((s) => s.auth);
   const func = (props) => {
-      if (auth.role.includes("user")) {
-        return <Redirect to={{ pathname: "/channels" }} />;
-      } else {
-        return <Component {...props} />;
-      }
+    if (auth.role.includes("user")) {
+      return <Redirect to={{ pathname: "/channels" }} />;
+    } else {
+      return <Component {...props} />;
+    }
   };
 
   return <Route {...rest} render={func} />;
@@ -71,21 +72,21 @@ function App() {
                 exact
                 path="/registration"
                 component={Registration}
-              ></OnlyAnonymousRoute>
+                ></OnlyAnonymousRoute>
               <OnlyAnonymousRoute
                 exact
                 path="/login"
                 component={Login}
-              ></OnlyAnonymousRoute>
+                ></OnlyAnonymousRoute>
               <PrivateRoute
                 exact
                 path="/channels"
                 component={Channel}
-              ></PrivateRoute>
+                ></PrivateRoute>
               <PrivateRoute
                 path="/channels/:channel"
                 component={Chat}
-              ></PrivateRoute>
+                ></PrivateRoute>
               <AdminRoute path="/admin" component={Admin}></AdminRoute>
               <Redirect from="/" to="/channels" />
             </Switch>
@@ -98,3 +99,5 @@ function App() {
 }
 
 export default App;
+
+export let gapi;

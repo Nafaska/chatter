@@ -6,15 +6,19 @@ import {
   selectEmail,
   selectPassword,
   authUser,
+  googleAuthUser,
 } from "./authSlice";
 import logo from "../../assets/cat-avatar.png";
 import { useHistory } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
 
 const Registration = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const email = useSelector(selectEmail);
   const password = useSelector(selectPassword);
+
+  const handleLogin = (data) => dispatch(googleAuthUser(data));
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -75,6 +79,13 @@ const Registration = () => {
             >
               Login
             </button>
+            <GoogleLogin
+              clientId={process.env.GOOGLE_CLIENT_ID}
+              buttonText="Log in with Google"
+              onSuccess={handleLogin}
+              onFailure={handleLogin}
+              cookiePolicy={"single_host_origin"}
+            />
             <h2 className="my-3 text-center text-gray-500">Or</h2>
             <button
               type="button"

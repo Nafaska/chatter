@@ -4,6 +4,8 @@ import history from "../../history";
 import Cookies from "universal-cookie";
 import { getMyIP } from "../../utils/IPDetector";
 import { toast } from "react-toastify";
+import {gapi } from "../../App";
+
 
 const cookies = new Cookies();
 
@@ -16,7 +18,7 @@ export const authSlice = createSlice({
     role: [],
     username: "",
     isAuthenticated: false,
-    id: ""
+    id: "",
   },
   reducers: {
     validatePassword: (state, action) => {
@@ -40,7 +42,7 @@ export const authSlice = createSlice({
     },
     logout: (state, action) => {
       cookies.remove("token");
-      state.token = '';
+      state.token = "";
       state.role = [];
       state.email = "";
       state.username = "";
@@ -59,15 +61,53 @@ export const {
   logout,
 } = authSlice.actions;
 
+export const logoutUser = () => async (dispatch) => {
+  console.log(window.gapi);
+  try {
+    var auth2 = window.gapi.auth2.getAuthInstance();
+    await auth2.signOut()
+    console.log("User signed out.");
+
+    dispatch(logout());
+  } catch (err) {
+    console.log(err);
+    toast.error(
+      err.response ? err.response.data.error : "Something went wrong"
+    );
+  }
+};
+
 export const authUser = (email, password) => async (dispatch) => {
   const credentials = {
     email,
     password,
   };
   try {
+    const res = await axios.post(`/api/v1/auth/signin`, credentials, {
+      withCredentials: true,
+    });
+    dispatch(
+      validateUser({
+        token: res.data.token,
+        role: res.data.role,
+        email: res.data.email,
+        username: res.data.username,
+        id: res.data.id,
+      })
+    );
+  } catch (err) {
+    console.log(err);
+    toast.error(
+      err.response ? err.response.data.error : "Something went wrong"
+    );
+  }
+};
+
+export const googleAuthUser = (googleData) => async (dispatch) => {
+  try {
     const res = await axios.post(
-      `/api/v1/auth/signin`,
-      credentials,
+      `/api/v1/auth/google`,
+      { token: googleData.tokenId },
       {
         withCredentials: true,
       }
@@ -97,13 +137,9 @@ export const createUser = (email, password, username) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post(
-      `/api/v1/auth/signup`,
-      credentials,
-      {
-        withCredentials: true,
-      }
-    );
+    const res = await axios.post(`/api/v1/auth/signup`, credentials, {
+      withCredentials: true,
+    });
     dispatch(
       validateUser({
         token: res.data.token,
@@ -125,12 +161,9 @@ export const createUser = (email, password, username) => async (dispatch) => {
 export function readToken() {
   return async (dispatch) => {
     try {
-      const res = await axios.get(
-        `/api/v1/auth/signin`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`/api/v1/auth/signin`, {
+        withCredentials: true,
+      });
       dispatch(
         validateUser({
           token: res.data.token,

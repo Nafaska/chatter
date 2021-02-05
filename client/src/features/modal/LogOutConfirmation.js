@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { logout } from "../auth/authSlice";
+import { logout, logoutUser } from "../auth/authSlice";
 import {
   closeModal,
 } from "./confirmationSlice";
@@ -13,7 +13,7 @@ const LogOutConfirmation = () => {
       title="Log Out"
       message={`Are you sure you want to log out?`}
       onConfirmation={() => {
-        dispatch(logout());
+        dispatch(logoutUser());
         dispatch(closeModal());
       }}
       confirmation="Log Out"

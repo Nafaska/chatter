@@ -9,7 +9,7 @@ import socketIo from "socket.io";
 import http from "http";
 import config from "./config";
 import mongooseService from "./services/mongoose";
-import { getMyCurrentIP } from "./utils/ipDetector";
+// import { getMyCurrentIP } from "./utils/ipDetector";
 
 const userHandlers = require("./users");
 const channelHandlers = require("./channels");
@@ -22,10 +22,9 @@ const app = express();
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 const httpServer = http.Server(app);
-// const io = socketIo(httpServer);
 const io = socketIo(httpServer, {
   cors: {
-    origin: `https://chatter-messaging-app.herokuapp.com`,
+    origin: config.clientUrl,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -45,11 +44,9 @@ if (config.isSocketsEnabled) {
   });
 }
 
-// const port = 5000;
-
 const middleware = [
   cors({
-    origin: `https://chatter-messaging-app.herokuapp.com`,
+    origin: config.clientUrl,
     credentials: true,
   }),
   passport.initialize(),
@@ -70,6 +67,7 @@ middleware.forEach((it) => app.use(it));
 authHandlers.verifyAuth(app);
 authHandlers.signin(app);
 authHandlers.signup(app);
+authHandlers.googleSignin(app);
 
 channelHandlers.getAllChannels(app);
 channelHandlers.getChannel(app);

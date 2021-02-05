@@ -38,23 +38,23 @@ const Header = () => {
         </div>
       </div>
       <div className="inline-flex absolute top-0 right-0 inline-flex ">
-        <button
-          title="Log Out"
-          onClick={() => dispatch(openModal())}
-          className="my-3 flex justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          <LogoutImg className="mx-auto h-7 w-auto" />
-        </button>
         {isAdmin ? (
           <button
             onClick={() => history.push("/admin")}
-            className="my-3 mr-3 flex rounded-l-none justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="my-3 flex justify-center rounded-r-none p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <AdminPageImg className="mx-auto h-7 w-auto" />
           </button>
         ) : (
           false
         )}
+        <button
+          title="Log Out"
+          onClick={() => dispatch(openModal())}
+          className="my-3 mr-3 flex justify-center p-1 border text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <LogoutImg className="mx-auto h-7 w-auto" />
+        </button>
       </div>
     </div>
   );

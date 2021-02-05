@@ -51,40 +51,36 @@ const Chat = () => {
   }, [channel, listOfChannels, dispatch, showEmojiPicker]);
 
   return (
-    <div className="font-mono w-full border shadow bg-white">
-      <div className="flex">
-        <div
-          className={`${
-            isBurgerMenuOpen
-              ? "bg-gradient-to-r from-gray-400 to-blue-500"
-              : "bg-transparent"
-          }`}
-        >
+    <div>
+      <div className="relative font-mono w-full border shadow bg-white">
+        <div className="flex">
           <BurgerButton />
           <BurgerMenu />
-        </div>
-        <div
-          className={`${
-            isBurgerMenuOpen
-              ? "hidden sm:flex w-3/4 absolute right-0"
-              : "w-full"
-          } flex h-screen flex-col`}
-        >
-          <Header />
-          <HandleMessages />
           <div
-            ref={pickerWrapper}
-            className={showEmojiPicker ? "absolute block bottom-20" : "hidden"}
+            className={`${
+              isBurgerMenuOpen
+                ? "hidden sm:flex w-3/4 absolute right-0"
+                : "w-full"
+            } flex h-screen flex-col`}
           >
-            <Picker
-              disableSkinTonePicker="true"
-              preload="true"
-              onEmojiClick={(event, emojiObject) =>
-                dispatch(addEmoji(emojiObject.emoji))
+            <Header />
+            <HandleMessages />
+            <div
+              ref={pickerWrapper}
+              className={
+                showEmojiPicker ? "absolute block bottom-20" : "hidden"
               }
-            />
+            >
+              <Picker
+                disableSkinTonePicker="true"
+                preload="true"
+                onEmojiClick={(event, emojiObject) =>
+                  dispatch(addEmoji(emojiObject.emoji))
+                }
+              />
+            </div>
+            <MessageInput emojiButton={emojiButton} />
           </div>
-          <MessageInput emojiButton={emojiButton} />
         </div>
       </div>
       <ConfirmationModal body={<LogOutConfirmation />} />

@@ -24,10 +24,6 @@ exports.connect = async () => {
     console.log("----------");
     console.log(error, 'db failed');
   }
-  // mongoose.connect(config.mongoURL, {
-  //   useUnifiedTopology: true,
-  //   useNewUrlParser: true,
-  //   useCreateIndex: true,
-  // });
+
   return mongoose.connection;
 };

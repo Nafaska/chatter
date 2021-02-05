@@ -4,13 +4,14 @@ import { ReactComponent as LogoutImg } from "../../assets/logout.svg";
 import { ReactComponent as AdminPageImg } from "../../assets/adminPage.svg";
 import { useHistory } from "react-router-dom";
 import { getListOfChannels } from "./channelSlice";
-import { selectRole } from "../auth/authSlice";
+import { selectRole, logout } from "../auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import LogOutConfirmation from "../modal/LogOutConfirmation";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import { openModal } from "../modal/confirmationSlice";
 import SelectChannel from "./SelectChannel";
 import CreateChannel from "./CreateChannel";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 const Channel = () => {
   const [expandedDropdown, setExpandedDropdown] = useState(false);
@@ -18,6 +19,7 @@ const Channel = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isAdmin = useSelector(selectRole).includes("admin");
+  const handleLogout = (data) => dispatch(logout(data));
 
   useEffect(() => {
     dispatch(getListOfChannels());
@@ -51,6 +53,11 @@ const Channel = () => {
           setExpandedDropdown={setExpandedDropdown}
         />
         <CreateChannel expandedDropdown={expandedDropdown} />
+        <GoogleLogout
+          clientId={process.env.GOOGLE_CLIENT_ID}
+          buttonText="Logout"
+          onLogoutSuccess={handleLogout}
+        ></GoogleLogout>
       </div>
       <ConfirmationModal body={<LogOutConfirmation />} />
     </div>
