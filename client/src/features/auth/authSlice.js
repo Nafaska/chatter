@@ -2,10 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
 import Cookies from "universal-cookie";
-import { getMyIP } from "../../utils/IPDetector";
 import { toast } from "react-toastify";
-import {gapi } from "../../App";
-
 
 const cookies = new Cookies();
 
@@ -61,22 +58,6 @@ export const {
   logout,
 } = authSlice.actions;
 
-export const logoutUser = () => async (dispatch) => {
-  console.log(window.gapi);
-  try {
-    var auth2 = window.gapi.auth2.getAuthInstance();
-    await auth2.signOut()
-    console.log("User signed out.");
-
-    dispatch(logout());
-  } catch (err) {
-    console.log(err);
-    toast.error(
-      err.response ? err.response.data.error : "Something went wrong"
-    );
-  }
-};
-
 export const authUser = (email, password) => async (dispatch) => {
   const credentials = {
     email,
@@ -124,7 +105,7 @@ export const googleAuthUser = (googleData) => async (dispatch) => {
   } catch (err) {
     console.log(err);
     toast.error(
-      err.response ? err.response.data.error : "Something went wrong"
+      err.response ? err.response.data.error : "Unable login via Google"
     );
   }
 };
@@ -153,7 +134,7 @@ export const createUser = (email, password, username) => async (dispatch) => {
   } catch (err) {
     console.log(err);
     toast.error(
-      err.response ? err.response.data.error : "Something went wrong"
+      err.response ? err.response.data.error : "Couldn't login via Google"
     );
   }
 };

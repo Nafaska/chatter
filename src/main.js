@@ -9,7 +9,6 @@ import socketIo from "socket.io";
 import http from "http";
 import config from "./config";
 import mongooseService from "./services/mongoose";
-// import { getMyCurrentIP } from "./utils/ipDetector";
 
 const userHandlers = require("./users");
 const channelHandlers = require("./channels");
@@ -83,6 +82,5 @@ app.get("*", (req, res) => {
 });
 
 httpServer.listen(config.port, () => {
-  console.log(`Example app listening at ${config.port}`);
-  // console.log(`Example app listening at http://${getMyCurrentIP()}:${config.port}`);
+  console.log(`Example app listening at http://localhost:${config.port}`);
 });

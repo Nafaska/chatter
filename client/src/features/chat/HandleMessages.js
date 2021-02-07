@@ -1,4 +1,4 @@
-import avatar from "../../assets/cat-avatar.png";
+import avatar from "../../assets/catAvatar.png";
 import Spinner from "../helpers/Spinner";
 import { topography } from "hero-patterns";
 import { useSelector } from "react-redux";

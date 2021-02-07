@@ -6,11 +6,10 @@ import {
   selectEmail,
   selectPassword,
   authUser,
-  googleAuthUser,
 } from "./authSlice";
-import logo from "../../assets/cat-avatar.png";
+import ChatterLogo from "../../assets/catAvatar.png";
 import { useHistory } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import LoginViaGoogle from "./LoginViaGoogle";
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -18,13 +17,15 @@ const Registration = () => {
   const email = useSelector(selectEmail);
   const password = useSelector(selectPassword);
 
-  const handleLogin = (data) => dispatch(googleAuthUser(data));
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <img className="mx-auto h-12 w-auto" src={logo} alt="Workflow" />
+          <img
+            className="mx-auto h-12 w-auto"
+            src={ChatterLogo}
+            alt="Workflow"
+          />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Login
           </h2>
@@ -79,18 +80,12 @@ const Registration = () => {
             >
               Login
             </button>
-            <GoogleLogin
-              clientId={process.env.GOOGLE_CLIENT_ID}
-              buttonText="Log in with Google"
-              onSuccess={handleLogin}
-              onFailure={handleLogin}
-              cookiePolicy={"single_host_origin"}
-            />
             <h2 className="my-3 text-center text-gray-500">Or</h2>
+            <LoginViaGoogle />
             <button
               type="button"
               onClick={() => history.push("/registration")}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="mt-2 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Register
             </button>

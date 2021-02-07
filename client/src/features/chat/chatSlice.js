@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import history from "../../history";
-import { getMyIP } from "../../utils/IPDetector";
 import { toast } from "react-toastify";
 
 const LIMIT_OF_MESSAGES = 5;

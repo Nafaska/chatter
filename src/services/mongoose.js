@@ -13,7 +13,6 @@ mongoose.connection.on("error", (err) => {
 mongoose.set("useFindAndModify", false);
 
 exports.connect = async () => {
-  console.log("trying to connect to db at", config.mongoURL);
   try {
     await mongoose.connect(config.mongoURL, {
       useUnifiedTopology: true,
@@ -21,7 +20,6 @@ exports.connect = async () => {
       useCreateIndex: true,
     });
   } catch (error) {
-    console.log("----------");
     console.log(error, 'db failed');
   }
 

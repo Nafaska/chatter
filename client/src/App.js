@@ -99,5 +99,3 @@ function App() {
 }
 
 export default App;
-
-export let gapi;

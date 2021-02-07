@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import logo from "../../assets/cat-avatar.png";
+import logo from "../../assets/catAvatar.png";
 import { useHistory } from "react-router-dom";
 import {
   validateEmail,
@@ -11,6 +11,7 @@ import {
   createUser,
   selectUsername,
 } from "./authSlice";
+import LoginViaGoogle from "./LoginViaGoogle";
 
 const Registration = () => {
   const history = useHistory();
@@ -95,10 +96,11 @@ const Registration = () => {
               Register
             </button>
             <h2 className="my-3 text-center text-gray-500">Or</h2>
+            <LoginViaGoogle />
             <button
               type="button"
               onClick={() => history.push("/login")}
-              className="group relative w-full flex justify-center py-2 px-4 border bosrder-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="mt-2 group relative w-full flex justify-center py-2 px-4 border bosrder-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Login
             </button>

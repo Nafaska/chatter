@@ -91,8 +91,10 @@ const signup = (app) => {
 const googleSignin = (app) => {
   app.post("/api/v1/auth/google", async (req, res) => {
     try {
+      if (!config.clientId) {
+        console.error("Error: client_id is not defined");
+      }
       const googleToken = req.body.token;
-      console.log(googleToken, req.body)
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
         audience: config.clientId,

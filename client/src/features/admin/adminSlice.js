@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getMyIP } from "../../utils/IPDetector";
 import { toast } from "react-toastify";
 
 export const adminSlice = createSlice({
