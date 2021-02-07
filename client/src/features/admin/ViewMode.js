@@ -27,10 +27,10 @@ const ViewMode = (props) => {
           >
             ✍🏻
           </button>
-          <span className="font-bold text-blue-300 text-md mr-2">
+          <span className="break-all font-bold text-blue-300 text-md mr-2">
             {props.it.username}
           </span>
-          <span className="text-grey-700 text-yellow-300 text-xs font-light">
+          <span className="text-grey-700 mr-10 text-yellow-300 text-xs font-light">
             {props.it.role.map((role) => `[${role}]`)}
           </span>
           <button
@@ -38,15 +38,17 @@ const ViewMode = (props) => {
             disabled={props.editMode ? true : false}
             className={`rounded ${
               props.editMode ? "disabled:opacity-50 " : "hover:bg-blue-300"
-            } absolute right-0 top-0 my-3 px-1 text-xl`}
+            } absolute right-0 top-0 my-2 px-1 text-xl`}
             onClick={() =>
-              dispatch(openModal({ username: props.it.username, id: props.it._id }))
+              dispatch(
+                openModal({ username: props.it.username, id: props.it._id })
+              )
             }
           >
             🗑️
           </button>
         </div>
-        <p className="font-light text-md border-b border-dotted text-white pb-2 pt-1">
+        <p className="break-all font-light text-md border-b border-dotted text-white pb-2 pt-1">
           {props.it.email}
         </p>
       </div>

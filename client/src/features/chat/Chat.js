@@ -1,6 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getChatInfo, addEmoji, selectIsBurgerMenuOpen } from "./chatSlice";
+import {
+  getChatInfo,
+  addEmoji,
+  selectIsBurgerMenuOpen,
+  selectName,
+} from "./chatSlice";
 import { readToken } from "../auth/authSlice";
 import { useParams } from "react-router-dom";
 import { getListOfChannels, selectChannelList } from "../channel/channelSlice";
@@ -19,6 +24,8 @@ const Chat = () => {
   const listOfChannels = useSelector(selectChannelList);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const isBurgerMenuOpen = useSelector(selectIsBurgerMenuOpen);
+    const name = useSelector(selectName);
+
 
   const pickerWrapper = useRef();
   const emojiButton = useRef();
@@ -79,7 +86,7 @@ const Chat = () => {
                 }
               />
             </div>
-            <MessageInput emojiButton={emojiButton} />
+            {name && <MessageInput emojiButton={emojiButton} />}
           </div>
         </div>
       </div>

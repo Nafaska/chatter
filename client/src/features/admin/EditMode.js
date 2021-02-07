@@ -18,7 +18,7 @@ const EditMode = (props) => {
   return (
     <div key={props.it._id} className="flex items-start">
       <div className="flex w-screen flex-col relative mx-2 mt-2">
-        <div className="flex relative items-end">
+        <div className="flex relative flex-wrap-reverse items-end">
           <button
             title="Save"
             className="rounded px-1 mr-1 text-xl hover:bg-blue-300"
@@ -30,7 +30,7 @@ const EditMode = (props) => {
           </button>
           <button
             title="Cancel"
-            className="rounded px-2 mr-4 text-xl hover:bg-blue-300"
+            className="rounded px-2 mr-2 text-xl hover:bg-blue-300"
             onClick={() => {
               props.setEditMode(!props.editMode);
             }}
@@ -45,7 +45,7 @@ const EditMode = (props) => {
             value={newUsername}
             className="font-bold pl-2 py-1 text-blue-300 bg-gray-500 rounded text-md mr-2"
           ></input>
-          <span className="text-grey-700 text-yellow-300 text-xs font-light">
+          <span className="text-grey-700 sm:mb-0 mr-24 mb-2 text-yellow-300 text-xs font-light">
             {isAdmin ? "[user] [admin]" : "[user]"}
           </span>
           <button

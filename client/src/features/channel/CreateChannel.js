@@ -14,7 +14,11 @@ const CreateChannel = (props) => {
   const regexOnlyWhiteSpace = /^\s*$/;
 
   return (
-    <div className={props.expandedDropdown ? "w-2/5 invisible" : "w-2/5"}>
+    <div
+      className={
+        props.expandedDropdown ? "invisible" : "sm:w-2/5 w-4/5"
+      }
+    >
       <h4 className="mt-3 text-sm text-gray-500 text-center">Or</h4>
       <input
         id="new-channel"

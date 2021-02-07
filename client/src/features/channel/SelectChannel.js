@@ -10,7 +10,7 @@ const SelectChannel = (props) => {
   const listOfChannels = useSelector(selectChannelList);
 
   return (
-    <div className="relative inline-block w-2/5 text-left">
+    <div className="relative inline-block sm:w-2/5 w-4/5 text-left">
       <button
         type="button"
         onClick={() => {

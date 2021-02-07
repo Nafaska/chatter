@@ -19,7 +19,7 @@ const HandleMessages = () => {
       style={backgroundStyle}
       className="border-b px-6 py-4 flex-1 overflow-y-auto"
     >
-      {!name && <Spinner height="h-4/5" />}
+      {!name && <Spinner height="h-full" />}
       {channelsContent[name]
         ? Object.values(channelsContent[name]).map((it) => {
             return (
