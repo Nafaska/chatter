@@ -75,7 +75,7 @@ const Chat = () => {
             <div
               ref={pickerWrapper}
               className={
-                showEmojiPicker ? "absolute block bottom-20" : "hidden"
+                showEmojiPicker ? "fixed block left-4 bottom-24 z-10" : "hidden"
               }
             >
               <Picker

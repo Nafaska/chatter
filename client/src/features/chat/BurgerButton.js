@@ -8,7 +8,7 @@ const BurgerButton = () => {
     <div
       open={isBurgerMenuOpen}
       onClick={() => dispatch(openBurgerMenu(!isBurgerMenuOpen))}
-      className={`absolute top-0 left-0 mt-4 ml-4 flex flex-col justify-around w-8 h-8 cursor-pointer z-10 focus: outline-none`}
+      className={`absolute top-0 left-0 mt-4 ml-4 flex flex-col justify-around w-8 h-8 cursor-pointer z-30 focus: outline-none`}
     >
       <span
         className={`rounded transform w-8 h-1 origin-left transition-all ease-linear duration-300 ${

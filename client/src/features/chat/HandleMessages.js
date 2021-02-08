@@ -11,13 +11,14 @@ const HandleMessages = () => {
   const channelsContent = useSelector(selectChannelsContent);
   const backgroundStyle = {
     backgroundImage: topography("#F3D5AD", 0.5),
+    height: "calc(100% - 9.5rem)",
   };
 
   return (
     <div
       id="channel"
       style={backgroundStyle}
-      className="border-b px-6 py-4 flex-1 overflow-y-auto"
+      className="border-b box-border px-6 pt-4 sm:pb-8 pb-24 overflow-y-auto items-center"
     >
       {!name && <Spinner height="h-full" />}
       {channelsContent[name]

@@ -12,6 +12,7 @@ import { openModal } from "../modal/confirmationSlice";
 import SelectChannel from "./SelectChannel";
 import CreateChannel from "./CreateChannel";
 
+export const rootSt = { AppHeight: "100%" };
 const Channel = () => {
   const [expandedDropdown, setExpandedDropdown] = useState(false);
 
@@ -25,7 +26,7 @@ const Channel = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex flex-col w-full items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="h-screen flex flex-col w-full items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="inline-flex absolute top-0 left-0 inline-flex -space-x-px">
           <button
             title="Log Out"

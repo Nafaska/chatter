@@ -15,7 +15,7 @@ const BurgerMenu = () => {
     <div
       className={`${
         isBurgerMenuOpen ? "translate-x-0" : "-translate-x-full"
-      } transform h-screen absolute top-0 left-0 w-full sm:w-1/4 bg-gradient-to-r from-gray-400 to-blue-500 pb-6 transition ease-in-out duration-300`}
+      } transform z-20 h-screen absolute top-0 box-content left-0 w-full sm:w-1/4 bg-gradient-to-r from-gray-400 to-blue-500 pb-6 transition ease-in-out duration-300`}
     >
       {name && listOfChannels ? (
         <div className="h-5/6">

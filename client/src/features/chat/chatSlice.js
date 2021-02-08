@@ -3,7 +3,7 @@ import axios from "axios";
 import history from "../../history";
 import { toast } from "react-toastify";
 
-const LIMIT_OF_MESSAGES = 5;
+const LIMIT_OF_MESSAGES = 15;
 
 export const chatSlice = createSlice({
   name: "chat",
