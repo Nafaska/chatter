@@ -1,0 +1,717 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dispatching content: dispatching a new message to existed one 1`] = `
+<body>
+  <div>
+    <div
+      class="backgroundStyle border-b box-border px-6 pt-4 sm:pb-8 pb-24 overflow-y-auto items-center"
+      data-testid="channel-content"
+      id="channel"
+      style="height: calc(100% - 9.5rem);"
+    >
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              Viktoriia Kovalenko
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:40 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            1st message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              Shelby
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            2nd message
+          </p>
+        </div>
+      </div>
+      <div
+        class="h-1 auto-overflow-anchoring"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`dispatching content: limit messages per channel 1`] = `
+<body>
+  <div>
+    <div
+      class="backgroundStyle border-b box-border px-6 pt-4 sm:pb-8 pb-24 overflow-y-auto items-center"
+      data-testid="channel-content"
+      id="channel"
+      style="height: calc(100% - 9.5rem);"
+    >
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user1
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #1 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user2
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #2 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user3
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #3 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user4
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #4 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user5
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #5 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user6
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #6 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user7
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #7 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user8
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #8 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user9
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #9 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user10
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #10 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user11
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #11 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user12
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #12 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user13
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #13 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              user14
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            #14 message
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start mb-4 no-overflow-anchoring"
+      >
+        <img
+          alt="user avatar"
+          class="w-12 h-12 rounded-full mr-3"
+          src="catAvatar.png"
+        />
+        <div
+          class="flex flex-col"
+        >
+          <div
+            class="flex items-end"
+          >
+            <span
+              class="font-bold text-md mr-2"
+              data-testid="username"
+            >
+              Shelby
+            </span>
+            <span
+              class="text-grey-700 text-xs font-light"
+              data-testid="time"
+            >
+              2/11/2021, 2:04:59 PM
+            </span>
+          </div>
+          <p
+            class="font-light break-words text-md text-grey-800 pt-1"
+            data-testid="message"
+          >
+            it's a message above the limit
+          </p>
+        </div>
+      </div>
+      <div
+        class="h-1 auto-overflow-anchoring"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`rendering content from mocked store: rendering page with 2 messages 1`] = `
+<div
+  className="backgroundStyle border-b box-border px-6 pt-4 sm:pb-8 pb-24 overflow-y-auto items-center"
+  data-testid="channel-content"
+  id="channel"
+  style={
+    Object {
+      "height": "calc(100% - 9.5rem)",
+    }
+  }
+>
+  <div
+    className="flex items-start mb-4 no-overflow-anchoring"
+  >
+    <img
+      alt="user avatar"
+      className="w-12 h-12 rounded-full mr-3"
+      src="catAvatar.png"
+    />
+    <div
+      className="flex flex-col"
+    >
+      <div
+        className="flex items-end"
+      >
+        <span
+          className="font-bold text-md mr-2"
+          data-testid="username"
+        >
+          Viktoriia Kovalenko
+        </span>
+        <span
+          className="text-grey-700 text-xs font-light"
+          data-testid="time"
+        >
+          2/10/2021, 7:42:20 PM
+        </span>
+      </div>
+      <p
+        className="font-light break-words text-md text-grey-800 pt-1"
+        data-testid="message"
+      >
+        it is a test
+      </p>
+    </div>
+  </div>
+  <div
+    className="flex items-start mb-4 no-overflow-anchoring"
+  >
+    <img
+      alt="user avatar"
+      className="w-12 h-12 rounded-full mr-3"
+      src="catAvatar.png"
+    />
+    <div
+      className="flex flex-col"
+    >
+      <div
+        className="flex items-end"
+      >
+        <span
+          className="font-bold text-md mr-2"
+          data-testid="username"
+        >
+          Shelby
+        </span>
+        <span
+          className="text-grey-700 text-xs font-light"
+          data-testid="time"
+        >
+          2/10/2021, 7:43:24 PM
+        </span>
+      </div>
+      <p
+        className="font-light break-words text-md text-grey-800 pt-1"
+        data-testid="message"
+      >
+        works fine
+      </p>
+    </div>
+  </div>
+  <div
+    className="h-1 auto-overflow-anchoring"
+  />
+</div>
+`;

@@ -3,7 +3,7 @@ import axios from "axios";
 import history from "../../history";
 import { toast } from "react-toastify";
 
-const LIMIT_OF_MESSAGES = 15;
+export const LIMIT_OF_MESSAGES = 15;
 
 export const chatSlice = createSlice({
   name: "chat",
@@ -36,7 +36,7 @@ export const chatSlice = createSlice({
       const channelName = action.payload.data.channel;
       const newMessage = {
         message: action.payload.data.message,
-        time: +new Date(),
+        time: process.env.NODE_ENV !== "test" ? +new Date() : action.payload.data.time,
         username: action.payload.data.username,
         name: channelName,
       };
