@@ -25,9 +25,7 @@ export default ({ children }) => {
     socket = io.connect(process.env.REACT_APP_SERVER_URL, {
       withCredentials: true,
     });
-    console.log("creating socket");
     socket.on("get message", (msg) => {
-      console.log("got message from server", msg);
       const payload = JSON.parse(msg);
       dispatch(storeMessages(payload));
     });

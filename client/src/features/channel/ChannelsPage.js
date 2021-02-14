@@ -13,7 +13,8 @@ import SelectChannel from "./SelectChannel";
 import CreateChannel from "./CreateChannel";
 
 export const rootSt = { AppHeight: "100%" };
-const Channel = () => {
+
+const ChannelsPage = () => {
   const [expandedDropdown, setExpandedDropdown] = useState(false);
 
   const history = useHistory();
@@ -58,4 +59,4 @@ const Channel = () => {
   );
 };
 
-export default Channel;
+export default ChannelsPage;

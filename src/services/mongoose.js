@@ -20,7 +20,7 @@ exports.connect = async () => {
       useCreateIndex: true,
     });
   } catch (error) {
-    console.log(error, 'db failed');
+    console.log(error, "db failed");
   }
 
   return mongoose.connection;

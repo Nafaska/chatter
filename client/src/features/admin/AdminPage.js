@@ -7,7 +7,7 @@ import DeleteConfirmation from "../modal/DeleteConfirmation";
 import EditMode from "./EditMode";
 import ViewMode from "./ViewMode";
 
-const Admin = () => {
+const AdminPage = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
   const [editMode, setEditMode] = useState(false);
@@ -47,4 +47,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default AdminPage;

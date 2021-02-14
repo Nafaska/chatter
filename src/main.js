@@ -21,15 +21,16 @@ const app = express();
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 const httpServer = http.Server(app);
-const io = socketIo(httpServer, {
-  cors: {
-    origin: config.clientUrl,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
 
 if (config.isSocketsEnabled) {
+  const io = socketIo(httpServer, {
+    cors: {
+      origin: config.clientUrl,
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
+
   io.on("connection", (conn) => {
     console.log("connected");
     conn.on("send message", (msg) => {

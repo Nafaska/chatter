@@ -1,7 +1,7 @@
 import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import HandleMessages from "./HandleMessages";
+import ChatMessageList from "./ChatMessageList";
 import TestRenderer from "react-test-renderer";
 import { storeMessages, openChat } from "./chatSlice";
 import { configureStore as realConfigureStore } from "@reduxjs/toolkit";
@@ -36,7 +36,7 @@ describe("dispatching content:", () => {
   test("limit messages per channel", () => {
     render(
       <Provider store={store}>
-        <HandleMessages />
+        <ChatMessageList />
       </Provider>
     );
     store.dispatch(openChat({ name: "ChecksLimit", description: "" }));
@@ -59,7 +59,7 @@ describe("dispatching content:", () => {
   test("dispatching a new message to existed one", () => {
     render(
       <Provider store={store}>
-        <HandleMessages />
+        <ChatMessageList />
       </Provider>
     );
     store.dispatch(openChat({ name: "General", description: "" }));
@@ -90,7 +90,7 @@ describe("dispatching content:", () => {
   test("rendering component without messages", () => {
     render(
       <Provider store={store}>
-        <HandleMessages />
+        <ChatMessageList />
       </Provider>
     );
     store.dispatch(openChat({ name: "General", description: "" }));
@@ -132,7 +132,7 @@ describe("rendering content from mocked store:", () => {
 
     comp = TestRenderer.create(
       <Provider store={mockedStore}>
-        <HandleMessages />
+        <ChatMessageList />
       </Provider>
     );
   });

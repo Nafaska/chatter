@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Toast = () => {
+const ToastNotification = () => {
   return <ToastContainer
     autoClose={5000}
     toastClassName={() =>
@@ -12,4 +12,4 @@ const Toast = () => {
   />;
 };
 
-export default Toast;
+export default ToastNotification;

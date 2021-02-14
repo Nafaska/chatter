@@ -10,7 +10,7 @@ import {
   selectName,
 } from "./chatSlice";
 
-const Header = () => {
+const ChatHeader = () => {
   const history = useHistory();
   const description = useSelector(selectDescription);
   const isAdmin = useSelector(selectRole).includes("admin");
@@ -60,4 +60,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ChatHeader;

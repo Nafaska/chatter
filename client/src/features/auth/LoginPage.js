@@ -11,7 +11,7 @@ import ChatterLogo from "../../assets/catAvatar.png";
 import { useHistory } from "react-router-dom";
 import LoginViaGoogle from "./LoginViaGoogle";
 
-const Registration = () => {
+const LoginPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const email = useSelector(selectEmail);
@@ -96,4 +96,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default LoginPage;

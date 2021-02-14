@@ -13,7 +13,7 @@ import {
 } from "./authSlice";
 import LoginViaGoogle from "./LoginViaGoogle";
 
-const Registration = () => {
+const RegistrationPage = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
@@ -111,4 +111,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default RegistrationPage;

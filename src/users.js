@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import config from "./config";
 import User from "./model/User.model";
 
-const validateEmailRegexp = /^\S+@\S+$/;
+const validateEmailRegexp = /^\S+@\S+$/; //simple validation that email string contains @
 const ROLES = ["user", "admin"];
 
 const getAllUsers = (app) => {

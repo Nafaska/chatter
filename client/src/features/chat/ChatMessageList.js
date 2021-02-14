@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectName, selectChannelsContent } from "./chatSlice";
 import ChatMessage from "./ChatMessage";
 
-const HandleMessages = () => {
+const ChatMessageList = () => {
   const name = useSelector(selectName);
   const channelsContent = useSelector(selectChannelsContent);
   const username = useSelector(selectUsername);
@@ -39,4 +39,4 @@ const HandleMessages = () => {
   );
 };
 
-export default HandleMessages;
+export default ChatMessageList;

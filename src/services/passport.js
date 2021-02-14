@@ -13,7 +13,6 @@ const jwtOptions = {
 
 const jwtStrategy = new passportJWT.Strategy(jwtOptions, (jwtPayload, done) => {
   User.findById(jwtPayload.uid, (err, user) => {
-    console.log('user find by id', jwtPayload.uid, user);
     if (err) {
       return done(err, null);
     }

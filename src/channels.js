@@ -86,7 +86,7 @@ const updateChannel = (app) => {
 
       if (!validationChannel) {
         console.log(req.body.name, "Channel doesn't exist");
-        return res.status(404).send(`'${req.body.name}' Channel doesn't exist`);
+        return res.status(404).send(`${req.body.name} Channel doesn't exist`);
       }
 
       const channel = await Channel.findOneAndUpdate(

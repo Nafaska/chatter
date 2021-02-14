@@ -1,16 +1,16 @@
 import React from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
-import Registration from "./features/auth/Registration";
+import RegistrationPage from "./features/auth/Registration";
 import Startup from "./startup";
-import Login from "./features/auth/Login";
-import Chat from "./features/chat/Chat";
-import Channel from "./features/channel/Channel";
+import LoginPage from "./features/auth/LoginPage";
+import ChatPage from "./features/chat/ChatPage";
+import ChannelsPage from "./features/channel/ChannelsPage";
 import history from "./history";
 import { Provider, useSelector } from "react-redux";
 import { store } from "./app/store";
 import WebSocketProvider from "./WebSocket";
-import Toast from "./features/helpers/toast";
-import Admin from "./features/admin/Admin";
+import ToastNotification from "./features/helpers/ToastNotification";
+import AdminPage from "./features/admin/AdminPage";
 import Spinner from "./features/helpers/Spinner";
 
 
@@ -71,29 +71,29 @@ function App() {
               <OnlyAnonymousRoute
                 exact
                 path="/registration"
-                component={Registration}
-                ></OnlyAnonymousRoute>
+                component={RegistrationPage}
+              ></OnlyAnonymousRoute>
               <OnlyAnonymousRoute
                 exact
                 path="/login"
-                component={Login}
-                ></OnlyAnonymousRoute>
+                component={LoginPage}
+              ></OnlyAnonymousRoute>
               <PrivateRoute
                 exact
                 path="/channels"
-                component={Channel}
-                ></PrivateRoute>
+                component={ChannelsPage}
+              ></PrivateRoute>
               <PrivateRoute
                 path="/channels/:channel"
-                component={Chat}
-                ></PrivateRoute>
-              <AdminRoute path="/admin" component={Admin}></AdminRoute>
+                component={ChatPage}
+              ></PrivateRoute>
+              <AdminRoute path="/admin" component={AdminPage}></AdminRoute>
               <Redirect from="/" to="/channels" />
             </Switch>
           </Startup>
         </Router>
       </WebSocketProvider>
-      <Toast />
+      <ToastNotification />
     </Provider>
   );
 }

@@ -1,6 +1,6 @@
 import Picker from "emoji-picker-react";
 
-export const Emoji = (props) => {
+export const EmojiPicker = (props) => {
   const onEmojiClick = (event, emojiObject) => {
     props.setChosenEmoji(emojiObject.emoji);
   };

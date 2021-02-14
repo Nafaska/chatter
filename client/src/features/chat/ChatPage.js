@@ -14,11 +14,11 @@ import LogOutConfirmation from "../modal/LogOutConfirmation";
 import ConfirmationModal from "../modal/ConfirmationModal";
 import BurgerMenu from "./BurgerMenu";
 import BurgerButton from "./BurgerButton";
-import Header from "./Header";
+import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
-import HandleMessages from "./HandleMessages";
+import ChatMessageList from "./ChatMessageList";
 
-const Chat = () => {
+const ChatPage = () => {
   const dispatch = useDispatch();
   const { channel } = useParams();
   const listOfChannels = useSelector(selectChannelList);
@@ -70,8 +70,8 @@ const Chat = () => {
                 : "w-full"
             } flex h-screen flex-col`}
           >
-            <Header />
-            <HandleMessages />
+            <ChatHeader />
+            <ChatMessageList />
             <div
               ref={pickerWrapper}
               className={
@@ -80,7 +80,6 @@ const Chat = () => {
             >
               <Picker
                 disableSkinTonePicker="true"
-                preload="true"
                 onEmojiClick={(event, emojiObject) =>
                   dispatch(addEmoji(emojiObject.emoji))
                 }
@@ -95,4 +94,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default ChatPage;
