@@ -28,7 +28,7 @@ const getChannel = (app) => {
       }
       res.status(200).json(validationChannel);
     } catch (err) {
-      res.status(401).json({ error: err });
+      res.status(400).json({ error: err });
     }
   });
 };

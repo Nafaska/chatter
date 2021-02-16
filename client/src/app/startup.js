@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { readToken, passToken } from "./features/auth/authSlice";
+import { readToken, passToken } from "../features/auth/authSlice";
 import { useHistory } from "react-router-dom";
 
 const Startup = (props) => {

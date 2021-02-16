@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import history from "../../history";
+import history from "../../app/history";
 import Cookies from "universal-cookie";
 import { toast } from "react-toastify";
 

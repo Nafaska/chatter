@@ -1,17 +1,17 @@
 import React from "react";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
-import RegistrationPage from "./features/auth/Registration";
+import RegistrationPage from "../features/auth/Registration";
 import Startup from "./startup";
-import LoginPage from "./features/auth/LoginPage";
-import ChatPage from "./features/chat/ChatPage";
-import ChannelsPage from "./features/channel/ChannelsPage";
+import LoginPage from "../features/auth/LoginPage";
+import ChatPage from "../features/chat/ChatPage";
+import ChannelsPage from "../features/channel/ChannelsPage";
 import history from "./history";
 import { Provider, useSelector } from "react-redux";
-import { store } from "./app/store";
+import { store } from "./store";
 import WebSocketProvider from "./WebSocket";
-import ToastNotification from "./features/helpers/ToastNotification";
-import AdminPage from "./features/admin/AdminPage";
-import Spinner from "./features/helpers/Spinner";
+import ToastNotification from "../features/helpers/ToastNotification";
+import AdminPage from "../features/admin/AdminPage";
+import Spinner from "../features/helpers/Spinner";
 
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {

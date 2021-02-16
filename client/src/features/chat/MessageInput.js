@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { WebSocketContext } from "../../WebSocket";
+import { WebSocketContext } from "../../app/WebSocket";
 import { useSelector, useDispatch } from "react-redux";
 import {
   typeMessage,

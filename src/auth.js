@@ -53,19 +53,20 @@ const signin = (app) => {
 const signup = (app) => {
   app.post("/api/v1/auth/signup", async (req, res) => {
     try {
+      if (!req.body.email || !req.body.password || !req.body.username) {
+        return res.status(422).json({ error: "Fill all required fields" });
+      }
+
       const newUser = new User({
         email: req.body.email,
         password: req.body.password,
         username: req.body.username,
       });
 
-      if (!req.body.email || !req.body.password || !req.body.username) {
-        return res.status(422).json({ error: "Fill all required fields" });
-      }
-
       const validationUser = await User.findOne({
         email: req.body.email,
       }).exec();
+      
       if (validationUser) {
         console.log(validationUser, "User already exists");
         return res.status(409).json({ error: "User already exists" });

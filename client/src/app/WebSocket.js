@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import io from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { storeMessages } from "./features/chat/chatSlice";
+import { storeMessages } from "../features/chat/chatSlice";
 
 const WebSocketContext = createContext(null);
 
