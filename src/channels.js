@@ -1,10 +1,7 @@
-import jwt from "jsonwebtoken";
-import config from "./config";
 import Channel from "./model/Channel.model";
 
 const listChannels = async (req, res, next) => {
   try {
-    jwt.verify(req.cookies.token, config.secret);
     const channels = await Channel.find();
     res.status(200).send(channels);
   } catch (err) {
@@ -15,7 +12,6 @@ const listChannels = async (req, res, next) => {
 const viewChannel = async (req, res, next) => {
   const { channel } = req.params;
   try {
-    jwt.verify(req.cookies.token, config.secret);
     const validationChannel = await Channel.findOne({
       name: channel,
     }).exec();
@@ -32,8 +28,6 @@ const viewChannel = async (req, res, next) => {
 
 const createChannel = async (req, res, next) => {
   try {
-    jwt.verify(req.cookies.token, config.secret);
-
     const newChannel = new Channel({
       name: req.body.name,
       description: req.body.description,
@@ -61,10 +55,9 @@ const createChannel = async (req, res, next) => {
 };
 
 const updateChannel = async (req, res, next) => {
+  const { channelName } = req.params;
   try {
-    jwt.verify(req.cookies.token, config.secret);
-
-    if (!req.body.name || !req.body.newName) {
+    if (!req.body.newName) {
       return res.status(422).json({ error: "Fill all required fields" });
     }
 
@@ -75,16 +68,16 @@ const updateChannel = async (req, res, next) => {
     }
 
     const validationChannel = await Channel.findOne({
-      name: req.body.name,
+      name: channelName,
     }).exec();
 
     if (!validationChannel) {
-      console.log(req.body.name, "Channel doesn't exist");
-      return res.status(404).send(`${req.body.name} Channel doesn't exist`);
+      console.log(channelName, "Channel doesn't exist");
+      return res.status(404).send(`${channelName} channel doesn't exist`);
     }
 
     const channel = await Channel.findOneAndUpdate(
-      { name: req.body.name },
+      { name: channelName },
       { description: req.body.newDescription, name: req.body.newName },
       { new: true }
     );

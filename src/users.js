@@ -1,5 +1,3 @@
-import jwt from "jsonwebtoken";
-import config from "./config";
 import User from "./model/User.model";
 import { ObjectID } from "mongodb";
 
@@ -8,8 +6,6 @@ const ROLES = ["user", "admin"];
 
 const listUsers = async (req, res, next) => {
   try {
-    jwt.verify(req.cookies.token, config.secret);
-
     const users = await User.find({}, "email username _id role");
     res.status(200).send(users);
   } catch (err) {
@@ -27,8 +23,6 @@ const deleteUser = async (req, res, next) => {
     if (!ObjectID.isValid(userId) || !ObjectID.isValid(req.body.id)) {
       return res.status(422).json({ message: "Invalid parameter format" });
     }
-
-    jwt.verify(req.cookies.token, config.secret);
 
     const user = await User.findById(req.body.id).exec();
     if (!user) {
@@ -83,8 +77,6 @@ const updateUser = async (req, res, next) => {
     if (!validateEmailRegexp.test(req.body.newEmail)) {
       return res.status(422).json({ error: "Email invalid" });
     }
-
-    jwt.verify(req.cookies.token, config.secret);
 
     const user = await User.findById(req.body.id).exec();
     if (!user) {

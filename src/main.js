@@ -8,6 +8,7 @@ import passportJWT from "./services/passport";
 import socketIo from "socket.io";
 import http from "http";
 import config from "./config";
+import jwt from "jsonwebtoken";
 import mongooseService from "./services/mongoose";
 
 const userHandlers = require("./users");
@@ -87,6 +88,16 @@ function handleErrors(err, req, res, next) {
 
 middleware.forEach((it) => app.use(it));
 
+app.use("/api/v2/channels", function (req, res, next) {
+  jwt.verify(req.cookies.token, config.secret);
+  next();
+});
+
+app.use("/api/v2/users", function (req, res, next) {
+  jwt.verify(req.cookies.token, config.secret);
+  next();
+});
+
 app.get("/api/v1/auth/signin", authHandlers.verifyAuth);
 app.post("/api/v1/auth/signin", authHandlers.signin);
 app.post("/api/v1/auth/signup", authHandlers.signup);
@@ -95,7 +106,7 @@ app.post("/api/v1/auth/google", authHandlers.googleSignin);
 app.get("/api/v2/channels", channelHandlers.listChannels);
 app.get("/api/v2/channels/:channel", channelHandlers.viewChannel);
 app.post("/api/v2/channels", channelHandlers.createChannel);
-app.patch("/api/v2/update-channel", channelHandlers.updateChannel);
+app.patch("/api/v2/channels/:channelName", channelHandlers.updateChannel);
 
 app.get("/api/v2/users", userHandlers.listUsers);
 app.delete("/api/v2/users/:userId", userHandlers.deleteUser);
