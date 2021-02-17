@@ -86,6 +86,7 @@ export const authUser = (email, password) => async (dispatch) => {
 
 export const googleAuthUser = (googleData) => async (dispatch) => {
   try {
+    console.log(googleData, googleData.tokenId);
     const res = await axios.post(
       `/api/v1/auth/google`,
       { token: googleData.tokenId },

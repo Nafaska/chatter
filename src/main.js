@@ -62,21 +62,46 @@ const middleware = [
 
 passport.use("jwt", passportJWT.jwt);
 
+function handleErrors(err, req, res, next) {
+  if (err.name === "JsonWebTokenError") {
+    return res.status(401).json({
+      err: "Invalid or missing authorization token",
+      message: err.message,
+    });
+  } else if (err.name === "TokenExpiredError") {
+    return res.status(401).json({
+      err: "The session is expired. You have to login again",
+      message: err.message,
+    });
+  } else if (
+    err.message === "Password Incorrect" ||
+    err.message === "No User"
+  ) {
+    return res.status(401).json({ error: "Invalid Credentials" });
+  } else if (err.code === 11000) {
+    return res.status(409).json({ error: "User already exists" });
+  }
+  console.log(err);
+  return res.status(500).json({ error: "Something went wrong" });
+}
+
 middleware.forEach((it) => app.use(it));
 
-authHandlers.verifyAuth(app);
-authHandlers.signin(app);
-authHandlers.signup(app);
-authHandlers.googleSignin(app);
+app.get("/api/v1/auth/signin", authHandlers.verifyAuth);
+app.post("/api/v1/auth/signin", authHandlers.signin);
+app.post("/api/v1/auth/signup", authHandlers.signup);
+app.post("/api/v1/auth/google", authHandlers.googleSignin);
 
-channelHandlers.getAllChannels(app);
-channelHandlers.getChannel(app);
-channelHandlers.createChannel(app);
-channelHandlers.updateChannel(app);
+app.get("/api/v2/channels", channelHandlers.listChannels);
+app.get("/api/v2/channels/:channel", channelHandlers.viewChannel);
+app.post("/api/v2/channels", channelHandlers.createChannel);
+app.patch("/api/v2/update-channel", channelHandlers.updateChannel);
 
-userHandlers.getAllUsers(app);
-userHandlers.updateUser(app);
-userHandlers.deleteUser(app);
+app.get("/api/v2/users", userHandlers.listUsers);
+app.delete("/api/v2/users/:userId", userHandlers.deleteUser);
+app.patch("/api/v2/users/:userId", userHandlers.updateUser);
+
+app.use(handleErrors);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));

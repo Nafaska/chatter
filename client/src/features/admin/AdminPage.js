@@ -34,11 +34,21 @@ const AdminPage = () => {
       {users.map((it) => {
         if (it._id === currentItemId && editMode) {
           return (
-            <EditMode setEditMode={setEditMode} editMode={editMode} it={it} />
+            <EditMode
+              setEditMode={setEditMode}
+              editMode={editMode}
+              it={it}
+              key={it._id}
+            />
           );
         } else {
           return (
-            <ViewMode setEditMode={setEditMode} editMode={editMode} it={it} />
+            <ViewMode
+              setEditMode={setEditMode}
+              editMode={editMode}
+              it={it}
+              key={it._id}
+            />
           );
         }
       })}
