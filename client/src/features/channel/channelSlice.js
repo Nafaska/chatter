@@ -36,7 +36,8 @@ export const getListOfChannels = () => async (dispatch) => {
       dispatch(showChannelList(channels));
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err, err.response.data.error);
+      toast.error(err.response.data.error);
     });
 };
 
@@ -52,8 +53,8 @@ export const createChannel = (name, description) => async (dispatch) => {
       history.push(`channels/${res.data.name}`);
     })
     .catch((err) => {
-      console.log(err);
-      toast.error(err.response.data);
+      console.log(err, err.response.data.error);
+      toast.error(err.response.data.error);
     });
 };
 

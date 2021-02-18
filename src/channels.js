@@ -18,7 +18,7 @@ const viewChannel = async (req, res, next) => {
 
     if (!validationChannel) {
       console.log(channel, "Channel doesn't exist");
-      return res.status(404).send("Channel doesn't exist");
+      return res.status(404).json({ error: "Channel doesn't exist" });
     }
     res.status(200).json(validationChannel);
   } catch (err) {
@@ -43,7 +43,7 @@ const createChannel = async (req, res, next) => {
 
     if (validationChannel) {
       console.log(validationChannel, "Channel already exists");
-      return res.status(409).send("Channel already exists");
+      return res.status(409).json({ error: "Channel already exists" });
     }
 
     const channel = await newChannel.save();
@@ -73,7 +73,7 @@ const updateChannel = async (req, res, next) => {
 
     if (!validationChannel) {
       console.log(channelName, "Channel doesn't exist");
-      return res.status(404).send(`${channelName} channel doesn't exist`);
+      return res.status(404).json({error: `${channelName} channel doesn't exist`});
     }
 
     const channel = await Channel.findOneAndUpdate(

@@ -77,10 +77,8 @@ export const authUser = (email, password) => async (dispatch) => {
       })
     );
   } catch (err) {
-    console.log(err);
-    toast.error(
-      err.response ? err.response.data.error : "Something went wrong"
-    );
+    console.log(err, err.response.data.error);
+    toast.error(err.response.data.error);
   }
 };
 
@@ -103,10 +101,8 @@ export const googleAuthUser = (googleData) => async (dispatch) => {
       })
     );
   } catch (err) {
-    console.log(err);
-    toast.error(
-      err.response ? err.response.data.error : "Unable login via Google"
-    );
+    console.log(err, err.response.data.error);
+    toast.error(err.response.data.error);
   }
 };
 
@@ -132,10 +128,8 @@ export const createUser = (email, password, username) => async (dispatch) => {
     );
     history.push("/channels");
   } catch (err) {
-    console.log(err);
-    toast.error(
-      err.response ? err.response.data.error : "Couldn't login via Google"
-    );
+    console.log(err, err.response.data.error);
+    toast.error(err.response.data.error);
   }
 };
 
@@ -158,8 +152,8 @@ export function readToken() {
     } catch (err) {
       dispatch(validateUser({ token: null, role: [] }));
       history.push("/login");
-      toast.error("You have to login again");
-      console.log(err, "You have to login again");
+      toast.error(err.response.data.error);
+      console.log(err, err.response.data.error);
       return false;
     }
   };

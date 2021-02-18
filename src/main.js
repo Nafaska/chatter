@@ -66,12 +66,12 @@ passport.use("jwt", passportJWT.jwt);
 function handleErrors(err, req, res, next) {
   if (err.name === "JsonWebTokenError") {
     return res.status(401).json({
-      err: "Invalid or missing authorization token",
+      error: "Invalid or missing authorization token. You have to login again",
       message: err.message,
     });
   } else if (err.name === "TokenExpiredError") {
     return res.status(401).json({
-      err: "The session is expired. You have to login again",
+      error: "The session is expired. You have to login again",
       message: err.message,
     });
   } else if (

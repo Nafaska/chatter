@@ -39,7 +39,8 @@ export const getAllUsers = () => async (dispatch) => {
       dispatch(saveUsersFromServer(res.data));
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err, err.response.data.error);
+      toast.error(err.response.data.error);
     });
 };
 
@@ -51,7 +52,6 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       withCredentials: true,
     })
     .then((res) => {
-      console.log(res.data.message);
       dispatch(saveUsersFromServer(res.data.users));
     })
     .catch((err) => {

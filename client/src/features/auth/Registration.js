@@ -75,6 +75,7 @@ const RegistrationPage = () => {
               <input
                 id="password"
                 name="password"
+                type="password"
                 value={password}
                 onChange={(e) => {
                   dispatch(validatePassword(e.target.value));

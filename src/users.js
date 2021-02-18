@@ -17,11 +17,11 @@ const deleteUser = async (req, res, next) => {
   const { userId } = req.params;
   try {
     if (!req.body.id) {
-      res.status(400).json({ message: "Fill all required fields" });
+      res.status(400).json({ error: "Fill all required fields" });
     }
 
     if (!ObjectID.isValid(userId) || !ObjectID.isValid(req.body.id)) {
-      return res.status(422).json({ message: "Invalid parameter format" });
+      return res.status(422).json({ error: "Invalid parameter format" });
     }
 
     const user = await User.findById(req.body.id).exec();
@@ -41,10 +41,10 @@ const deleteUser = async (req, res, next) => {
     const result = await User.deleteOne({ _id: userId });
     if (result.deletedCount === 1) {
       const users = await User.find({}, "email username _id role");
-      res.status(200).json({ message: "Deleted Successfully", users });
+      res.status(200).json({ error: "Deleted Successfully", users });
     } else {
       res.status(404).json({
-        message: "Record doesn't exist or already has been deleted",
+        error: "Record doesn't exist or already has been deleted",
       });
     }
   } catch (err) {
@@ -61,11 +61,11 @@ const updateUser = async (req, res, next) => {
       !req.body.newEmail ||
       !req.body.newRole
     ) {
-     return res.status(400).json({ message: "Fill all required fields" });
+     return res.status(400).json({ error: "Fill all required fields" });
     }
 
     if (!ObjectID.isValid(userId) || !ObjectID.isValid(req.body.id)) {
-      return res.status(404).json({ message: "Invalid parameter format" });
+      return res.status(404).json({ error: "Invalid parameter format" });
     }
 
     if (req.body.newUsername.length < 1 || req.body.newUsername === " ") {
@@ -78,14 +78,14 @@ const updateUser = async (req, res, next) => {
       return res.status(422).json({ error: "Email invalid" });
     }
 
-    const user = await User.findById(req.body.id).exec();
-    if (!user) {
+    const adminUser = await User.findById(req.body.id).exec();
+    if (!adminUser) {
       return res
         .status(404)
         .json({ error: `User ${req.body.id} doesn't exist` });
     }
 
-    const isAdmin = user.role.includes("admin");
+    const isAdmin = adminUser.role.includes("admin");
 
     if (!isAdmin) {
       console.log(`User ${req.body.id} doesn't have access`);
@@ -115,7 +115,7 @@ const updateUser = async (req, res, next) => {
 
     if (!updatedUser) {
       console.log(`${userId} User doesn't exist`);
-      return res.status(404).send(`${userId} User doesn't exist`);
+      return res.status(404).json({error: `${userId} User doesn't exist`});
     }
 
     const users = await User.find({}, "email username _id role");

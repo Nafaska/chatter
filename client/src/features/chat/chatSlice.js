@@ -85,8 +85,8 @@ export const getChatInfo = (channel) => async (dispatch) => {
       })
     );
   } catch (err) {
-    console.log(err);
-    toast.error(err.response.data);
+    console.log(err, err.response.data.error);
+    toast.error(err.response.data.error);
     history.push(`/channels`);
   }
 };
