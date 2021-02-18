@@ -24,7 +24,7 @@
     "build": "babel ./src --out-dir ./dist",
     "start": "node ./dist/main.js",
     "heroku-postbuild": "yarn build && cd client && yarn && yarn run build",
-    "start:watch": "NODE_ENV=development nodemon --exec babel-node ./src/main.js"
+    "start:watch": "DEBUG=express:* NODE_ENV=development nodemon --exec babel-node ./src/main.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",

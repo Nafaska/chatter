@@ -46,9 +46,11 @@ const signin = async (req, res, next) => {
 const signup = async (req, res, next) => {
   try {
     if (!req.body.email || !req.body.password || !req.body.username) {
+      console.error(`Fill all required fields: ${req.body}`);
       return res.status(422).json({ error: "Fill all required fields" });
     }
     if (!validateEmailRegexp.test(req.body.email)) {
+      console.error(`Email invalid: ${req.body.email}`);
       return res.status(422).json({ error: "Email invalid" });
     }
 

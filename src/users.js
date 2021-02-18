@@ -17,15 +17,20 @@ const deleteUser = async (req, res, next) => {
   const { userId } = req.params;
   try {
     if (!req.body.id) {
+      console.error(`Fill all required fields`);
       res.status(400).json({ error: "Fill all required fields" });
     }
 
     if (!ObjectID.isValid(userId) || !ObjectID.isValid(req.body.id)) {
+      console.error(
+        `Invalid parameter format: userId = ${userId}, req.body.id = ${req.body.id}`
+      );
       return res.status(422).json({ error: "Invalid parameter format" });
     }
 
     const user = await User.findById(req.body.id).exec();
     if (!user) {
+      console.error(`User ${req.body.id} doesn't exist`);
       return res
         .status(404)
         .json({ error: `User ${req.body.id} doesn't exist` });
@@ -33,7 +38,7 @@ const deleteUser = async (req, res, next) => {
 
     const isAdmin = user.role.includes("admin");
     if (!isAdmin) {
-      console.log(`User ${req.body.id} doesn't have access`);
+      console.error(`User ${req.body.id} doesn't have access`);
       return res
         .status(403)
         .json({ error: `User ${req.body.id} doesn't have access` });
@@ -43,6 +48,9 @@ const deleteUser = async (req, res, next) => {
       const users = await User.find({}, "email username _id role");
       res.status(200).json({ error: "Deleted Successfully", users });
     } else {
+      console.error(
+        `Record doesn't exist or already has been deleted: ${userId}`
+      );
       res.status(404).json({
         error: "Record doesn't exist or already has been deleted",
       });
@@ -61,14 +69,19 @@ const updateUser = async (req, res, next) => {
       !req.body.newEmail ||
       !req.body.newRole
     ) {
-     return res.status(400).json({ error: "Fill all required fields" });
+      console.error("Fill all required fields", req.body);
+      return res.status(400).json({ error: "Fill all required fields" });
     }
 
     if (!ObjectID.isValid(userId) || !ObjectID.isValid(req.body.id)) {
+      console.error(
+        `Invalid parameter format: userId = ${userId}, req.body.id = ${req.body.id}`
+      );
       return res.status(404).json({ error: "Invalid parameter format" });
     }
 
     if (req.body.newUsername.length < 1 || req.body.newUsername === " ") {
+      console.error("Username should have at list one character");
       return res
         .status(422)
         .json({ error: "Username should have at list one character" });
@@ -80,6 +93,7 @@ const updateUser = async (req, res, next) => {
 
     const adminUser = await User.findById(req.body.id).exec();
     if (!adminUser) {
+      console.error(`User ${req.body.id} doesn't exist`);
       return res
         .status(404)
         .json({ error: `User ${req.body.id} doesn't exist` });
@@ -88,12 +102,11 @@ const updateUser = async (req, res, next) => {
     const isAdmin = adminUser.role.includes("admin");
 
     if (!isAdmin) {
-      console.log(`User ${req.body.id} doesn't have access`);
+      console.error(`User ${req.body.id} doesn't have access`);
       return res
         .status(403)
         .json({ error: `User ${req.body.id} doesn't have access` });
     }
-
 
     const validateRole = req.body.newRole.every((role) => ROLES.includes(role));
     const roleWithoutDuplicates = Array.from(new Set(req.body.newRole))
@@ -101,6 +114,7 @@ const updateUser = async (req, res, next) => {
       .reverse();
 
     if (req.body.newRole.length < 1 || !validateRole) {
+      console.error(`Role invalid: ${req.body.newRole}`);
       return res.status(422).json({ error: "Role invalid" });
     }
 
@@ -114,8 +128,8 @@ const updateUser = async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      console.log(`${userId} User doesn't exist`);
-      return res.status(404).json({error: `${userId} User doesn't exist`});
+      console.error(`${userId} User doesn't exist`);
+      return res.status(404).json({ error: `${userId} User doesn't exist` });
     }
 
     const users = await User.find({}, "email username _id role");

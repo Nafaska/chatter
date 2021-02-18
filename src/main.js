@@ -82,7 +82,7 @@ function handleErrors(err, req, res, next) {
   } else if (err.code === 11000) {
     return res.status(409).json({ error: "User already exists" });
   }
-  console.log(err);
+  console.error(err);
   return res.status(500).json({ error: "Something went wrong" });
 }
 

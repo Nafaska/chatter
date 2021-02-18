@@ -17,7 +17,7 @@ const viewChannel = async (req, res, next) => {
     }).exec();
 
     if (!validationChannel) {
-      console.log(channel, "Channel doesn't exist");
+      console.error(channel, "Channel doesn't exist");
       return res.status(404).json({ error: "Channel doesn't exist" });
     }
     res.status(200).json(validationChannel);
@@ -34,6 +34,7 @@ const createChannel = async (req, res, next) => {
     });
 
     if (!req.body.name) {
+      console.error("Fill all required fields: name is missing");
       return res.status(422).json({ error: "Fill all required fields" });
     }
 
@@ -42,7 +43,7 @@ const createChannel = async (req, res, next) => {
     }).exec();
 
     if (validationChannel) {
-      console.log(validationChannel, "Channel already exists");
+      console.error(validationChannel, "Channel already exists");
       return res.status(409).json({ error: "Channel already exists" });
     }
 
@@ -58,10 +59,14 @@ const updateChannel = async (req, res, next) => {
   const { channelName } = req.params;
   try {
     if (!req.body.newName) {
+      console.error("Fill all required fields: newName is missing");
       return res.status(422).json({ error: "Fill all required fields" });
     }
 
     if (req.body.newName.length < 1 || req.body.newName === " ") {
+      console.error(
+        `Name should have at list one character: ${req.body.newName}`
+      );
       return res
         .status(422)
         .json({ error: "Name should have at list one character" });
@@ -72,8 +77,10 @@ const updateChannel = async (req, res, next) => {
     }).exec();
 
     if (!validationChannel) {
-      console.log(channelName, "Channel doesn't exist");
-      return res.status(404).json({error: `${channelName} channel doesn't exist`});
+      console.error(channelName, "Channel doesn't exist");
+      return res
+        .status(404)
+        .json({ error: `${channelName} channel doesn't exist` });
     }
 
     const channel = await Channel.findOneAndUpdate(
