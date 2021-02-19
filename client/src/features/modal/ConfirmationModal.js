@@ -22,7 +22,7 @@ const ConfirmationModal = (props) => {
     },
     overlay: {
       backgroundColor: "lightgray",
-      zIndex: 20
+      zIndex: 40
     },
   };
 
