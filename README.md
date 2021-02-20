@@ -18,6 +18,7 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
 - Messages are not stored on the server or database.
 
 ## Planned Improvements:
+- Increase test coverage.
 - Get user images from Google Account.
 - Update channel details.
 - Close channel panel once selected.
