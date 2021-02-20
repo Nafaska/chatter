@@ -24,7 +24,9 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
 - Show online users.
 
 ## GIFs:
-<img src="./docs/ReadmeImages/Gifs/loginViaGoogle.gif" title="Send Message">
+<img src="./docs/ReadmeImages/Gifs/sendMessage.gif" title="Send Message">
+<img src="./docs/ReadmeImages/Gifs/Registartion.gif" title="Registration">
+<img src="./docs/ReadmeImages/Gifs/EditUserDetails.gif" title="Edit User Details">
 
 ## Screenshots:
 
