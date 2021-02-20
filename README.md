@@ -24,6 +24,7 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
 - Show online users.
 
 ## GIFs:
+<img src="./docs/ReadmeImages/Gifs/loginViaGoogle.gif" title="Send Message">
 
 ## Screenshots:
 
@@ -64,6 +65,4 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
 <p float="left">
   <img src="./docs/ReadmeImages/Mobile/HorizontalLandscape.jpg" title="Horizontal Landscape">
 </p>
-
-<img src="./docs/test.gif" title="Horizontal Landscape">
 
