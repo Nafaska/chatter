@@ -18,13 +18,16 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
 - Messages are not stored on the server or database.
 
 ## Planned Improvements:
+- Increase test coverage.
 - Get user images from Google Account.
 - Update channel details.
 - Close channel panel once selected.
 - Show online users.
 
-## GIFs:
-<img src="./docs/ReadmeImages/Gifs/loginViaGoogle.gif" title="Send Message">
+## Main interaction scenarios as GIFs:
+<img src="./docs/ReadmeImages/Gifs/sendMessage.gif" title="Send Message">
+<img src="./docs/ReadmeImages/Gifs/Registartion.gif" title="Registration">
+<img src="./docs/ReadmeImages/Gifs/EditUserDetails.gif" title="Edit User Details">
 
 ## Screenshots:
 
