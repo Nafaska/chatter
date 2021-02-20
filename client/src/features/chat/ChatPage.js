@@ -75,7 +75,7 @@ const ChatPage = () => {
             <div
               ref={pickerWrapper}
               className={
-                showEmojiPicker ? "fixed block left-4 bottom-24 z-10" : "hidden"
+                showEmojiPicker ? "fixed block ml-2 bottom-24 z-50" : "hidden"
               }
             >
               <Picker
