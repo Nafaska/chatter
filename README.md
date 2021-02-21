@@ -13,6 +13,9 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
  - Toast messages - [React-Toastify](https://www.npmjs.com/package/react-toastify)
  - Emoji - [React Emoji Picker](https://www.npmjs.com/package/emoji-picker-react)
 
+## Architecture: 
+<img src="./docs/ReadmeImages/ArchitectureDiagram.png" title="Architecture Diagram">
+
 ## Limitations: 
 - Messages are currently stored on the client side with the limit of 15 messages per channel. The client store is cleaned up each time the page is refreshed. 
 - Messages are not stored on the server or database.
