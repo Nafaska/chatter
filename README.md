@@ -37,36 +37,36 @@ Web application for instant messaging. Deployed to Heroku: https://chatter-messa
 ### Desktop (macOS, Chrome):
 
 <p float="left">
-  <img src="./docs/ReadmeImages/Desktop/LoginPage.png" width="470" title="Login Page"/>
-  <img src="./docs/ReadmeImages/Desktop/RegistrationPage.png" width="470" title="Registration Page"/> 
+  <img src="./docs/ReadmeImages/Desktop/LoginPage.png" width="49%" title="Login Page"/>
+  <img src="./docs/ReadmeImages/Desktop/RegistrationPage.png" width="49%" title="Registration Page"/> 
 </p>
 <p float="left">
-  <img src="./docs/ReadmeImages/Desktop/BurgerMenu.png" width="470" title="Channels List">
-  <img src="./docs/ReadmeImages/Desktop/ChatPage.png" width="470" title="Chat Page">
+  <img src="./docs/ReadmeImages/Desktop/BurgerMenu.png" width="49%" title="Channels List">
+  <img src="./docs/ReadmeImages/Desktop/ChatPage.png" width="49%" title="Chat Page">
 </p>
 <p float="left">
-  <img src="./docs/ReadmeImages/Desktop/ChannelsPage.png" width="470" title="Channels Page">
-  <img src="./docs/ReadmeImages/Desktop/AdminPanel.png" width="470" title="Admin Panel">
+  <img src="./docs/ReadmeImages/Desktop/ChannelsPage.png" width="49%" title="Channels Page">
+  <img src="./docs/ReadmeImages/Desktop/AdminPanel.png" width="49%" title="Admin Panel">
 </p>
 <p float="left">
-  <img src="./docs/ReadmeImages/Desktop/ToastError.png" width="470" title="Toast Error">
-  <img src="./docs/ReadmeImages/Desktop/ModalWindow.png" width="470" title="Modal Window">
+  <img src="./docs/ReadmeImages/Desktop/ToastError.png" width="49%" title="Toast Error">
+  <img src="./docs/ReadmeImages/Desktop/ModalWindow.png" width="49%" title="Modal Window">
 </p>
 
 ### Mobile (iOS, Chrome):
 <p float="left">
-  <img src="./docs/ReadmeImages/Mobile/LoginPage.jpg" width="310" title="Login Page"/>
-  <img src="./docs/ReadmeImages/Mobile/RegistrationPage.jpg" width="310" title="Registration Page"/> 
-  <img src="./docs/ReadmeImages/Mobile/ChannelsPage.jpg" width="310" title="Channels Page"/> 
+  <img src="./docs/ReadmeImages/Mobile/LoginPage.jpg" width="32%" title="Login Page"/>
+  <img src="./docs/ReadmeImages/Mobile/RegistrationPage.jpg" width="32%" title="Registration Page"/> 
+  <img src="./docs/ReadmeImages/Mobile/ChannelsPage.jpg" width="32%" title="Channels Page"/> 
 </p>
 <p float="left">
-  <img src="./docs/ReadmeImages/Mobile/ChatPage.jpg" width="310" title="Chat Page">
-  <img src="./docs/ReadmeImages/Mobile/ChannelList.jpg" width="310" title="Channels List">
-  <img src="./docs/ReadmeImages/Mobile/AdminPanel.jpg" width="310" title="Admin Panel">
+  <img src="./docs/ReadmeImages/Mobile/ChatPage.jpg" width="32%" title="Chat Page">
+  <img src="./docs/ReadmeImages/Mobile/ChannelList.jpg" width="32%" title="Channels List">
+  <img src="./docs/ReadmeImages/Mobile/AdminPanel.jpg" width="32%" title="Admin Panel">
 </p>
 <p float="left">
-  <img src="./docs/ReadmeImages/Mobile/ErrorToast.jpg" width="310" title="Toast Error">
-  <img src="./docs/ReadmeImages/Mobile/ModalWindow.jpg" width="310" title="Modal Window">
+  <img src="./docs/ReadmeImages/Mobile/ErrorToast.jpg" width="32%" title="Toast Error">
+  <img src="./docs/ReadmeImages/Mobile/ModalWindow.jpg" width="32%" title="Modal Window">
 </p>
 <p float="left">
   <img src="./docs/ReadmeImages/Mobile/HorizontalLandscape.jpg" title="Horizontal Landscape">
